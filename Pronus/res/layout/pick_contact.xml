@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_contact_new_conversation"
+        android:gravity="center_vertical|center_horizontal" />
+
+</LinearLayout>

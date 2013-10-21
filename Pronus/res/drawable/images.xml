@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myprogress"
+    android:oneshot="true" >
+
+    <item
+        android:drawable="@drawable/twelth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/eleven"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/tenth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/nineth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/seventh"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/sixth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/fifth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/fourth"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/third"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/second"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/first"
+        android:duration="200"/>
+
+</animation-list>
