@@ -1,10 +1,18 @@
 package com.example.pronus;
 
 
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 
+import org.apache.commons.codec.Decoder;
+import org.apache.commons.codec.binary.Base64;
+import javax.crypto.Cipher;
+import org.apache.*;
 import org.jivesoftware.smack.packet.Message;
-
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +28,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-public class Editor extends Fragment{
+public class Editor extends Fragment {
 
 	private EditText message;
 	static ListView conversation;
@@ -70,15 +78,55 @@ public class Editor extends Fragment{
 				ConversationList.addNewSms("22:55",name, message.getText().toString(),1,R.drawable.demo_profile,false);
 				adapter.add(new OneComment(false, message.getText().toString()));
 				String to = name + "/0123456789101";
+				// Questo è il testo da criptare con la chiave pubblica associata al contatto
 				String text = message.getText().toString();
-				if(addMessage(name, text, 0))
-					Log.i("PickContact - ","messaggio inviato aggiunto");
+				
+				if (addMessage(name, text, 0))
+					Log.i("Editor","Messaggio in uscita aggiunto al database");
+				
 				message.setText("");
-				Log.i("XMPPChatDemoActivity", "Sending text " + text + " to " + to);
+				
+				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+				
+				String[] columns = {"public_key"};
+				String selection = "email = ?";
+				String[] selectionArgs = {name};
+				
+				Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
+				
+				cursor.moveToFirst();
+				
+				// Ho ottenuto la chiave pubblica del destinatario sottoforma di stringa, 
+				// devo convertirla in PublicKey
+				String receiver_public_key_string = cursor.getString(0);
+				
+				PublicKey receiver_public_key;
+				Cipher c = null;
+				byte[] encodeFile = null;
+				byte[] b = text.getBytes();
+
+				try {
+					receiver_public_key = loadPublicKey(receiver_public_key_string);
+
+					// Cifratura di text
+
+					c = Cipher.getInstance("RSA/ECB/PKCS1Padding");			
+					c.init(Cipher.ENCRYPT_MODE, receiver_public_key);
+					encodeFile = c.doFinal(b);
+
+				} catch (GeneralSecurityException e) {
+					Log.i("Editor","Impossibile convertire la stringa in chiave pubblica");	
+				}
+
+				String encrypt = new String(encodeFile);
+				
+				
+				Log.i("XMPPChatDemoActivity", "Sending text " + encrypt + " to " + to);
 				Message msg = new Message(to, Message.Type.chat);
-				msg.setBody(text);				
+				msg.setBody(encrypt);				
 				if (Login.connection != null) {
 					Login.connection.sendPacket(msg);
+					Log.i("Editor","Messaggio criptato inviato con successo");
 				}
 
 			}
@@ -109,6 +157,13 @@ public class Editor extends Fragment{
 		if (id == -1)
 			return false;
 		return true;
+	}
+	
+	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+	    byte[] data = Base64.decodeBase64(stored);
+	    X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+	    KeyFactory fact = KeyFactory.getInstance("RSA");
+	    return fact.generatePublic(spec);
 	}
 
 }
