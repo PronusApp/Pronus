@@ -44,14 +44,13 @@ public class Intro extends Activity {
 
 		launcher.start();
 	}
-	private static ImageView getImage(){
-		return intro;
-	}
+
 	private class IntentLauncher extends Thread {
 
 		/**
 		 * Sleep for some time and than start new activity.
 		 */
+		
 		@Override
 		public void run() {
 

@@ -1,21 +1,11 @@
 package com.example.pronus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -85,18 +75,12 @@ public class ContactActivity extends Activity{
 			    startActivity(i);
 			    
 			}
-
-
-		});
-		
+		});		
 	}
-	
+
 	protected void onNewIntent (Intent i){
-		
 		if( i.getBooleanExtra("finish",false) ){
-			
 			finish();
-			
 		}
 	}
 }
