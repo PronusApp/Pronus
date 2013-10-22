@@ -64,8 +64,6 @@ public class ConversationList extends Fragment{
 			return null;
 		}
 
-		updateSmsList();
-
 		// inflate view from layout
 		view = (FrameLayout)inflater.inflate(R.layout.list_of_conversations,container,false);
 
@@ -89,7 +87,6 @@ public class ConversationList extends Fragment{
 				for(OneComment s : list)
 					if(s!=null){
 						Editor.adapter.add(s);
-						Log.i("ConversationList", s.getMessage());
 						Editor.conversation.setAdapter(Editor.adapter);
 					}
 
@@ -103,6 +100,8 @@ public class ConversationList extends Fragment{
 		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
 
 		mSmsList.setAdapter(adapter);
+		
+		updateSmsList();
 
 		return view;
 	}
@@ -157,6 +156,8 @@ public class ConversationList extends Fragment{
 				Cursor cursorConv = getConversation(mail);
 
 				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
+				
+				
 
 				while(cursorConv.moveToNext()){
 
@@ -171,15 +172,17 @@ public class ConversationList extends Fragment{
 						tempConv.addMessageToList(false,messaggio);
 
 					}
+					
 				}
 				
 				smsList.put(mail,tempConv);
-
-
 			}
 
 		}
-		update();
+		for(String s : smsList.keySet()){
+			adapter.add(smsList.get(s));
+		}
+			
 
 	}
 
@@ -194,7 +197,6 @@ public class ConversationList extends Fragment{
 		if(!alreadyExists){
 			adapter.add(new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
 			ConversationList.smsList.put(userName,new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
-			SMSService.smsList = smsList;
 
 		}else{
 			//prendo la conversazione relativa
@@ -221,14 +223,6 @@ public class ConversationList extends Fragment{
 		}
 	}
 
-	public static void update() {
-		for(String s : smsList.keySet()){
-			Conversation c = smsList.get(s);
-			Log.i("ConversationList","Esiste almeno una conversazione:" );
-			adapter.add(c);
-		}
-
-	}
 	public Cursor getConversation(final String nome_conversazione) {
 
 		SQLiteDatabase database = mDatabaseHelperForConversation.getReadableDatabase();
