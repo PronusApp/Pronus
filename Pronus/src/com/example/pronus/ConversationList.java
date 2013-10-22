@@ -80,6 +80,7 @@ public class ConversationList extends Fragment{
 				((TextView)v.findViewById(R.id.smsMessage)).setTypeface(null);
 				((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#000000"));
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
+				// NOME O MAIL?
 				Editor.setItems(nome,message);
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
 				currentlyConv = smsList.get(nome);
@@ -108,7 +109,7 @@ public class ConversationList extends Fragment{
 
 	private void updateSmsList() {
 		int bool = 0;
-		//smsList.put(null,null);
+
 		HashMap<String, String> mappaContatti;
 		contatti = new Rubrica(Main.mainContentResolver);
 
@@ -133,7 +134,6 @@ public class ConversationList extends Fragment{
 				Log.i("Test","Errore nell'insert");
 			else
 				Log.i("Test", nome + " " + contatti.getNumberByName(nome));
-
 		}   
 
 		Log.i("Main","Creo mDatabaseHelperForConversation");
@@ -145,12 +145,12 @@ public class ConversationList extends Fragment{
 
 		String[] columns = {"nome_conversazione"};
 
-		Cursor cursor = databaseConversazioni.query("conversazioni",columns,null,null,null,null,null);
+		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
 		while(cursor.moveToNext()){
 			
 			String mail = cursor.getString(0);
-			Log.i("ConversationList",""+mail);
+			Log.i("ConversationList - Test","" + mail);
 			if(!smsList.containsKey(mail)){
 
 				Cursor cursorConv = getConversation(mail);
@@ -182,7 +182,8 @@ public class ConversationList extends Fragment{
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
-			
+		
+		SMSService.sendPublicKey();
 
 	}
 
@@ -208,7 +209,7 @@ public class ConversationList extends Fragment{
 			int i = 0;
 			//controllo che sia un nuovo messaggio ricevuto
 			if(isMine){
-				//se è un messaggio ricevuto allora vado a cercare la conversazione nella lista
+				//se ÔøΩ un messaggio ricevuto allora vado a cercare la conversazione nella lista
 				//con lo scopo di aggiornare nella textview l'ultimo messaggio ricevuto
 				while(i < num_of_items){
 					View v =  ConversationList.mSmsList.getChildAt(i);
@@ -236,25 +237,8 @@ public class ConversationList extends Fragment{
 		Cursor cursor = database.query("conversazioni", columns, selection, selectionArgs, null, null, null);
 
 		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
-		// il cursor ritornato con moveToNext() (finchè questo non è null)
+		// il cursor ritornato con moveToNext() (finchÔøΩ questo non ÔøΩ null)
 
 		return cursor;
 	}
-	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
-
-		ContentValues values = new ContentValues();
-
-		values.put("nome_conversazione", nome_conversazione);
-		values.put("bool", bool);
-		values.put("messaggio", messaggio);
-
-		SQLiteDatabase database = mDatabaseHelperForConversation.getWritableDatabase();
-
-		long id = database.insert("conversazioni", null, values);
-
-		if (id == -1)
-			return false;
-		return true;
-	}
-
 }

@@ -21,35 +21,31 @@ public class Intro extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    // Removes notification bar
+		
+		// Rimozione del titolo e della barra e delle notifiche
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.intro);
 
 		intro = new ImageView(this);
-
 		intro = (ImageView) findViewById(R.id.introImage);
-		
 		intro.setVisibility(View.VISIBLE);
-		
+
         Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		
 	    intro.startAnimation(fadeInAnimation);
 	    
+	    // Lancio il servizio che gira sempre in background
 	    startService(new Intent(this, SMSService.class));
 		
-		// Start timer and launch main activity
 		IntentLauncher launcher = new IntentLauncher();
 
 		launcher.start();
 	}
-
+	
+	// Attività che dorme per tot secondi e poi lancia l'activity main
+	
 	private class IntentLauncher extends Thread {
-
-		/**
-		 * Sleep for some time and than start new activity.
-		 */
 		
 		@Override
 		public void run() {

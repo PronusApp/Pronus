@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class pickContact extends Activity{
 	@Override
@@ -35,12 +32,10 @@ public class pickContact extends Activity{
 				if(addEMailByName(autocomplete.getText().toString(),mail.getText().toString()))
 					Log.i("PickContact","Contatto aggiunto");
 
-				ConversationList.addNewSms("22:55",autocomplete.getText().toString(),"",1,R.drawable.demo_profile,true);
+				ConversationList.addNewSms("22:55",mail.getText().toString(),"",1,R.drawable.demo_profile,true);
 
 				finish();
-
 			}
-
 		});
 		
 		Button newContact = (Button)findViewById(R.id.new_contact);
@@ -50,10 +45,10 @@ public class pickContact extends Activity{
 			@Override
 			public void onClick(View arg0) {
 
-				if(addNewContact(newName.getText().toString(),newNumber.getText().toString(),newMail.getText().toString()))
+				if(addNewContact(newName.getText().toString(), newNumber.getText().toString(),newMail.getText().toString()))
 					Log.i("PickContact","Contatto aggiunto");
 
-				ConversationList.addNewSms("22:55",newName.getText().toString(),"",1,R.drawable.demo_profile,true);
+				ConversationList.addNewSms("22:55", newMail.getText().toString(),"",1,R.drawable.demo_profile,true);
 
 				finish();
 
@@ -61,8 +56,7 @@ public class pickContact extends Activity{
 
 		});
 	}
-	public boolean addEMailByName(final String nome, final String email) 
-	{
+	public boolean addEMailByName(final String nome, final String email) {
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -77,9 +71,11 @@ public class pickContact extends Activity{
 
 		if (r == -1)
 			return false;
-
+		
+		SMSService.sendPublicKey();
 		return true;
 	}
+	
 	public boolean addNewContact(String nome, String numero, String email) {
 
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
@@ -97,7 +93,8 @@ public class pickContact extends Activity{
 
 		if (id == -1)
 			return false;
-
+		
+		SMSService.sendPublicKey();
 		return true;
 	}
 }

@@ -37,9 +37,11 @@ public class Editor extends Fragment {
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
 		// fragment not when container null
+		
 		if (container == null) {
 			return null;
 		}
+		
 		// inflate view from layout
 		View view = (FrameLayout)inflater.inflate(R.layout.editor,container,false);
 
@@ -78,11 +80,12 @@ public class Editor extends Fragment {
 				ConversationList.addNewSms("22:55",name, message.getText().toString(),1,R.drawable.demo_profile,false);
 				adapter.add(new OneComment(false, message.getText().toString()));
 				String to = name + "/0123456789101";
+				
 				// Questo è il testo da criptare con la chiave pubblica associata al contatto
 				String text = message.getText().toString();
 				
 				if (addMessage(name, text, 0))
-					Log.i("Editor","Messaggio in uscita aggiunto al database");
+					Log.i("Editor","Messaggio in uscita inviato a "+ name +" aggiunto al database");
 				
 				message.setText("");
 				
@@ -121,7 +124,7 @@ public class Editor extends Fragment {
 				String encrypt = new String(encodeFile);
 				
 				
-				Log.i("XMPPChatDemoActivity", "Sending text " + encrypt + " to " + to);
+				Log.i("Editor", "Sending text " + encrypt + " to " + to);
 				Message msg = new Message(to, Message.Type.chat);
 				msg.setBody(encrypt);				
 				if (Login.connection != null) {
@@ -137,7 +140,6 @@ public class Editor extends Fragment {
 	public static void setItems(String nome, String messaggio){
 
 		Main.instance.setTitle(nome);
-
 		name = nome;
 
 	}
@@ -160,7 +162,7 @@ public class Editor extends Fragment {
 	}
 	
 	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
-	    byte[] data = Base64.decodeBase64(stored);
+	    byte[] data = Base64.decodeBase64(stored.getBytes());
 	    X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
 	    KeyFactory fact = KeyFactory.getInstance("RSA");
 	    return fact.generatePublic(spec);

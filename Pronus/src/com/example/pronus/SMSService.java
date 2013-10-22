@@ -7,9 +7,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.crypto.Cipher;
-
 import org.apache.commons.codec.binary.Hex;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -18,10 +16,10 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
-
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
@@ -31,36 +29,64 @@ public class SMSService extends Service {
 
 	public static XMPPConnection connection;
 	public static Map<String,Conversation> smsList=new HashMap<String,Conversation>();
-	
+
 	// Chiave pubblica e privata associata al contatto
-	public static PrivateKey privata;
-	public static PublicKey pubblica;
+	public static PrivateKey privata = null;
+	public static PublicKey pubblica = null; 
 
 	@Override
 	public void onCreate() {
-		
-		Log.d("Service", "onCreate");
-		
+
+		Log.d("SMSService", "onCreate");
+
 		KeyPairGenerator kpg = null;
+		
 		// Inizializzazione delle chiavi
 		try {
 			kpg = KeyPairGenerator.getInstance("RSA");
 		} catch (NoSuchAlgorithmException e) {
 			Log.i("SMSService","Impossibile creare un'istanza RSA");
 		}
-        kpg.initialize(1024);
-        
-        // Generazione delle chiavi
-        KeyPair kp = kpg.generateKeyPair();
-        
-        // Questa sarà la chiave che dovrò passare ai miei coontatti per poter comunicare con me
+		kpg.initialize(1024);
+
+		// Generazione delle chiavi
+		KeyPair kp = kpg.generateKeyPair();
+
+		// Questa sarà la chiave che dovrò passare ai miei coontatti per poter comunicare con me
 		pubblica = kp.getPublic();
-		
+
 		// Questa sarà la chiave personale e segreta del contatto per decifrare i messaggi in entrata
 		privata = kp.getPrivate();
-		
+
 		Log.i("SMSService", "Creazione chiave pubblica e chiave privata effettuata con successo");
+
 	}
+	
+	public static void sendPublicKey() {
+		
+		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+		
+		String[] columns = {"email"};
+		
+		Cursor cursor = database.query("contatti", columns, null, null, null,null,null);
+
+		while (cursor.moveToNext()) {
+			String to = cursor.getString(0);
+			
+			// Canale dedicato allo scambio di chiavi pubbliche
+			Message msg = new Message(to, Message.Type.normal);
+			msg.setBody(pubblica.toString());				
+			
+			if (Login.connection != null) 
+				Login.connection.sendPacket(msg);
+			
+			Log.i("SMSService","Inviata la chiave pubblica a " + to);
+		}
+		
+		Log.i("SMSService", "Aggiornate le chiavi pubbliche");
+
+	}
+	
 	@Override
 	public void onDestroy() {
 		Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();
@@ -69,18 +95,18 @@ public class SMSService extends Service {
 	@Override
 	public void onStart(Intent intent, int startid) {
 		Log.d("Service", "onStart");
-		
+
 		this.connection = Login.connection;
-		
+
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
 
 		// Listener per i messaggi (chat)
-		
+
 		if (connection != null) {
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
 			connection.addPacketListener(new PacketListener() {
-				
+
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
@@ -88,44 +114,49 @@ public class SMSService extends Service {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 						Log.i("SMSService", "Text Recieved " + message.getBody() + " from " + fromName );
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave privata
-						
+
 						Cipher cc = null;
 						byte[] plainFile = null;
 
 						try {
-						cc = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-						cc.init(Cipher.DECRYPT_MODE, privata);
+							cc = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+							cc.init(Cipher.DECRYPT_MODE, privata);
 
-						byte[] bytes = Hex.decodeHex(message.getBody().toCharArray());
-						
-						plainFile = cc.doFinal(bytes);		
+							byte[] bytes = Hex.decodeHex(message.getBody().toCharArray());
+
+							plainFile = cc.doFinal(bytes);		
 						} catch (Exception e) {
 							Log.i("SMSService", "Impossibile decodificare il messaggio");
 						}
-						
-						if(addMessage(fromName,new String(plainFile), 1))
+
+						if(addMessage(fromName, new String(plainFile), 1))
 							Log.i("Login - ","Messaggio aggiunto al database");
 						new UIUpdater().execute(fromName,message.getBody(),"");
 					}
 				}
 			}, filter);
 		}
-		
+
 		// Listener per le chiavi pubbliche (normal)
 		if (connection != null) {
-			
+
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.normal);
 			connection.addPacketListener(new PacketListener() {
+				
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
 					if (message.getBody() != null) {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
+
+						Log.i("SMSService", "Public key received " + message.getBody() + " from " + fromName);
 						
-						Log.i("SMSService", "Public key received " + message.getBody() + " from " + fromName );
 						if (addPublicKey(message.getBody(), fromName))
-							Log.i("Login - ","Chiave pubblica aggiunta al database");
+							Log.i("SMSService","Chiave pubblica aggiunta al database");
+						else
+							Log.i("SMSService","Impossibile aggiungere chiave pubblica al database");
+						
 						new UIUpdater().execute(fromName,message.getBody(),"");
 					}
 				}
@@ -134,7 +165,7 @@ public class SMSService extends Service {
 
 
 	}
-	
+
 	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
 
 		ContentValues values = new ContentValues();
@@ -151,7 +182,7 @@ public class SMSService extends Service {
 			return false;
 		return true;
 	}
-	
+
 	public boolean addPublicKey(String public_key, String email) {
 
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
@@ -167,6 +198,7 @@ public class SMSService extends Service {
 			return false;
 		return true;
 	}
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
