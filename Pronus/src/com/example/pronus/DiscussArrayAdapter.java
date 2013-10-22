@@ -6,13 +6,12 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,24 +55,22 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
 		countryName = (TextView) row.findViewById(R.id.message);
 
-		countryName.setText(coment.comment);
+		countryName.setText(coment.message);
 
 		countryName.setBackgroundResource(coment.left ? R.drawable.rounded_corners_blue: R.drawable.rounded_corners);
 
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
-		anim = AnimationUtils.loadAnimation(Main.mainContext, R.anim.anim);
-		
+		anim = new TranslateAnimation(0, 0, 200, 0);
+
+		anim.setDuration(750);   
+
 		anim.setDuration(400);
-		
-		if(position == (numOfItem - 1) && (animationOn)==1){
-			
-			row.startAnimation(anim);
-			
-		}
-		
+
+		row.startAnimation(anim);
+
 		anim = null;
-		
+
 		return row;
 	}
 

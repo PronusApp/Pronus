@@ -3,31 +3,21 @@ package com.example.pronus;
 import android.os.AsyncTask;
 import android.util.Log;
 
-class UIUpdater  extends AsyncTask<String,String, String>{
-
+class UIUpdater extends AsyncTask<String,String,String>{
+	String name, message;
 	@Override
 	protected String doInBackground(String... arg0) {
-		Log.i("UIUpdater","Devo aggiornare l'UI di sistema");
-		Log.i("UIUpdater","Nome " + arg0[0] );
-		Log.i("UIUpdater","Messaggio " + arg0[1] );
-		onProgressUpdate(arg0[0],arg0[1]);
+		name = arg0[0];
+		message = arg0[1];
 		return null;
-	}
+	} 
+    protected void onProgressUpdate(Integer... progress) {
+    	//
+    }
 
-	@Override
-	protected void onPostExecute(String result) {
-
-	}
-
-	@Override
-	protected void onPreExecute() {
-
-	}
-
-	@Override
-	protected void onProgressUpdate(String... values) {
-		ConversationList.adapter.add(new Conversation("22:55",values[0],values[1],1,R.drawable.demo_profile));
-		ConversationList.adapter.notifyDataSetChanged();
-	}
+    protected void onPostExecute(String result) {
+    	Log.i("UIUpdater","gonna update now");
+		ConversationList.addNewSms("22:55",name,message,1,R.drawable.demo_profile,true);
+    }
 
 }

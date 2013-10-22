@@ -16,20 +16,22 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.util.StringUtils;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class Login extends Activity{
 
-	private static XMPPConnection connection;
 	private Button start;
 	private EditText userName;
 	private EditText password;
@@ -38,6 +40,7 @@ public class Login extends Activity{
 	public static final String SERVICE = "gmail.com";
 	private String USERNAME = null;
 	private String PASSWORD = null;
+	public static XMPPConnection connection;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +55,9 @@ public class Login extends Activity{
 		password = (EditText)findViewById(R.id.password);
 
 		start = (Button)findViewById(R.id.start);
+
+		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		start.startAnimation(fadeIn);
 
 		start.setOnClickListener(new OnClickListener(){
 
@@ -69,14 +75,13 @@ public class Login extends Activity{
 	}
 	public void connect() {
 
-		//final ProgressDialog dialog = ProgressDialog.show(this,
-				//"Connecting...", "Please wait...", false);
+		//final ProgressDialog dialog = ProgressDialog.show(this,"Connecting...", "Please wait...", false);
 
 		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				
+
 				// Create a connection
 				ConnectionConfiguration connConfig = new ConnectionConfiguration(HOST, PORT, SERVICE);
 				XMPPConnection connection = new XMPPConnection(connConfig);
@@ -103,39 +108,6 @@ public class Login extends Activity{
 					connection.sendPacket(presence);
 					setConnection(connection);
 
-					Roster roster = connection.getRoster();
-
-					// Try to add vincenzoarceri
-
-					//roster.createEntry("vincenzoarceri.92@gmail.com/0123456789101", "Vincenzo Arceri", null);
-
-					Collection<RosterEntry> entries = roster.getEntries();
-					for (RosterEntry entry : entries) {
-						Log.d("XMPPy",
-								"--------------------------------------");
-						Log.d("XMPP", "RosterEntry " + entry);
-						Log.d("XMPP",
-								"User: " + entry.getUser());
-						Log.d("XMPP",
-								"Name: " + entry.getName());
-						Log.d("XMPP",
-								"Status: " + entry.getStatus());
-						Log.d("XMPP",
-								"Type: " + entry.getType());
-						Presence entryPresence = roster.getPresence(entry
-								.getUser());
-
-						Log.d("XMPP", "Presence Status: "
-								+ entryPresence.getStatus());
-						Log.d("XMPP", "Presence Type: "
-								+ entryPresence.getType());
-						Presence.Type type = entryPresence.getType();
-						if (type == Presence.Type.available)
-							Log.d("XMPP", "Presence AVIALABLE");
-						Log.d("XMPP", "Presence : "
-								+ entryPresence);
-
-					}
 				} catch (XMPPException ex) {
 					Log.e("XMPPChatDemoActivity", "Failed to log in as "
 							+ USERNAME);
@@ -150,24 +122,7 @@ public class Login extends Activity{
 		//dialog.show();
 	}
 	public void setConnection(XMPPConnection connection) {
-//		Main.connection = connection;
-		Login.connection = connection;
-		if (Login.connection != null) {
-			// Add a packet listener to get messages sent to us
-			PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
-			Login.connection.addPacketListener(new PacketListener() {
-				@Override
-				public void processPacket(Packet packet) {
-					Message message = (Message) packet;
-					if (message.getBody() != null) {
-						String fromName = StringUtils.parseBareAddress(message
-								.getFrom());
-						Log.i("XMPP", "Text Recieved " + message.getBody()
-								+ " from " + fromName );
-						new UIUpdater().execute(fromName,message.getBody(),"");
-					}
-				}
-			}, filter);
-		}
+			Login.connection = connection;
+			startService(new Intent(this, SMSService.class));
 	}
 }

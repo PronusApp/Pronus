@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@color/Ivory">
+    android:layout_height="match_parent"
+    android:background="@color/Ivory" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,7 +13,7 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="413dp"
+            android:layout_height="428dp"
             android:textColor="@color/Blue"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="@color/Ivory"
         android:src="@drawable/ic_contact_new_conversation" />
 
     <ImageButton
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:background="@color/Ivory"
         android:src="@drawable/ic_contact_undo" />
 
 </RelativeLayout>

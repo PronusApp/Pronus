@@ -34,7 +34,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/messageText"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_corners_blue"
             android:text="SEND"
             android:textColor="@color/Ivory"
             android:typeface="sans" />

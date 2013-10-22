@@ -1,15 +1,17 @@
 package com.example.pronus;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class pickContact extends Activity{
 	@Override
@@ -17,34 +19,85 @@ public class pickContact extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pick_contact);
 		this.setTitle("Seleziona un contatto");
-		final AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.autocomplete);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				this,
-				android.R.layout.simple_dropdown_item_1line, 
-				Main.contactNames
-				);
-		autocomplete.setAdapter(adapter);
-		autocomplete.setOnItemClickListener(new OnItemClickListener() {
+		final EditText autocomplete = (EditText) findViewById(R.id.nome);
+		final EditText newName = (EditText) findViewById(R.id.nome_new);
+		final EditText newNumber = (EditText) findViewById(R.id.numero_new);
+		final EditText newMail = (EditText) findViewById(R.id.mail_new);
+		final EditText mail = (EditText) findViewById(R.id.mail);
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-
-			}
-		});
 		Button confirm = (Button)findViewById(R.id.confirm);
-		
+
 		confirm.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				
-				ConversationList.addNewSms("22:55",autocomplete.getText().toString(),"Hi man!\nWassup?I'm going to eat an apple today rofl",1,R.drawable.demo_profile);
-				
+
+				if(addEMailByName(autocomplete.getText().toString(),mail.getText().toString()))
+					Log.i("PickContact","Contatto aggiunto");
+
+				ConversationList.addNewSms("22:55",autocomplete.getText().toString(),"",1,R.drawable.demo_profile,true);
+
 				finish();
-				
+
 			}
-			
+
 		});
+		
+		Button newContact = (Button)findViewById(R.id.new_contact);
+		
+		newContact.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+
+				if(addNewContact(newName.getText().toString(),newNumber.getText().toString(),newMail.getText().toString()))
+					Log.i("PickContact","Contatto aggiunto");
+
+				ConversationList.addNewSms("22:55",newName.getText().toString(),"",1,R.drawable.demo_profile,true);
+
+				finish();
+
+			}
+
+		});
+	}
+	public boolean addEMailByName(final String nome, final String email) 
+	{
+		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+
+		ContentValues values = new ContentValues();
+
+		if (!(email.substring(email.indexOf('@')).equals("@gmail.com")))
+			return false;
+
+		values.put("email", email);
+		String whereClause = "nome = ?";
+		String[] whereArgs = { nome };
+		int r = database.update("contatti", values, whereClause, whereArgs);
+
+		if (r == -1)
+			return false;
+
+		return true;
+	}
+	public boolean addNewContact(String nome, String numero, String email) {
+
+		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+
+		ContentValues values = new ContentValues();
+
+		if (!(email.substring(email.indexOf('@')).equals("@gmail.com")))
+			return false;
+
+		values.put("email", email);
+		values.put("nome", nome);
+		values.put("numero", numero);
+
+		long id = database.insert("contatti", null, values);
+
+		if (id == -1)
+			return false;
+
+		return true;
 	}
 }

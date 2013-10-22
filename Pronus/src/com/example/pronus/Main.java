@@ -1,33 +1,22 @@
 package com.example.pronus;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
-
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.util.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +26,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class Main extends FragmentActivity{
+public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> fragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
@@ -46,8 +35,6 @@ public class Main extends FragmentActivity{
 	public static CustomViewPager mPager;
 	//main context
 	public static Context mainContext;
-
-	public static Rubrica contatti;
 
 	private DrawerLayout mDrawerLayout;
 
@@ -58,11 +45,10 @@ public class Main extends FragmentActivity{
 	public static Activity instance;
 
 	public static String[] contactNames;
-
-	private UploadContacts myUploader;
-
-	public static XMPPConnection connection;
-
+	
+	public static ContentResolver mainContentResolver;
+	
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +60,8 @@ public class Main extends FragmentActivity{
 		this.setTitle("Messaggi");
 
 		instance = this;
-
-		myUploader = new UploadContacts();
-
-		myUploader.execute("");
+		
+		mainContentResolver = getContentResolver();
 
 		mainContext = this.getBaseContext();
 
@@ -173,6 +157,8 @@ public class Main extends FragmentActivity{
 			}
 
 		};
+		
+		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		mPager.setPageTransformer(true, new DepthPageTransformer());
@@ -180,8 +166,6 @@ public class Main extends FragmentActivity{
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		getActionBar().setHomeButtonEnabled(true);
-
-
 	}
 	@Override
 
@@ -231,16 +215,12 @@ public class Main extends FragmentActivity{
 
 		case R.id.action_search:
 
-			while(contatti==null);
-
 			startContactList();
 
 			return true;
 		case R.id.action_add:
-
-			while(contatti==null);
-
-			composeMessage();
+			
+			addNewContact();
 
 			return true;
 
@@ -291,36 +271,10 @@ public class Main extends FragmentActivity{
 			this.setTitle("Messaggi");
 		}
 	}
-	private class UploadContacts extends AsyncTask<String, Void, String> {
-
-		@Override
-		protected String doInBackground(String... params) {
-			contatti = new Rubrica(getContentResolver());
-			Map<String, String> myRubrica = new HashMap<String, String>();
-			myRubrica = contatti.getContacts();
-			contactNames = myRubrica.values().toArray(new String[0]);
-			return null;
-		}        
-
-		@Override
-		protected void onPostExecute(String result) {             
-		}
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-		}
-	}
-	private void composeMessage(){
+	private void addNewContact(){
 
 		Intent intent = new Intent(this,pickContact.class);
 
 		startActivity(intent);
 	}
-
-
-
 }

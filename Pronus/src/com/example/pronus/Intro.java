@@ -2,12 +2,13 @@ package com.example.pronus;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 public class Intro extends Activity {
@@ -31,6 +32,12 @@ public class Intro extends Activity {
 		intro = (ImageView) findViewById(R.id.introImage);
 		
 		intro.setVisibility(View.VISIBLE);
+		
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		
+	    intro.startAnimation(fadeInAnimation);
+	    
+	    startService(new Intent(this, SMSService.class));
 		
 		// Start timer and launch main activity
 		IntentLauncher launcher = new IntentLauncher();

@@ -52,7 +52,7 @@ public class ListOfConversationAdapter  extends ArrayAdapter<Conversation>{
 		
 		smsMessage = (TextView) row.findViewById(R.id.smsMessage);
 
-		smsMessage.setText(conv.getMessage());
+		smsMessage.setText(conv.getTextOfLastSms());
 		
 		smsCounter  = ((TextView) row.findViewById(R.id.smsCounter));
 		

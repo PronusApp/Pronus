@@ -30,9 +30,6 @@ public class ContactActivity extends Activity{
 
 	Context myCont;
 
-	//oggetto rubrica
-
-
 	private Map<String, String> myRubrica = new HashMap<String, String>();
 
 	protected void onCreate(Bundle savedInstanceState){
@@ -45,9 +42,7 @@ public class ContactActivity extends Activity{
 
 		myCont = this.getBaseContext();
 
-		getWindow().setLayout(600, 700);
-
-		myRubrica = Main.contatti.getContacts();
+		//myRubrica = Main.contatti.getContacts();
 
 		String[] names = myRubrica.values().toArray(new String[0]);
 
@@ -60,33 +55,48 @@ public class ContactActivity extends Activity{
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView parent, View v, int position, long id){
-				Log.i("prova",(String) (list.getItemAtPosition(position)));
+
+				//chiudo l'activity
 				Intent i = new Intent(myCont, ContactActivity.class);
+				
 			    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			    
 			    i.putExtra("finish",true);
+			    
 			    startActivity(i);
+			    
 			}
+			
 		});
 
 		ImageButton exit = (ImageButton)findViewById(R.id.cancel);
+		
 		exit.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 
 				Intent i = new Intent(myCont, ContactActivity.class);
+				
 			    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			    
 			    i.putExtra("finish",true);
+			    
 			    startActivity(i);
 			    
 			}
 
 
 		});
+		
 	}
+	
 	protected void onNewIntent (Intent i){
+		
 		if( i.getBooleanExtra("finish",false) ){
+			
 			finish();
+			
 		}
 	}
 }
