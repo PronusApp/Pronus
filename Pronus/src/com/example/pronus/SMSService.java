@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.crypto.Cipher;
 import org.apache.commons.codec.binary.Hex;
@@ -18,9 +19,11 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
 
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -40,13 +43,14 @@ public class SMSService extends Service {
 	public static PrivateKey privata = null;
 	public static PublicKey pubblica = null; 
 
+
 	@Override
 	public void onCreate() {
 
 		Log.d("SMSService", "onCreate");
 
 		KeyPairGenerator kpg = null;
-		
+
 		// Inizializzazione delle chiavi
 		try {
 			kpg = KeyPairGenerator.getInstance("RSA");
@@ -65,34 +69,36 @@ public class SMSService extends Service {
 		privata = kp.getPrivate();
 
 		Log.i("SMSService", "Creazione chiave pubblica e chiave privata effettuata con successo");
+		if(isForeground("com.example.pronus"))
+			Toast.makeText(Main.mainContext, "Running", Toast.LENGTH_SHORT).show();
 
 	}
-	
+
 	public static void sendPublicKey() {
-		
+
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
-		
+
 		String[] columns = {"email"};
-		
+
 		Cursor cursor = database.query("contatti", columns, null, null, null,null,null);
 
 		while (cursor.moveToNext()) {
 			String to = cursor.getString(0);
-			
+
 			// Canale dedicato allo scambio di chiavi pubbliche
 			Message msg = new Message(to, Message.Type.normal);
 			msg.setBody(pubblica.toString());				
-			
+
 			if (Login.connection != null) 
 				Login.connection.sendPacket(msg);
-			
+
 			Log.i("SMSService","Inviata la chiave pubblica a " + to);
 		}
-		
+
 		Log.i("SMSService", "Aggiornate le chiavi pubbliche");
 
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();
@@ -137,11 +143,13 @@ public class SMSService extends Service {
 
 						if(addMessage(fromName, new String(plainFile), 1))
 							Log.i("Login - ","Messaggio aggiunto al database");
-						
+
 						//Lancio la notifica alla ricezione del messaggio
+						//se e solo se la mia applicazione non è in esecuzione.
 						
-						createNotification(fromName,new String(plainFile));
-						
+						if(!isForeground("com.example.pronus"))
+							createNotification(fromName,new String(plainFile));
+
 						new UIUpdater().execute(fromName,message.getBody(),"");
 					}
 				}
@@ -154,7 +162,7 @@ public class SMSService extends Service {
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.normal);
 			connection.addPacketListener(new PacketListener() {
-				
+
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
@@ -162,13 +170,13 @@ public class SMSService extends Service {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 
 						Log.i("SMSService", "Public key received " + message.getBody() + " from " + fromName);
-						
+
 						if (addPublicKey(message.getBody(), fromName))
 							Log.i("SMSService","Chiave pubblica aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere chiave pubblica al database");
-						
-						
+
+
 						new UIUpdater().execute(fromName,message.getBody(),"");
 					}
 				}
@@ -210,13 +218,13 @@ public class SMSService extends Service {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/*
 	 * Il metodo createNotification viene 
 	 */
@@ -227,20 +235,38 @@ public class SMSService extends Service {
 
 		//Creo la notifica 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-		
-			    .setSmallIcon(R.drawable.ic_launcher)
-			    
-			    .setContentTitle(name)
-			    
-			    .setContentText(message)
-			    
-			    .setContentIntent(pIntent);
-		
+
+		.setSmallIcon(R.drawable.ic_launcher)
+
+		.setContentTitle(name)
+
+		.setContentText(message)
+
+		.setContentIntent(pIntent);
+
 		NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		
+
 		//Build della notifica e lancio
-		
+
 		mNotifyMgr.notify(0,  mBuilder.build());
 	}
 
+	/*
+	 * Questo metodo mi permette di verificare se ci sono applicazioni in Foreground
+	 * nel momento in cui devo lanciare la notifica.
+	 * E' necessario in quanto una notifica deve essere lanciata solo se l'applicazione
+	 * non è in esecuzione.
+	 */
+	public boolean isForeground(String myPackage){
+
+		ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+		List< ActivityManager.RunningTaskInfo > runningTaskInfo = manager.getRunningTasks(1); 
+
+		ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
+
+		if(componentInfo.getPackageName().equals(myPackage)) return true;
+
+		return false;
+	}
 }

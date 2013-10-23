@@ -47,8 +47,8 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	public static String[] contactNames;
 	
 	public static ContentResolver mainContentResolver;
-	
-	
+
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -277,4 +277,5 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 
 		startActivity(intent);
 	}
+	
 }

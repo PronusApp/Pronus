@@ -5,7 +5,9 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/Users/Francesca/Downloads/asmack.jar"/>
-	<classpathentry kind="lib" path="/Users/Francesca/Downloads/commons-codec-1.8/commons-codec-1.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/asmack.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/commons-codec-1.8/commons-codec-1.8.jar"/>
+	<classpathentry kind="lib" path="/Users/Francesca/Downloads/smack.jar"/>
+	<classpathentry kind="lib" path="/Users/Francesca/Downloads/naming.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
