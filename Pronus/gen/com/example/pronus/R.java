@@ -136,9 +136,10 @@ containing a value of this type.
         public static final int list_of_conversations=0x7f030004;
         public static final int login=0x7f030005;
         public static final int message=0x7f030006;
-        public static final int pick_contact=0x7f030007;
-        public static final int settings_nav_drawer=0x7f030008;
-        public static final int sms_preview=0x7f030009;
+        public static final int notification_result=0x7f030007;
+        public static final int pick_contact=0x7f030008;
+        public static final int settings_nav_drawer=0x7f030009;
+        public static final int sms_preview=0x7f03000a;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -195,7 +196,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:typeface
+          @attr name com.example.pronus:typeface
         */
         public static final int TypefacedTextView_typeface = 0;
     };
