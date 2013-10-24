@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -18,10 +19,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -57,6 +61,10 @@ public class ConversationList extends Fragment{
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
 	public static Rubrica contatti;
+	
+	private static Button add,newMessage,settings;
+	
+	private static TextView myMail,hint;
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
 		// fragment not when container null
@@ -87,9 +95,6 @@ public class ConversationList extends Fragment{
 				
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
 				
-				// NOME O MAIL?
-				
-				Editor.setItems(nome);
 				
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
 				
@@ -111,7 +116,13 @@ public class ConversationList extends Fragment{
 				
 				Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 				
+				// NOME O MAIL?
+				
+				Editor.setItems(nome);
+				
 				Main.mPager.setCurrentItem(1,true);
+				
+				
 				
 			}
 
@@ -121,10 +132,74 @@ public class ConversationList extends Fragment{
 		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
 
 		mSmsList.setAdapter(adapter);
+		//salvo la mia mail nella textview associata
 		
-		TextView myMail = (TextView)view.findViewById(R.id.myMail);
+		myMail = (TextView)view.findViewById(R.id.myMail);
+		
+		hint = (TextView)view.findViewById(R.id.hint);
+		
+		add = (Button)view.findViewById(R.id.addContact);
+		
+		newMessage = (Button)view.findViewById(R.id.newMessage);
+		
+		settings = (Button)view.findViewById(R.id.settings);
 		
 		myMail.setText(Main.mail);
+		//quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
+		myMail.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				arg0.setVisibility(View.GONE);
+				ConversationList.hint.setVisibility(View.GONE);
+				ConversationList.add.setVisibility(View.VISIBLE);
+				ConversationList.newMessage.setVisibility(View.VISIBLE);
+				ConversationList.settings.setVisibility(View.VISIBLE);
+				return false;
+			}
+			
+		});
+		
+		add.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				arg0.setVisibility(View.GONE);
+				ConversationList.myMail.setVisibility(View.VISIBLE);
+				ConversationList.newMessage.setVisibility(View.GONE);
+				ConversationList.settings.setVisibility(View.GONE);
+				addNewContact();
+				return false;
+			}
+			
+		});
+			
+		newMessage.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				arg0.setVisibility(View.GONE);
+				ConversationList.myMail.setVisibility(View.VISIBLE);
+				ConversationList.add.setVisibility(View.GONE);
+				ConversationList.settings.setVisibility(View.GONE);
+				return false;
+			}
+			
+		});
+		
+		settings.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				arg0.setVisibility(View.GONE);
+				ConversationList.myMail.setVisibility(View.VISIBLE);
+				ConversationList.add.setVisibility(View.GONE);
+				ConversationList.newMessage.setVisibility(View.GONE);
+				launchSettings();
+				return false;
+			}
+			
+		});
 		
 		updateSmsList();
 
@@ -265,4 +340,24 @@ public class ConversationList extends Fragment{
 
 		return cursor;
 	}
+	
+	private void addNewContact(){
+
+		Intent intent = new Intent(Main.mainContext,pickContact.class);
+
+		startActivity(intent);
+	}
+	
+	/*
+	 * Il metodo selectItem permette di gestire le azioni dopo aver premuto
+	 * un elemento del navigation drawer
+	 */
+	public void launchSettings() {
+		//Qui verrˆ lanciata l'activity per le impostazioni
+		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
+		
+		startActivity(intent);
+
+	}
+
 }

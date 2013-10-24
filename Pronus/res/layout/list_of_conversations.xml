@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
-        android:src="@drawable/demo_profile" />
-
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -25,16 +19,85 @@
         android:dividerHeight="0dp" >
     </ListView>
 
-    <TextView
-        android:id="@+id/myMail"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="60dp"
-        android:background="@color/Blue_Dark"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="myContact@gmail.com"
-        android:textColor="@color/Ivory"
-        android:textSize="20sp"
-        android:typeface="normal" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp" >
+
+        <TextView
+            android:id="@+id/myMail"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/Blue_Dark"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="myContact@gmail.com"
+            android:textColor="@color/Ivory"
+            android:textSize="20sp"
+            android:typeface="normal" />
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Preferenze"
+            android:textColor="@color/Blue"
+            android:textSize="14dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="fill_parent"
+            android:layout_alignRight="@+id/addContact"
+            android:background="@color/Blue" />
+
+        <Button
+            android:id="@+id/addContact"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="2dp"
+            android:text="Nuovo Contatto"
+            android:textColor="@color/Blue"
+            android:textSize="14dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="fill_parent"
+            android:layout_alignRight="@+id/newMessage"
+            android:background="@color/Blue" />
+
+        <Button
+            android:id="@+id/newMessage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/settings"
+            android:layout_toRightOf="@+id/addContact"
+            android:background="@null"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Nuova Conversazione"
+            android:textColor="@color/Blue"
+            android:textSize="14dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Click for settings"
+            android:textColor="@color/Ivory" />
+    </RelativeLayout>
 
 </FrameLayout>

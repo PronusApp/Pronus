@@ -19,6 +19,8 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	// list contains fragments to instantiate in the viewpager
@@ -45,10 +47,11 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_main);
-
-		this.setTitle("Messaggi");
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
 		
+		setContentView(R.layout.activity_main);
+		
+	
 		//acquisisco i dati passati alla classe main quando viene
 		//lanciata come intent dalla classe Login
 		
@@ -83,10 +86,7 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 		mPager.setAdapter(this.mPagerAdapter);
 
 		mPager.setPageTransformer(true, new DepthPageTransformer());
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-		getActionBar().setHomeButtonEnabled(true);
+		
 	}
 	@Override
 
@@ -120,30 +120,8 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	@Override
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-		case R.id.action_search:
-
-			startContactList();
-
-			return true;
-		case R.id.action_add:
-
-			addNewContact();
-
-			return true;
-		case R.id.settings:
-
-			launchSettings();
-
-			return true;
-
-		default:
-
-			return super.onOptionsItemSelected(item);
-
-		}
+		
+		return false;
 
 	}
 
@@ -168,25 +146,6 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 			this.setTitle("Messaggi");
 		}
-	}
-
-	private void addNewContact(){
-
-		Intent intent = new Intent(this,pickContact.class);
-
-		startActivity(intent);
-	}
-	
-	/*
-	 * Il metodo selectItem permette di gestire le azioni dopo aver premuto
-	 * un elemento del navigation drawer
-	 */
-	public void launchSettings() {
-		//Qui verrˆ lanciata l'activity per le impostazioni
-		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
-		
-		startActivity(intent);
-
 	}
 
 }

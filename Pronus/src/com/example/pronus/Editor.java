@@ -6,27 +6,26 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
-import org.apache.commons.codec.Decoder;
-import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
-import org.apache.*;
+
+import org.apache.commons.codec.binary.Base64;
 import org.jivesoftware.smack.packet.Message;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class Editor extends Fragment {
 	
@@ -37,6 +36,10 @@ public class Editor extends Fragment {
 	static DiscussArrayAdapter adapter;
 	
 	private static String name;
+	
+	private static TextView userName;
+	
+	private View EditorView;
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
 		// fragment not when container null
@@ -46,16 +49,19 @@ public class Editor extends Fragment {
 		}
 		
 		// inflate view from layout
-		View view = (FrameLayout)inflater.inflate(R.layout.editor,container,false);
+		EditorView = (FrameLayout)inflater.inflate(R.layout.editor,container,false);
 		//lista per i messaggi
-		conversation = (ListView)view.findViewById(R.id.conversation);
+		conversation = (ListView)EditorView.findViewById(R.id.conversation);
 		//button per l'invio di messaggi
-		Button send = (Button)view.findViewById(R.id.send);
+		Button send = (Button)EditorView.findViewById(R.id.send);
 		//edittext per la stesura del messaggio
-		message = (EditText)view.findViewById(R.id.messageText);
+		message = (EditText)EditorView.findViewById(R.id.messageText);
 		//adapter per la listview conversation
 		adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
-
+		
+		//Nome dell'utente con cui sto conversando
+		userName=(TextView)EditorView.findViewById(R.id.userMail);
+		
 		conversation.setAdapter(adapter);
 
 		send.setOnClickListener(new OnClickListener(){
@@ -140,7 +146,7 @@ public class Editor extends Fragment {
 			
 		});
 		
-		return view;
+		return EditorView;
 		
 	}
 	/*
@@ -148,10 +154,11 @@ public class Editor extends Fragment {
 	 * della persona con cui si sta conversando
 	 */
 	public static void setItems(String nome){
-
-		Main.instance.setTitle(nome);
 		
 		name = nome;
+		
+		userName.setText(name);
+		
 
 	}
 	/*
