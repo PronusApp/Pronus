@@ -29,10 +29,13 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 public class Editor extends Fragment {
-
+	
 	private EditText message;
+	
 	static ListView conversation;
+	
 	static DiscussArrayAdapter adapter;
+	
 	private static String name;
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -44,50 +47,35 @@ public class Editor extends Fragment {
 		
 		// inflate view from layout
 		View view = (FrameLayout)inflater.inflate(R.layout.editor,container,false);
-
+		//lista per i messaggi
 		conversation = (ListView)view.findViewById(R.id.conversation);
-
+		//button per l'invio di messaggi
 		Button send = (Button)view.findViewById(R.id.send);
-
+		//edittext per la stesura del messaggio
 		message = (EditText)view.findViewById(R.id.messageText);
-
+		//adapter per la listview conversation
 		adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
 
 		conversation.setAdapter(adapter);
-
-		message.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// If the event is a key-down event on the "enter" button
-				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					// Perform action on key press
-					adapter.numOfItem++;
-					adapter.animationOn = 0;
-					adapter.add(new OneComment(false, message.getText().toString()));
-					conversation.setSelection(conversation.getAdapter().getCount()-1);
-					message.setText("");
-					return true;
-				}
-				return false;
-			}
-		});
-
-
 
 		send.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				adapter.numOfItem++;
+				//aggiungo un nuovo messaggio a una conversazione esistente
 				ConversationList.addNewSms("22:55",name, message.getText().toString(),1,R.drawable.demo_profile,false);
+				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
 				adapter.add(new OneComment(false, message.getText().toString()));
+				
 				String to = name + "/0123456789101";
 				
 				// Questo è il testo da criptare con la chiave pubblica associata al contatto
 				String text = message.getText().toString();
-				
+				//controllo che il messaggio sia stato inviato
 				if (addMessage(name, text, 0))
+					
 					Log.i("Editor","Messaggio in uscita inviato a "+ name +" aggiunto al database");
-				
+				//pulisco l'edittext per l'invio del messaggio successivo
 				message.setText("");
 				
 				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
@@ -105,46 +93,71 @@ public class Editor extends Fragment {
 				String receiver_public_key_string = cursor.getString(0);
 				
 				PublicKey receiver_public_key;
+				
 				Cipher c = null;
+				
 				byte[] encodeFile = null;
+				
 				byte[] b = text.getBytes();
 
 				try {
+					
 					receiver_public_key = loadPublicKey(receiver_public_key_string);
 
 					// Cifratura di text
 
-					c = Cipher.getInstance("RSA/ECB/PKCS1Padding");			
+					c = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+					
 					c.init(Cipher.ENCRYPT_MODE, receiver_public_key);
+					
 					encodeFile = c.doFinal(b);
+					
 
 				} catch (GeneralSecurityException e) {
+					
 					Log.i("Editor","Impossibile convertire la stringa in chiave pubblica");	
+					
 				}
 
 				String encrypt = new String(encodeFile);
 				
 				
-				Log.i("Editor", "Sending text " + encrypt + " to " + to);
+				Log.i("Editor", "Invio messaggio" + encrypt + " a " + to);
+				//creo un nuovo messaggio da inviare
 				Message msg = new Message(to, Message.Type.chat);
-				msg.setBody(encrypt);				
+				
+				msg.setBody(encrypt);
+				
 				if (Login.connection != null) {
+					
 					Login.connection.sendPacket(msg);
+					
 					Log.i("Editor","Messaggio criptato inviato con successo");
+					
 				}
 
 			}
+			
 		});
+		
 		return view;
+		
 	}
-
-	public static void setItems(String nome, String messaggio){
+	/*
+	 * La funzione setItems permette di settare il titolo dell'activity con il nome
+	 * della persona con cui si sta conversando
+	 */
+	public static void setItems(String nome){
 
 		Main.instance.setTitle(nome);
+		
 		name = nome;
 
 	}
-
+	/*
+	 * Il metodo addMessage permette di memorizzare il messaggio inviato nel database
+	 * in modo da aggiornare lo storico di una determinata conversazione
+	 */
 	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
 
 		ContentValues values = new ContentValues();
@@ -161,11 +174,17 @@ public class Editor extends Fragment {
 			return false;
 		return true;
 	}
-	
+	/*
+	 * Il metoo loadPublicKey permette di ottenere una chiave pubblica
+	 */
 	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+		
 	    byte[] data = Base64.decodeBase64(stored.getBytes());
+	    
 	    X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+	    
 	    KeyFactory fact = KeyFactory.getInstance("RSA");
+	    
 	    return fact.generatePublic(spec);
 	}
 

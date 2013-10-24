@@ -89,7 +89,7 @@ public class ConversationList extends Fragment{
 				
 				// NOME O MAIL?
 				
-				Editor.setItems(nome,message);
+				Editor.setItems(nome);
 				
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
 				
