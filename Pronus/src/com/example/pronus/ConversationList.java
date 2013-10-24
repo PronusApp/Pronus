@@ -74,25 +74,45 @@ public class ConversationList extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				
 				View v =  mSmsList.getChildAt(arg2);
+				
 				nome = ((TextView)v.findViewById(R.id.userName)).getText().toString();
+				
 				message =((TextView)v.findViewById(R.id.smsMessage)).getText().toString();
+				
 				((TextView)v.findViewById(R.id.smsMessage)).setTypeface(null);
+				
 				((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#000000"));
+				
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
+				
 				// NOME O MAIL?
+				
 				Editor.setItems(nome,message);
+				
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
+				
 				currentlyConv = smsList.get(nome);
+				
 				ArrayList<OneComment> list = currentlyConv.getMessage();
+				
 				for(OneComment s : list)
+					
 					if(s!=null){
+						
 						Editor.adapter.add(s);
+						
 						Editor.conversation.setAdapter(Editor.adapter);
+						
 					}
 
-
+				//imposto la lista di messaggi all'ultimo elemento
+				
+				Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+				
 				Main.mPager.setCurrentItem(1,true);
+				
 			}
 
 

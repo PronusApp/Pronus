@@ -63,6 +63,7 @@ public class Editor extends Fragment {
 					adapter.numOfItem++;
 					adapter.animationOn = 0;
 					adapter.add(new OneComment(false, message.getText().toString()));
+					conversation.setSelection(conversation.getAdapter().getCount()-1);
 					message.setText("");
 					return true;
 				}

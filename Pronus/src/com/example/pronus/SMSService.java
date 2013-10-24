@@ -69,8 +69,6 @@ public class SMSService extends Service {
 		privata = kp.getPrivate();
 
 		Log.i("SMSService", "Creazione chiave pubblica e chiave privata effettuata con successo");
-		if(isForeground("com.example.pronus"))
-			Toast.makeText(Main.mainContext, "Running", Toast.LENGTH_SHORT).show();
 
 	}
 
