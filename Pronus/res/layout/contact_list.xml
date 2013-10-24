@@ -13,7 +13,7 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="428dp"
+            android:layout_height="match_parent"
             android:textColor="@color/Blue"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -22,11 +22,11 @@
     <ImageButton
         android:id="@+id/send"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@color/Ivory"
-        android:src="@drawable/ic_contact_new_conversation" />
+        android:src="@drawable/ic_action_new_message_blue" />
 
     <ImageButton
         android:id="@+id/cancel"
@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/send"
         android:background="@color/Ivory"
-        android:src="@drawable/ic_contact_undo" />
+        android:src="@drawable/back" />
 
 </RelativeLayout>
