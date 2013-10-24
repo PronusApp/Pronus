@@ -3,13 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/demo_profile" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="59dp"
+        android:background="@color/Blue" />
+
     <ListView
         android:id="@+id/sms_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="65dp"
         android:animateLayoutChanges="true"
         android:divider="@null"
         android:dividerHeight="0dp" >
     </ListView>
+
+    <TextView
+        android:id="@+id/myMail"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="60dp"
+        android:background="@color/Blue_Dark"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="myContact@gmail.com"
+        android:textColor="@color/Ivory"
+        android:textSize="20sp"
+        android:typeface="normal" />
 
 </FrameLayout>

@@ -67,6 +67,8 @@ public class Login extends Activity{
 				PASSWORD = password.getText().toString();
 				connect();
 				Intent intent = new Intent(Login.this, Main.class);
+				//salvo il nome utilizzato per il login nella classe main
+				intent.putExtra("mail",USERNAME);
 				startActivity(intent);
 				Login.this.finish();
 			}

@@ -122,6 +122,10 @@ public class ConversationList extends Fragment{
 
 		mSmsList.setAdapter(adapter);
 		
+		TextView myMail = (TextView)view.findViewById(R.id.myMail);
+		
+		myMail.setText(Main.mail);
+		
 		updateSmsList();
 
 		return view;
