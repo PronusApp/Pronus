@@ -1,0 +1,59 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <EditText
+            android:id="@+id/messageText"
+            android:layout_width="270dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/userMail"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="18dp"
+            android:textColor="@color/Ivory"
+            android:background="@color/Blue_Dark"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="userMail@gmail.com" />
+
+        <ListView
+            android:id="@+id/conversation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/messageText"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/userMail"
+            android:layout_marginBottom="4dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:overScrollMode="ifContentScrolls"
+            android:paddingTop="4dp"
+            android:smoothScrollbar="true" >
+
+        </ListView>
+
+        <Button
+            android:id="@+id/send"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/messageText"
+            android:background="@drawable/ok"
+            android:textColor="@color/Ivory"
+            android:typeface="sans" />
+
+    </RelativeLayout>
+
+</FrameLayout>
