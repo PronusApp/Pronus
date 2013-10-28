@@ -1,16 +1,6 @@
 package com.example.pronus;
 
-
-import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
-
-import javax.crypto.Cipher;
-
-
 import org.jivesoftware.smack.packet.Message;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,26 +21,22 @@ import android.widget.Toast;
 public class Editor extends Fragment {
 	
 	private EditText message;
-	
 	static ListView conversation;
-	
 	static DiscussArrayAdapter adapter;
-	
 	private static String name;
-	
 	private static TextView userName;
-	
 	private View EditorView;
-
-	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-		// fragment not when container null
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
+		// Fragment not when container null
 		if (container == null) {
 			return null;
 		}
 		
 		// inflate view from layout
-		EditorView = (FrameLayout)inflater.inflate(R.layout.editor,container,false);
+		EditorView = (FrameLayout)inflater.inflate(R.layout.editor, container, false);
 		//lista per i messaggi
 		conversation = (ListView)EditorView.findViewById(R.id.conversation);
 		//button per l'invio di messaggi
@@ -69,8 +55,10 @@ public class Editor extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				
 				//aggiungo un nuovo messaggio a una conversazione esistente
-				ConversationList.addNewSms("22:55",name, message.getText().toString(),1,R.drawable.demo_profile,false);
+				ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
+				
 				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
 				adapter.add(new OneComment(false, message.getText().toString()));
 				
@@ -81,8 +69,7 @@ public class Editor extends Fragment {
 		
 				if (addMessage(name, text, 0))
 					Log.i("Editor","Messaggio in uscita inviato a "+ name +" aggiunto al database");
-				
-				// Pulisco l'edittext per l'invio del messaggio successivo
+	
 				message.setText("");
 				
 				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
@@ -99,22 +86,49 @@ public class Editor extends Fragment {
 					return;
 				}
 				
-				String password = cursor.getString(0);
+				String seed = cursor.getString(0);
 				
-				if (password == null) {
+				if (seed == null) {
 					Log.i("Editor", "Nessuna password memorizzata per il contatto");
 					
 					// Richiesta esplicita della password al contatto
+					
+					Message msg = new Message(to, Message.Type.normal);
+		
+					msg.setBody("IWannaYourKey");
+					
+					if (Login.connection != null) {	
+						Login.connection.sendPacket(msg);
+						Log.i("Editor","Richiesta della password inviata con successo");
+					}
+					
+					try {
+						Thread.currentThread().sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					// Query per cercare la nuova password
+
+					Cursor new_cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
+					
+					if (new_cursor.moveToFirst() == false) {
+						Log.i("Editor", "Password non presente per questo contatto");
+						Toast.makeText(getActivity(), "Password non presente per questo contatto", Toast.LENGTH_LONG).show();
+						return;
+					}
+		
+					seed = new_cursor.getString(0);
 				}
 	
-				String seed = "ThisIsASecretKey";
-
 				String encrypt = "";
 				
 				try {
+					if (seed == null) 
+						seed = "ThisIsASecretKey";
+					
 					encrypt = Decoder.encrypt(seed, text);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -127,7 +141,7 @@ public class Editor extends Fragment {
 				
 				if (Login.connection != null) {	
 					Login.connection.sendPacket(msg);
-					Log.i("Editor","Messaggio criptato inviato con successo");
+					Log.i("Editor", "Messaggio criptato inviato con successo");
 				}
 			}	
 		});

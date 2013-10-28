@@ -12,7 +12,7 @@ public class Decoder {
 	
 	private static final String CIPHER_ALGORITHM = "AES";
 	private static final String RANDOM_GENERATOR_ALGORITHM = "SHA1PRNG";
-	private static final int RANDOM_KEY_SIZE = 128;
+	private static final int RANDOM_KEY_SIZE = 256;
 	
 	public static String encrypt( String password, String data ) throws Exception {
 		byte[] secretKey = generateKey( password.getBytes() );

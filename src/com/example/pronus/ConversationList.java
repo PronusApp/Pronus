@@ -103,12 +103,9 @@ public class ConversationList extends Fragment {
 				
 				for(OneComment s : list)
 					
-					if(s!=null){
-						
+					if (s != null){
 						Editor.adapter.add(s);
-						
 						Editor.conversation.setAdapter(Editor.adapter);
-						
 					}
 
 				//imposto la lista di messaggi all'ultimo elemento
@@ -120,12 +117,7 @@ public class ConversationList extends Fragment {
 				Editor.setItems(nome);
 				
 				Main.mPager.setCurrentItem(1,true);
-				
-				
-				
 			}
-
-
 		});
 
 		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
@@ -144,7 +136,8 @@ public class ConversationList extends Fragment {
 		settings = (Button)view.findViewById(R.id.settings);
 		
 		myMail.setText(Main.mail);
-		//quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
+		
+		// Quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
 		myMail.setOnTouchListener(new OnTouchListener(){
 
 			@Override
@@ -208,7 +201,6 @@ public class ConversationList extends Fragment {
 	private void updateSmsList() {
 		int bool = 0;
 
-		
 		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
@@ -224,7 +216,7 @@ public class ConversationList extends Fragment {
 
 		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
-		while(cursor.moveToNext()) {
+		while (cursor.moveToNext()) {
 			
 			String mail = cursor.getString(0);
 			Log.i("ConversationList","" + mail);
@@ -260,7 +252,7 @@ public class ConversationList extends Fragment {
 		}
 		
 		SMSService.sendPublicKey();
-
+		database.close();
 	}
 
 	public static void addNewSms(String timeOfLastSms,String userName,String sms, int numOfNewMessages,int profileImage, boolean isMine){
@@ -314,7 +306,8 @@ public class ConversationList extends Fragment {
 
 		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
 		// il cursor ritornato con moveToNext() (finch� questo non � null)
-
+		
+		database.close();
 		return cursor;
 	}
 	

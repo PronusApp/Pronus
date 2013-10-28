@@ -80,13 +80,16 @@ public class SMSService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startid) {
-		Log.d("Service", "onStart");
+		Log.i("SMSService", "onStart");
 
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
-
+		
+		this.connection = Login.connection;
+		
 		// Listener per i messaggi (chat)
 
 		if (connection != null) {
+			
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
 			connection.addPacketListener(new PacketListener() {
@@ -94,11 +97,13 @@ public class SMSService extends Service {
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
+					
 					if (message.getBody() != null) {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
-						Log.i("SMSService", "Text Received " + message.getBody() + " from " + fromName );
+						Log.i("SMSService", "Messaggio ricevuto " + message.getBody() + " da " + fromName );
+						
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave
-
+						
 						String clear = "";
 						
 						try {
@@ -107,8 +112,8 @@ public class SMSService extends Service {
 							e.printStackTrace();
 						}
 
-						if(addMessage(fromName, clear, 1))
-							Log.i("Login - ","Messaggio aggiunto al database:" + clear);
+						if (addMessage(fromName, clear, 1))
+							Log.i("SMSService ","Messaggio aggiunto al database: " + clear);
 
 						//Lancio la notifica alla ricezione del messaggio
 						//se e solo se la mia applicazione non è in esecuzione.
@@ -132,24 +137,34 @@ public class SMSService extends Service {
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
-					if (message.getBody() != null) {
+					if ((message.getBody() != null) && (!message.getBody().equals("IWannaYourKey"))) {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 
-						Log.i("SMSService", "Public key received " + message.getBody() + " from " + fromName);
+						Log.i("SMSService", "Password ricevuta " + message.getBody() + " da " + fromName);
 
 						if (addPublicKey(message.getBody(), fromName))
-							Log.i("SMSService","Chiave pubblica aggiunta al database");
+							Log.i("SMSService","Password aggiunta al database");
 						else
-							Log.i("SMSService","Impossibile aggiungere chiave pubblica al database");
-
+							Log.i("SMSService","Impossibile aggiungere la password al database");
 
 						new UIUpdater().execute(fromName,message.getBody(),"");
+					} else if (message.getBody().equals("IWannaYourKey")) {
+						
+						String from = StringUtils.parseBareAddress(message.getFrom());
+						Log.i("SMSService", "Richiesta di password ricevuta da " + from);
+						
+						Message msg = new Message(from, Message.Type.normal);
+						
+						msg.setBody(seed);
+						
+						if (Login.connection != null) {	
+							Login.connection.sendPacket(msg);
+							Log.i("SMSService","Passoword inviata con successo");
+						}	
 					}
 				}
 			}, filter);
 		}
-
-
 	}
 
 	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
