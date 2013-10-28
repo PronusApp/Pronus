@@ -8,10 +8,11 @@
 
         <EditText
             android:id="@+id/messageText"
-            android:layout_width="270dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/send"
             android:ems="10" />
 
         <TextView
@@ -28,6 +29,8 @@
 
         <ListView
             android:id="@+id/conversation"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/messageText"
@@ -45,14 +48,13 @@
         <Button
             android:id="@+id/send"
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="45dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/messageText"
             android:background="@drawable/ok"
-            android:textColor="@color/Ivory"
-            android:typeface="sans" />
+            android:textColor="@color/Ivory" />
 
     </RelativeLayout>
 
