@@ -86,7 +86,7 @@ public class Editor extends Fragment {
 				
 				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
 				
-				String[] columns = {"public_key"};
+				String[] columns = {"password"};
 				String selection = "email = ?";
 				String[] selectionArgs = {name};
 				

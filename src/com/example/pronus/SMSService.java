@@ -1,14 +1,8 @@
 package com.example.pronus;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.crypto.Cipher;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
@@ -30,25 +24,24 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 public class SMSService extends Service {
 
 	public static XMPPConnection connection;
-	public static Map<String,Conversation> smsList=new HashMap<String,Conversation>();
+	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
 
 	public static String seed;
 
 
 	@Override
 	public void onCreate() {
-
-		Log.d("SMSService", "onCreate");
-
+		
 		seed = "ThisIsASecretKey";
 		
-		Log.i("SMSService", "Creazione chiave pubblica e chiave privata effettuata con successo");
+		this.connection = Login.connection;
+		
+		Log.i("SMSService", "Servizio creato");
 
 	}
 
@@ -63,17 +56,20 @@ public class SMSService extends Service {
 		while (cursor.moveToNext()) {
 			String to = cursor.getString(0);
 
-			// Canale dedicato allo scambio di chiavi pubbliche
-			Message msg = new Message(to, Message.Type.normal);
-			msg.setBody(seed.toString());				
+			if (to != null) {
+				
+				// Canale dedicato allo scambio di chiavi pubbliche
+				Message msg = new Message(to, Message.Type.normal);
+				msg.setBody(seed);				
 
-			if (Login.connection != null) 
-				Login.connection.sendPacket(msg);
+				if (Login.connection != null) 
+					Login.connection.sendPacket(msg);
 
-			Log.i("SMSService","Inviata la chiave pubblica a " + to);
+				Log.i("SMSService","Inviata password a " + to);
+			}
 		}
 
-		Log.i("SMSService", "Aggiornate le chiavi pubbliche");
+		Log.i("SMSService", "Inviata password a tutti i contatti");
 
 	}
 
@@ -85,8 +81,6 @@ public class SMSService extends Service {
 	@Override
 	public void onStart(Intent intent, int startid) {
 		Log.d("Service", "onStart");
-
-		this.connection = Login.connection;
 
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
 
@@ -106,6 +100,7 @@ public class SMSService extends Service {
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave
 
 						String clear = "";
+						
 						try {
 							clear = Decoder.decrypt( new String(seed), message.getBody());
 						} catch (Exception e) {
@@ -116,7 +111,7 @@ public class SMSService extends Service {
 							Log.i("Login - ","Messaggio aggiunto al database:" + clear);
 
 						//Lancio la notifica alla ricezione del messaggio
-						//se e solo se la mia applicazione non � in esecuzione.
+						//se e solo se la mia applicazione non è in esecuzione.
 						
 						if(!isForeground("com.example.pronus"))
 							createNotification(fromName, clear);

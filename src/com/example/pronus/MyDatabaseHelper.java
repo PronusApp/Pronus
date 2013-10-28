@@ -19,7 +19,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		sql += "id INTEGER PRIMARY KEY,";
 		sql += "nome TEXT NOT NULL,";
 		sql += "numero TEXT NOT NULL,";
-		sql += "public_key TEXT,";
+		sql += "password TEXT,";
 		sql += "email TEXT)";
 		db.execSQL(sql);
 	}

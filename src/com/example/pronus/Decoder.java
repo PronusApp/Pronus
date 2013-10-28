@@ -22,7 +22,7 @@ public class Decoder {
 		byte[] clear = data.getBytes();
 
 		SecretKeySpec secretKeySpec = new SecretKeySpec( secretKey, CIPHER_ALGORITHM );
-		Cipher cipher = Cipher.getInstance( CIPHER_ALGORITHM );
+		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 		cipher.init( Cipher.ENCRYPT_MODE, secretKeySpec );
 
 		byte[] encrypted = cipher.doFinal( clear );
