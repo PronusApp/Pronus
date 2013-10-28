@@ -9,8 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import android.util.Base64;
 
-
-
 public class Decoder {
 	
 	private static final String CIPHER_ALGORITHM = "AES";
