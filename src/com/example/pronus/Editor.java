@@ -98,11 +98,11 @@ public class Editor extends Fragment {
 				// devo convertirla in PublicKey
 				String receiver_public_key_string = cursor.getString(0);
 				
-				PublicKey receiver_public_key;
+				/////
 				
 				String seed = "ThisIsASecretKey";
-				
-				String encrypt = null;
+
+				String encrypt = "";
 				
 				try {
 					encrypt = Decoder.encrypt(seed, text);

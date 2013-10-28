@@ -105,15 +105,15 @@ public class SMSService extends Service {
 						Log.i("SMSService", "Text Received " + message.getBody() + " from " + fromName );
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave
 
-						String clear = null;
+						String clear = "";
 						try {
-							clear = Decoder.decrypt(seed, message.getBody());
+							clear = Decoder.decrypt( new String(seed), message.getBody());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
 						if(addMessage(fromName, clear, 1))
-							Log.i("Login - ","Messaggio aggiunto al database");
+							Log.i("Login - ","Messaggio aggiunto al database:" + clear);
 
 						//Lancio la notifica alla ricezione del messaggio
 						//se e solo se la mia applicazione non � in esecuzione.
@@ -121,7 +121,7 @@ public class SMSService extends Service {
 						if(!isForeground("com.example.pronus"))
 							createNotification(fromName, clear);
 
-						new UIUpdater().execute(fromName,message.getBody(),"");
+						new UIUpdater().execute(fromName, clear ,"");
 					}
 				}
 			}, filter);
