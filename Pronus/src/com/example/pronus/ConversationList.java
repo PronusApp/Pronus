@@ -38,7 +38,7 @@ public class ConversationList extends Fragment{
 	public PagerAdapter mPagerAdapter = null;
 	// view pager
 	public static ViewPager mPager;
-
+	//Conversazione selezionata
 	public static Conversation currentlyConv = null;
 	/*
 	 * 
@@ -59,8 +59,6 @@ public class ConversationList extends Fragment{
 	public static MyDatabaseHelper mDatabaseHelper;
 
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
-
-	public static Rubrica contatti;
 	
 	private static Button add,newMessage,settings;
 	
@@ -78,7 +76,9 @@ public class ConversationList extends Fragment{
 		mSmsList = (ListView)view.findViewById(R.id.sms_list);
 
 		mSmsList.setOnItemClickListener(new OnItemClickListener(){
-
+			/*
+			 * Specifico le azioni da eseguire al click di una conversazione
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -95,6 +95,7 @@ public class ConversationList extends Fragment{
 				
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
 				
+				//aggiorno l'editor con i messaggi della conversazione selezionata
 				
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
 				
@@ -105,7 +106,7 @@ public class ConversationList extends Fragment{
 				for(OneComment s : list)
 					
 					if(s!=null){
-						
+						//aggiungo i messaggi
 						Editor.adapter.add(s);
 						
 						Editor.conversation.setAdapter(Editor.adapter);
@@ -115,11 +116,9 @@ public class ConversationList extends Fragment{
 				//imposto la lista di messaggi all'ultimo elemento
 				
 				Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-				
-				// NOME O MAIL?
-				
+				//passo alla classe editor il nome della persona con cui sto conversando
 				Editor.setItems(nome);
-				
+				//cambio fragment
 				Main.mPager.setCurrentItem(1,true);
 				
 				
@@ -128,20 +127,20 @@ public class ConversationList extends Fragment{
 
 
 		});
-
+		
 		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
 
 		mSmsList.setAdapter(adapter);
 		//salvo la mia mail nella textview associata
 		
 		myMail = (TextView)view.findViewById(R.id.myMail);
-		
+		//textview suggerimento (clicca per impostazioni)
 		hint = (TextView)view.findViewById(R.id.hint);
-		
+		//bottone per aggiungere un nuovo contatto
 		add = (Button)view.findViewById(R.id.addContact);
-		
+		//bottone per aggiungere un nuovo messaggio
 		newMessage = (Button)view.findViewById(R.id.newMessage);
-		
+		//bottone per richiamare le impostazioni
 		settings = (Button)view.findViewById(R.id.settings);
 		
 		myMail.setText(Main.mail);
@@ -168,7 +167,7 @@ public class ConversationList extends Fragment{
 				ConversationList.myMail.setVisibility(View.VISIBLE);
 				ConversationList.newMessage.setVisibility(View.GONE);
 				ConversationList.settings.setVisibility(View.GONE);
-				addNewContact();
+				//addNewContact();
 				return false;
 			}
 			
@@ -200,7 +199,7 @@ public class ConversationList extends Fragment{
 			}
 			
 		});
-		
+		//aggiorno la lista delle conversazioni
 		updateSmsList();
 
 		return view;
@@ -209,31 +208,9 @@ public class ConversationList extends Fragment{
 	private void updateSmsList() {
 		int bool = 0;
 
-		HashMap<String, String> mappaContatti;
-		contatti = new Rubrica(Main.mainContentResolver);
 
 		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
-
-		mappaContatti = (HashMap<String, String>) contatti.getMapOfContacts();
-
-		// Prendo l'insieme di nomi dei contatti
-		Set<String> set = mappaContatti.keySet();
-
-		for (String nome: set) {
-
-			ContentValues values = new ContentValues();
-
-			values.put("nome", nome);
-			values.put("numero", contatti.getNumberByName(nome));
-
-			long id = database.insert("contatti", null, values);
-
-			if (id == -1)
-				Log.i("Test","Errore nell'insert");
-			else
-				Log.i("Test", nome + " " + contatti.getNumberByName(nome));
-		}   
 
 		Log.i("Main","Creo mDatabaseHelperForConversation");
 

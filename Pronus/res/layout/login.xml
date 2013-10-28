@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#33B5E5"
@@ -6,16 +6,44 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextView2"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_corners_ivory"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:password="true"
+        android:shadowDx="80"
+        android:shadowDy="80"
+        android:text="aslobadas90" />
+
+    <Button
+        android:id="@+id/start"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
+        android:background="@drawable/ok"
+        android:padding="1dp"
+        android:paddingLeft="1dp"
+        android:textColor="@color/Ivory"
+        android:textSize="18dp" />
+
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/TextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/password"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="150dp"
+        android:layout_below="@+id/userNameLogin"
+        android:layout_marginTop="78dp"
         android:gravity="center_horizontal"
-        android:text="Insert your google e-mail"
+        android:text="Insert your password"
         android:textColor="@color/Ivory"
         android:textSize="18dp"
         android:typeface="sans" />
@@ -24,52 +52,30 @@
         android:id="@+id/userNameLogin"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginTop="5dp"
+        android:layout_alignLeft="@+id/TextView2"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="119dp"
         android:background="@drawable/rounded_corners_ivory"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:shadowDx="80"
-        android:text="vincenzoarceri.92@gmail.com"
-        android:shadowDy="80" >
+        android:shadowDy="80"
+        android:text="vincenzoarceri.92@gmail.com" >
 
         <requestFocus />
     </EditText>
 
     <TextView
-        android:id="@+id/TextView2"
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_alignBottom="@+id/userNameLogin"
+        android:layout_alignLeft="@+id/userNameLogin"
+        android:layout_marginBottom="52dp"
         android:gravity="center_horizontal"
-        android:text="Insert your password"
+        android:text="Insert your google e-mail"
         android:textColor="@color/Ivory"
         android:textSize="18dp"
         android:typeface="sans" />
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="77dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/rounded_corners_ivory"
-        android:ems="10"
-        android:gravity="center_vertical|center_horizontal"
-        android:password="true"
-        android:shadowDx="80"
-        android:text="aslobadas90"
-        android:shadowDy="80" />
-
-    <Button
-        android:id="@+id/start"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ok"
-        android:padding="1dp"
-        android:paddingLeft="1dp"
-        android:textColor="@color/Ivory"
-        android:textSize="18dp" />
-
-</LinearLayout>
+</RelativeLayout>
