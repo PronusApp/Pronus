@@ -31,7 +31,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ConversationList extends Fragment{
+public class ConversationList extends Fragment {
+	
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> convFragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
@@ -59,8 +60,6 @@ public class ConversationList extends Fragment{
 	public static MyDatabaseHelper mDatabaseHelper;
 
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
-
-	public static Rubrica contatti;
 	
 	private static Button add,newMessage,settings;
 	
@@ -209,34 +208,13 @@ public class ConversationList extends Fragment{
 	private void updateSmsList() {
 		int bool = 0;
 
-		HashMap<String, String> mappaContatti;
-		contatti = new Rubrica(Main.mainContentResolver);
-
+		
 		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
-		mappaContatti = (HashMap<String, String>) contatti.getMapOfContacts();
-
 		// Prendo l'insieme di nomi dei contatti
-		Set<String> set = mappaContatti.keySet();
-
-		for (String nome: set) {
-
-			ContentValues values = new ContentValues();
-
-			values.put("nome", nome);
-			values.put("numero", contatti.getNumberByName(nome));
-
-			long id = database.insert("contatti", null, values);
-
-			if (id == -1)
-				Log.i("Test","Errore nell'insert");
-			else
-				Log.i("Test", nome + " " + contatti.getNumberByName(nome));
-		}   
-
+		
 		Log.i("Main","Creo mDatabaseHelperForConversation");
-
 
 		mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
 
@@ -246,17 +224,16 @@ public class ConversationList extends Fragment{
 
 		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
-		while(cursor.moveToNext()){
+		while(cursor.moveToNext()) {
 			
 			String mail = cursor.getString(0);
-			Log.i("ConversationList - Test","" + mail);
-			if(!smsList.containsKey(mail)){
+			Log.i("ConversationList","" + mail);
+			
+			if (!smsList.containsKey(mail)){
 
 				Cursor cursorConv = getConversation(mail);
 
 				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
-				
-				
 
 				while(cursorConv.moveToNext()){
 
@@ -353,7 +330,7 @@ public class ConversationList extends Fragment{
 	 * un elemento del navigation drawer
 	 */
 	public void launchSettings() {
-		//Qui verrˆ lanciata l'activity per le impostazioni
+		//Qui verrï¿½ lanciata l'activity per le impostazioni
 		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
 		
 		startActivity(intent);

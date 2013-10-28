@@ -3,8 +3,9 @@ package com.example.pronus;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 public class myDatabaseHelperForConversation extends SQLiteOpenHelper {
-	private static final String DB_NAME = "conversazioni_pronus";
+	private static final String DB_NAME = "conversazioni_pronus_2";
 	private static final int DB_VERSION = 1;
 
 	public myDatabaseHelperForConversation(Context context) {

@@ -174,7 +174,7 @@ public class SMSService extends Service {
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
-		values.put("public_key", public_key);
+		values.put("password", public_key);
 		String whereClause = "email = ?";
 		String[] whereArgs = {email};
 

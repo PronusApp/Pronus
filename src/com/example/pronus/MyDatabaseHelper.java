@@ -1,4 +1,5 @@
 package com.example.pronus;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -9,7 +10,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
-	private static final String DB_NAME = "rubrica_pronus";
+	private static final String DB_NAME = "rubrica_pronus_2";
 	private static final int DB_VERSION = 1;
 
 	@Override

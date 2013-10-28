@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Editor extends Fragment {
 	
@@ -77,11 +78,11 @@ public class Editor extends Fragment {
 				
 				// Questo è il testo da criptare con la chiave pubblica associata al contatto
 				String text = message.getText().toString();
-				//controllo che il messaggio sia stato inviato
+		
 				if (addMessage(name, text, 0))
-					
 					Log.i("Editor","Messaggio in uscita inviato a "+ name +" aggiunto al database");
-				//pulisco l'edittext per l'invio del messaggio successivo
+				
+				// Pulisco l'edittext per l'invio del messaggio successivo
 				message.setText("");
 				
 				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
@@ -92,14 +93,20 @@ public class Editor extends Fragment {
 				
 				Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
 				
-				cursor.moveToFirst();
+				if (cursor.moveToFirst() == false) {
+					Log.i("Editor","Contatto non presente in rubrica");
+					Toast.makeText(getActivity(), "Contatto non presente in rubrica", Toast.LENGTH_LONG).show();
+					return;
+				}
 				
-				// Ho ottenuto la chiave pubblica del destinatario sottoforma di stringa, 
-				// devo convertirla in PublicKey
-				String receiver_public_key_string = cursor.getString(0);
+				String password = cursor.getString(0);
 				
-				/////
-				
+				if (password == null) {
+					Log.i("Editor", "Nessuna password memorizzata per il contatto");
+					
+					// Richiesta esplicita della password al contatto
+				}
+	
 				String seed = "ThisIsASecretKey";
 
 				String encrypt = "";
@@ -110,7 +117,6 @@ public class Editor extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 				
 				Log.i("Editor", "Invio messaggio" + encrypt + " a " + to);
 				
@@ -127,7 +133,6 @@ public class Editor extends Fragment {
 		});
 		
 		return EditorView;
-		
 	}
 	
 	/*
