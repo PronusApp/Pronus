@@ -13,16 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class ContactActivity extends Activity{
+public class ContactActivity extends Activity {
 
 	Context myCont;
 
 	private Map<String, String> myRubrica = new HashMap<String, String>();
 
-	protected void onCreate(Bundle savedInstanceState){
+	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 

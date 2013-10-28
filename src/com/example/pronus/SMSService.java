@@ -36,17 +36,12 @@ public class SMSService extends Service {
 
 	@Override
 	public void onCreate() {
-		
 		seed = "ThisIsASecretKey";
-		
 		this.connection = Login.connection;
-		
 		Log.i("SMSService", "Servizio creato");
-
 	}
 
 	public static void sendPublicKey() {
-
 		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
 
 		String[] columns = {"email"};
@@ -69,8 +64,8 @@ public class SMSService extends Service {
 			}
 		}
 
+		database.close();
 		Log.i("SMSService", "Inviata password a tutti i contatti");
-
 	}
 
 	@Override
@@ -179,6 +174,8 @@ public class SMSService extends Service {
 
 		long id = database.insert("conversazioni", null, values);
 
+		database.close();
+		
 		if (id == -1)
 			return false;
 		return true;
@@ -195,6 +192,8 @@ public class SMSService extends Service {
 
 		int id = database.update("conversazioni", values, whereClause, whereArgs);
 
+		database.close();
+		
 		if (id == -1)
 			return false;
 		return true;
@@ -246,8 +245,8 @@ public class SMSService extends Service {
 
 		ComponentName componentInfo = runningTaskInfo.get(0).topActivity;
 
-		if(componentInfo.getPackageName().equals(myPackage)) return true;
-
+		if (componentInfo.getPackageName().equals(myPackage)) 
+			return true;
 		return false;
 	}
 }

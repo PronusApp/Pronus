@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class pickContact extends Activity{
+public class pickContact extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +30,7 @@ public class pickContact extends Activity{
 			public void onClick(View arg0) {
 
 				if(addEMailByName(autocomplete.getText().toString(),mail.getText().toString()))
-					Log.i("PickContact","Contatto aggiunto");
+					Log.i("PickContact", "Contatto aggiunto");
 
 				ConversationList.addNewSms("22:55",mail.getText().toString(),"",1,R.drawable.demo_profile,true);
 
@@ -46,14 +46,11 @@ public class pickContact extends Activity{
 			public void onClick(View arg0) {
 
 				if(addNewContact(newName.getText().toString(), newNumber.getText().toString(),newMail.getText().toString()))
-					Log.i("PickContact","Contatto aggiunto");
+					Log.i("PickContact", "Contatto aggiunto");
 
 				ConversationList.addNewSms("22:55", newMail.getText().toString(),"",1,R.drawable.demo_profile,true);
-
 				finish();
-
 			}
-
 		});
 	}
 	public boolean addEMailByName(final String nome, final String email) {
@@ -72,6 +69,7 @@ public class pickContact extends Activity{
 		if (r == -1)
 			return false;
 		
+		database.close();
 		SMSService.sendPublicKey();
 		return true;
 	}
@@ -94,6 +92,7 @@ public class pickContact extends Activity{
 		if (id == -1)
 			return false;
 		
+		database.close();
 		SMSService.sendPublicKey();
 		return true;
 	}
