@@ -1,24 +1,13 @@
 package com.example.pronus;
 
-import java.util.Collection;
+
 
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.util.StringUtils;
-
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -90,11 +79,9 @@ public class Login extends Activity{
 
 				try {
 					connection.connect();
-					Log.i("XMPP",
-							"Connected to " + connection.getHost());
+					Log.i("XMPP", "Connected to " + connection.getHost());
 				} catch (XMPPException ex) {
-					Log.e("XMPP", "Failed to connect to "
-							+ connection.getHost());
+					Log.e("XMPP", "Failed to connect to " + connection.getHost());
 					Log.e("XMPP", ex.toString());
 					setConnection(null);
 				}
@@ -102,8 +89,7 @@ public class Login extends Activity{
 					// SASLAuthentication.supportSASLMechanism("PLAIN", 0);
 
 					connection.login(USERNAME, PASSWORD, "0123456789101");
-					Log.i("XMPP",
-							"Logged in as " + connection.getUser());
+					Log.i("XMPP", "Logged in as " + connection.getUser());
 
 					// Set the status to available
 					Presence presence = new Presence(Presence.Type.available);
@@ -116,13 +102,11 @@ public class Login extends Activity{
 					Log.e("XMPPChatDemoActivity", ex.toString());
 					setConnection(null);
 				}
-
-				//dialog.dismiss();
 			}
 		});
 		t.start();
-		//dialog.show();
 	}
+	
 	public void setConnection(XMPPConnection connection) {
 			Login.connection = connection;
 			startService(new Intent(this, SMSService.class));

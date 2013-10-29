@@ -10,13 +10,4 @@
         android:src="@drawable/first" 
         android:background="@color/Ivory"/>
 
-    <ProgressBar
-        android:id="@+id/imgProgress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="59dp" />
-
 </RelativeLayout>

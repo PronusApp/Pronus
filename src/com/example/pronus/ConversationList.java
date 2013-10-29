@@ -32,7 +32,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ConversationList extends Fragment{
+public class ConversationList extends Fragment {
+
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> convFragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
@@ -61,11 +62,9 @@ public class ConversationList extends Fragment{
 
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
-	public static Rubrica contatti;
-
 	private static Button add,newMessage,settings;
 
-	private static TextView myMail,hint;
+	private static TextView myMail, hint;
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
 		// fragment not when container null
@@ -105,29 +104,30 @@ public class ConversationList extends Fragment{
 
 				for(OneComment s : list)
 
-					if(s!=null){
-
+					if (s != null){
 						Editor.adapter.add(s);
-
 						Editor.conversation.setAdapter(Editor.adapter);
 
+						if(s!=null){
+
+							Editor.adapter.add(s);
+
+							Editor.conversation.setAdapter(Editor.adapter);
+
+						}
+
+						//imposto la lista di messaggi all'ultimo elemento
+
+						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+
+						// NOME O MAIL?
+
+						Editor.setItems(nome);
+
+						Main.mPager.setCurrentItem(1,true);
+
 					}
-
-				//imposto la lista di messaggi all'ultimo elemento
-
-				Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-
-				// NOME O MAIL?
-
-				Editor.setItems(nome);
-
-				Main.mPager.setCurrentItem(1,true);
-
-
-
 			}
-
-
 		});
 
 		mSmsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -156,7 +156,8 @@ public class ConversationList extends Fragment{
 		settings = (Button)view.findViewById(R.id.settings);
 
 		myMail.setText(Main.mail);
-		//quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
+
+		// Quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
 		myMail.setOnTouchListener(new OnTouchListener(){
 
 			@Override
@@ -181,7 +182,6 @@ public class ConversationList extends Fragment{
 				ConversationList.newMessage.setVisibility(View.INVISIBLE);
 				ConversationList.settings.setVisibility(View.INVISIBLE);
 				addNewContact();
-
 			}
 
 		});
@@ -221,34 +221,12 @@ public class ConversationList extends Fragment{
 	private void updateSmsList() {
 		int bool = 0;
 
-		HashMap<String, String> mappaContatti;
-		contatti = new Rubrica(Main.mainContentResolver);
-
 		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
-		mappaContatti = (HashMap<String, String>) contatti.getMapOfContacts();
-
 		// Prendo l'insieme di nomi dei contatti
-		Set<String> set = mappaContatti.keySet();
-
-		for (String nome: set) {
-
-			ContentValues values = new ContentValues();
-
-			values.put("nome", nome);
-			values.put("numero", contatti.getNumberByName(nome));
-
-			long id = database.insert("contatti", null, values);
-
-			if (id == -1)
-				Log.i("Test","Errore nell'insert");
-			else
-				Log.i("Test", nome + " " + contatti.getNumberByName(nome));
-		}   
 
 		Log.i("Main","Creo mDatabaseHelperForConversation");
-
 
 		mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
 
@@ -258,44 +236,45 @@ public class ConversationList extends Fragment{
 
 		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 
-			String mail = cursor.getString(0);
-			Log.i("ConversationList - Test","" + mail);
-			if(!smsList.containsKey(mail)){
+			while(cursor.moveToNext()){
+				String mail = cursor.getString(0);
+				Log.i("ConversationList","" + mail);
 
-				Cursor cursorConv = getConversation(mail);
+				if (!smsList.containsKey(mail)){
 
-				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
+					Cursor cursorConv = getConversation(mail);
 
+					Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
 
+					while(cursorConv.moveToNext()){
 
-				while(cursorConv.moveToNext()){
+						String messaggio = cursorConv.getString(0);
 
-					String messaggio = cursorConv.getString(0);
+						if((bool = cursorConv.getInt(1)) == 1){
 
-					if((bool = cursorConv.getInt(1)) == 1){
+							tempConv.addMessageToList(true,messaggio);
 
-						tempConv.addMessageToList(true,messaggio);
+						}else{
 
-					}else{
+							tempConv.addMessageToList(false,messaggio);
 
-						tempConv.addMessageToList(false,messaggio);
+						}
 
 					}
 
+					smsList.put(mail,tempConv);
 				}
 
-				smsList.put(mail,tempConv);
+			}
+			for(String s : smsList.keySet()){
+				adapter.add(smsList.get(s));
 			}
 
+			SMSService.sendPublicKey();
+			database.close();
 		}
-		for(String s : smsList.keySet()){
-			adapter.add(smsList.get(s));
-		}
-
-		SMSService.sendPublicKey();
-
 	}
 
 	public static void addNewSms(String timeOfLastSms,String userName,String sms, int numOfNewMessages,int profileImage, boolean isMine){
@@ -354,6 +333,7 @@ public class ConversationList extends Fragment{
 		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
 		// il cursor ritornato con moveToNext() (finchï¿½ questo non ï¿½ null)
 
+		database.close();
 		return cursor;
 	}
 
@@ -369,7 +349,7 @@ public class ConversationList extends Fragment{
 	 * un elemento del navigation drawer
 	 */
 	public void launchSettings() {
-		//Qui verrˆ lanciata l'activity per le impostazioni
+		//Qui verrï¿½ lanciata l'activity per le impostazioni
 		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
 
 		startActivity(intent);
