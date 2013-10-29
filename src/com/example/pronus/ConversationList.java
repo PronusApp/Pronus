@@ -97,18 +97,15 @@ public class ConversationList extends Fragment {
 
 				ArrayList<OneComment> list = currentlyConv.getMessage();
 
-				for(OneComment s : list)
+				for (OneComment s : list)
 
 					if (s != null){
 						Editor.adapter.add(s);
 						Editor.conversation.setAdapter(Editor.adapter);
 
-						if(s!=null){
-
+						if (s != null) {
 							Editor.adapter.add(s);
-
 							Editor.conversation.setAdapter(Editor.adapter);
-
 						}
 
 						//imposto la lista di messaggi all'ultimo elemento
@@ -221,16 +218,13 @@ public class ConversationList extends Fragment {
 
 		// Prendo l'insieme di nomi dei contatti
 
-		Log.i("Main","Creo mDatabaseHelperForConversation");
-
 		String[] columns = {"nome_conversazione"};
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
-		while (cursor.moveToNext()) {
-
-			while(cursor.moveToNext()){
+			while(cursor.moveToNext()) {
+				
 				String mail = cursor.getString(0);
-				Log.i("ConversationList","" + mail);
+				Log.i("ConversationList", "" + mail);
 
 				if (!smsList.containsKey(mail)){
 
@@ -238,28 +232,22 @@ public class ConversationList extends Fragment {
 
 					Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
 
-					while(cursorConv.moveToNext()){
+					while (cursorConv.moveToNext()) {
 
 						String messaggio = cursorConv.getString(0);
 
-						if((bool = cursorConv.getInt(1)) == 1){
-
+						if ((bool = cursorConv.getInt(1)) == 1) {
 							tempConv.addMessageToList(true,messaggio);
-
-						}else{
-
+						} else {
 							tempConv.addMessageToList(false,messaggio);
-
 						}
-
 					}
+					
 					cursorConv.close();
 					smsList.put(mail,tempConv);
 				}
 			}
-		}
-
-
+		
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}

@@ -190,7 +190,7 @@ public class SMSService extends Service {
 		String whereClause = "email = ?";
 		String[] whereArgs = {email};
 
-		int id = database.update("conversazioni", values, whereClause, whereArgs);
+		int id = database.update("contatti", values, whereClause, whereArgs);
 
 		database.close();
 		

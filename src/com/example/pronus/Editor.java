@@ -127,6 +127,7 @@ public class Editor extends Fragment {
 				
 				try {
 					if (seed == null) {
+						Toast.makeText(getActivity(), "Impossibile ottenere la password.\nUso la password di default", Toast.LENGTH_LONG).show();
 						Log.i("Editor", "Password non trovata, uso la password di default");
 						seed = "ThisIsASecretKey";
 					}

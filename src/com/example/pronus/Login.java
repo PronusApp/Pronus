@@ -1,7 +1,5 @@
 package com.example.pronus;
 
-
-
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -18,23 +16,23 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class Login extends Activity{
+public class Login extends Activity {
 
 	private Button start;
 	private EditText userName;
 	private EditText password;
-	public static final String HOST = "talk.google.com";
-	public static final int PORT = 5222;
-	public static final String SERVICE = "gmail.com";
+	private static final String HOST = "talk.google.com";
+	private static final int PORT = 5222;
+	private static final String SERVICE = "gmail.com";
 	private String USERNAME = null;
 	private String PASSWORD = null;
 	public static XMPPConnection connection;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    // Removes notification bar
 
 		setContentView(R.layout.login);
@@ -57,16 +55,15 @@ public class Login extends Activity{
 				connect();
 				Intent intent = new Intent(Login.this, Main.class);
 				//salvo il nome utilizzato per il login nella classe main
-				intent.putExtra("mail",USERNAME);
+				intent.putExtra("mail", USERNAME);
 				startActivity(intent);
 				Login.this.finish();
 			}
 
 		});
 	}
+	
 	public void connect() {
-
-		//final ProgressDialog dialog = ProgressDialog.show(this,"Connecting...", "Please wait...", false);
 
 		Thread t = new Thread(new Runnable() {
 
@@ -82,12 +79,14 @@ public class Login extends Activity{
 					Log.i("XMPP", "Connected to " + connection.getHost());
 				} catch (XMPPException ex) {
 					Log.e("XMPP", "Failed to connect to " + connection.getHost());
+					
+					((EditText) findViewById(R.id.userNameLogin)).setText("");
+					((EditText) findViewById(R.id.password)).setText("");
 					Log.e("XMPP", ex.toString());
 					setConnection(null);
 				}
+				
 				try {
-					// SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-
 					connection.login(USERNAME, PASSWORD, "0123456789101");
 					Log.i("XMPP", "Logged in as " + connection.getUser());
 
