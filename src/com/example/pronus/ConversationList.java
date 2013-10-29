@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Vector;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -54,8 +53,8 @@ public class ConversationList extends Fragment {
 
 	private static View view;
 
-	public static MyDatabaseHelper mDatabaseHelper;
-
+	public Database database;
+	
 	private static Button add, newMessage,settings;
 
 	private static TextView myMail, hint; 
@@ -68,6 +67,8 @@ public class ConversationList extends Fragment {
 			return null;
 		}
 
+		database = new Database(getActivity());
+		
 		// inflate view from layout
 		view = (FrameLayout)inflater.inflate(R.layout.list_of_conversations,container,false);
 
@@ -124,14 +125,12 @@ public class ConversationList extends Fragment {
 
 		mSmsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-			public boolean onItemLongClick(AdapterView<?> arg0, View v,
-					int index, long arg3) {
+			public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
 				// TODO Auto-generated method stub
 				Log.i("ConversationList","in onLongClick");
 				return true;
 			}
 		}); 
-
 
 		adapter = new ListOfConversationAdapter(getActivity(), R.layout.sms_preview);
 
@@ -213,24 +212,24 @@ public class ConversationList extends Fragment {
 	private void updateSmsList() {
 		int bool = 0;
 
-		mDatabaseHelper = new MyDatabaseHelper(getActivity());
-		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
-
+		Database database = new Database(getActivity());
+		
 		// Prendo l'insieme di nomi dei contatti
 
 		String[] columns = {"nome_conversazione"};
+		
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
-			while(cursor.moveToNext()) {
+			while (cursor.moveToNext()) {
 				
 				String mail = cursor.getString(0);
 				Log.i("ConversationList", "" + mail);
 
-				if (!smsList.containsKey(mail)){
+				if (!smsList.containsKey(mail)) {
 
-					Cursor cursorConv = getConversation(mail);
+					Cursor cursorConv = database.getConversation(mail);
 
-					Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
+					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile,true);
 
 					while (cursorConv.moveToNext()) {
 
@@ -251,13 +250,9 @@ public class ConversationList extends Fragment {
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
-
-		SMSService.sendPublicKey();
-
-		database.close();
-
+		
 		cursor.close();
-		database.close();
+		database.sendPassword();
 	}
 
 
@@ -297,26 +292,7 @@ public class ConversationList extends Fragment {
 				}}
 		}
 	}
-
-	public Cursor getConversation(final String nome_conversazione) {
-
-		SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-
-		String[] columns = {"messaggio","bool"};
-		String selection = "nome_conversazione = ?" ;
-		String[] selectionArgs = {nome_conversazione};
-		//		String orderBy = "id DESC";
-
-		// SELECT messaggio FROM conversazioni WHERE email = Valore(email) AND nome_conversazione = Valore(nome_conversazione);
-		Cursor cursor = database.query("conversazioni", columns, selection, selectionArgs, null, null, null);
-
-		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
-		// il cursor ritornato con moveToNext() (finch� questo non � null)
-
-		database.close();
-		return cursor;
-	}
-
+	
 	private void addNewContact(){
 		Intent intent = new Intent(getActivity(), pickContact.class);
 		startActivity(intent);

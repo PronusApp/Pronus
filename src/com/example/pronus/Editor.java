@@ -1,9 +1,7 @@
 package com.example.pronus;
 
 import org.jivesoftware.smack.packet.Message;
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,6 +24,7 @@ public class Editor extends Fragment {
 	private static String name;
 	private static TextView userName;
 	private View EditorView;
+	public Database database;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +34,7 @@ public class Editor extends Fragment {
 			return null;
 		}
 		
+		database = new Database(getActivity());
 		// inflate view from layout
 		EditorView = (FrameLayout)inflater.inflate(R.layout.editor, container, false);
 		//lista per i messaggi
@@ -67,18 +67,19 @@ public class Editor extends Fragment {
 				// Questo è il testo da criptare con la chiave pubblica associata al contatto
 				String text = message.getText().toString();
 		
-				if (addMessage(name, text, 0))
-					Log.i("Editor","Messaggio in uscita inviato a "+ name +" aggiunto al database");
+				if (database.addMessage(name, text, 0))
+					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
 	
 				message.setText("");
 				
-				SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+				//SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+				
 				
 				String[] columns = {"password"};
 				String selection = "email = ?";
 				String[] selectionArgs = {name};
 				
-				Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
+				Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
 				
 				if (cursor.moveToFirst() == false) {
 					Log.i("Editor","Contatto non presente in rubrica");
@@ -162,28 +163,5 @@ public class Editor extends Fragment {
 	public static void setItems(String nome){
 		name = nome;
 		userName.setText(name);
-	}
-	
-	/*
-	 * Il metodo addMessage permette di memorizzare il messaggio inviato nel database
-	 * in modo da aggiornare lo storico di una determinata conversazione
-	 */
-	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
-
-		ContentValues values = new ContentValues();
-
-		values.put("nome_conversazione", nome_conversazione);
-		values.put("bool", bool);
-		values.put("messaggio", messaggio);
-
-		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
-
-		long id = database.insert("conversazioni", null, values);
-
-		database.close();
-		
-		if (id == -1)
-			return false;
-		return true;
 	}
 }

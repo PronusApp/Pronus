@@ -96,13 +96,13 @@ public class Login extends Activity {
 					setConnection(connection);
 
 				} catch (XMPPException ex) {
-					Log.e("XMPPChatDemoActivity", "Failed to log in as "
-							+ USERNAME);
+					Log.e("XMPPChatDemoActivity", "Failed to log in as " + USERNAME);
 					Log.e("XMPPChatDemoActivity", ex.toString());
 					setConnection(null);
 				}
 			}
 		});
+		
 		t.start();
 	}
 	

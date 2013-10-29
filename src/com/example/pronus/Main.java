@@ -9,25 +9,25 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 
-public class Main<MyDatabaseHelper> extends FragmentActivity {
+public class Main extends FragmentActivity {
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> fragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
 	private PagerAdapter mPagerAdapter = null;
 	// view pager
 	public static CustomViewPager mPager;
-	//main context
-	//public static Context mainContext;
-
+	
 	public static Activity instance;
 
 	public static String[] contactNames;
@@ -55,7 +55,6 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 
 		instance = this;
 		mainContentResolver = getContentResolver();
-		//mainContext = this.getBaseContext();
 
 		// creating fragments and adding to list
 
@@ -115,5 +114,22 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 			this.setTitle("Messaggi");
 		}
+	}
+	
+	public static class UIUpdater extends AsyncTask<String,String,String>{
+		String name, message;
+		
+		@Override
+		protected String doInBackground(String... arg0) {
+			name = arg0[0];
+			message = arg0[1];
+			return null;
+		} 
+		
+		@Override
+	    protected void onPostExecute(String result) {
+	    	Log.i("UIUpdater","gonna update now");
+			ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
+	    }
 	}
 }

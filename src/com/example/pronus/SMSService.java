@@ -30,42 +30,15 @@ public class SMSService extends Service {
 
 	public static XMPPConnection connection;
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
-
 	public static String seed;
-
+	Database database;
 
 	@Override
 	public void onCreate() {
 		seed = "ThisIsASecretKey";
 		this.connection = Login.connection;
+		database = new Database(getBaseContext());
 		Log.i("SMSService", "Servizio creato");
-	}
-
-	public static void sendPublicKey() {
-		SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
-
-		String[] columns = {"email"};
-
-		Cursor cursor = database.query("contatti", columns, null, null, null,null,null);
-
-		while (cursor.moveToNext()) {
-			String to = cursor.getString(0);
-
-			if (to != null) {
-				
-				// Canale dedicato allo scambio di chiavi pubbliche
-				Message msg = new Message(to, Message.Type.normal);
-				msg.setBody(seed);				
-
-				if (Login.connection != null) 
-					Login.connection.sendPacket(msg);
-
-				Log.i("SMSService","Inviata password a " + to);
-			}
-		}
-
-		database.close();
-		Log.i("SMSService", "Inviata password a tutti i contatti");
 	}
 
 	@Override
@@ -75,6 +48,7 @@ public class SMSService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startid) {
+		
 		Log.i("SMSService", "onStart");
 
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
@@ -102,21 +76,21 @@ public class SMSService extends Service {
 						String clear = "";
 						
 						try {
-							clear = Decoder.decrypt( new String(seed), message.getBody());
+							clear = Decoder.decrypt(new String(seed), message.getBody());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-
-						if (addMessage(fromName, clear, 1))
+						
+						if (database.addMessage(fromName, clear, 1))
 							Log.i("SMSService ","Messaggio aggiunto al database: " + clear);
 
-						//Lancio la notifica alla ricezione del messaggio
-						//se e solo se la mia applicazione non è in esecuzione.
+						// Lancio la notifica alla ricezione del messaggio
+						// se e solo se la mia applicazione non è in esecuzione.
 						
 						if(!isForeground("com.example.pronus"))
 							createNotification(fromName, clear);
-
-						new UIUpdater().execute(fromName, clear ,"");
+						else 
+							new Main.UIUpdater().execute(fromName, clear ,"");
 					}
 				}
 			}, filter);
@@ -136,13 +110,12 @@ public class SMSService extends Service {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 
 						Log.i("SMSService", "Password ricevuta " + message.getBody() + " da " + fromName);
-
-						if (addPublicKey(message.getBody(), fromName))
+		
+						if (database.addPassword(message.getBody(), fromName))
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
 
-						new UIUpdater().execute(fromName,message.getBody(),"");
 					} else if (message.getBody().equals("IWannaYourKey")) {
 						
 						String from = StringUtils.parseBareAddress(message.getFrom());
@@ -155,50 +128,13 @@ public class SMSService extends Service {
 						if (Login.connection != null) {	
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
-						}	
+						}
 					}
 				}
 			}, filter);
 		}
 	}
-
-	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
-
-		ContentValues values = new ContentValues();
-
-		values.put("nome_conversazione", nome_conversazione);
-		values.put("bool", bool);
-		values.put("messaggio", messaggio);
-
-		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
-
-		long id = database.insert("conversazioni", null, values);
-
-		database.close();
-		
-		if (id == -1)
-			return false;
-		return true;
-	}
-
-	public boolean addPublicKey(String public_key, String email) {
-
-		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
-		ContentValues values = new ContentValues();
-
-		values.put("password", public_key);
-		String whereClause = "email = ?";
-		String[] whereArgs = {email};
-
-		int id = database.update("contatti", values, whereClause, whereArgs);
-
-		database.close();
-		
-		if (id == -1)
-			return false;
-		return true;
-	}
-
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
