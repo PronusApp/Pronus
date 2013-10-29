@@ -130,6 +130,16 @@ public class ConversationList extends Fragment{
 
 		});
 
+		mSmsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			public boolean onItemLongClick(AdapterView<?> arg0, View v,
+					int index, long arg3) {
+				// TODO Auto-generated method stub
+				Log.i("ConversationList","in onLongClick");
+				return true;
+			}
+		}); 
+
 		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
 
 		mSmsList.setAdapter(adapter);
