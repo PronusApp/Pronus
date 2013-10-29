@@ -12,17 +12,9 @@ public class UIUpdater extends AsyncTask<String,String,String>{
 		message = arg0[1];
 		return null;
 	} 
-<<<<<<< HEAD
-	
+
 	@Override
     protected void onPostExecute(String result) {
-    	Log.i("UIUpdater","gonna update now");
-		ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
-    }
-}
-=======
-    @Override
-    protected void onPostExecute(String result) {     
     	Log.i("UIUpdater","gonna update now");
 		ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
     }
@@ -32,4 +24,4 @@ public class UIUpdater extends AsyncTask<String,String,String>{
     }
 
 }
->>>>>>> refs/remotes/origin/master
+

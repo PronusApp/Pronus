@@ -89,10 +89,7 @@ public class SMSService extends Service {
 						
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
-<<<<<<< HEAD
-						else 
-							new Main.UIUpdater().execute(fromName, clear ,"");
-=======
+
 						}else{
 							Log.i("SMSService","Aggiungo messaggio");
 							if(Main.mPager.getCurrentItem() == 1){
@@ -108,7 +105,7 @@ public class SMSService extends Service {
 							new UIUpdater().execute(fromName, clear ,"");
 							//controllo che l'utente stia chattando in questo momento
 						}
->>>>>>> refs/remotes/origin/master
+
 					}
 				}
 			}, filter);

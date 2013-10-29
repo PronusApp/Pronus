@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/intro"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
@@ -6,8 +7,8 @@
         android:id="@+id/introImage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@color/Ivory"
         android:scaleType="fitXY"
-        android:src="@drawable/first" 
-        android:background="@color/Ivory"/>
+        android:src="@drawable/first" />
 
 </RelativeLayout>

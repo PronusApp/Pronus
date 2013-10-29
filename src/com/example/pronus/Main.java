@@ -124,7 +124,6 @@ public class Main extends FragmentActivity {
 			this.setTitle("Messaggi");
 		}
 	}
-<<<<<<< HEAD
 	
 	public static class UIUpdater extends AsyncTask<String,String,String>{
 		String name, message;
@@ -142,7 +141,5 @@ public class Main extends FragmentActivity {
 			ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
 	    }
 	}
-=======
 
->>>>>>> refs/remotes/origin/master
 }

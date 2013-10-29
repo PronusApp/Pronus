@@ -262,7 +262,6 @@ public class ConversationList extends Fragment {
 		
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
-<<<<<<< HEAD
 			while (cursor.moveToNext()) {
 				
 				String mail = cursor.getString(0);
@@ -273,18 +272,7 @@ public class ConversationList extends Fragment {
 					Cursor cursorConv = database.getConversation(mail);
 
 					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile,true);
-=======
-		while(cursor.moveToNext()) {
 
-			String mail = cursor.getString(0);
-			Log.i("ConversationList", "" + mail);
-
-			if (!smsList.containsKey(mail)){
-
-				Cursor cursorConv = getConversation(mail);
->>>>>>> refs/remotes/origin/master
-
-				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
 
 				while (cursorConv.moveToNext()) {
 
@@ -308,10 +296,8 @@ public class ConversationList extends Fragment {
 		}
 		
 		cursor.close();
-<<<<<<< HEAD
+
 		database.sendPassword();
-=======
->>>>>>> refs/remotes/origin/master
 	}
 
 
@@ -351,30 +337,7 @@ public class ConversationList extends Fragment {
 				}}
 		}
 	}
-<<<<<<< HEAD
-	
-=======
 
-	public Cursor getConversation(final String nome_conversazione) {
-
-		SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-
-		String[] columns = {"messaggio","bool"};
-		String selection = "nome_conversazione = ?" ;
-		String[] selectionArgs = {nome_conversazione};
-		//		String orderBy = "id DESC";
-
-		// SELECT messaggio FROM conversazioni WHERE email = Valore(email) AND nome_conversazione = Valore(nome_conversazione);
-		Cursor cursor = database.query("conversazioni", columns, selection, selectionArgs, null, null, null);
-
-		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
-		// il cursor ritornato con moveToNext() (finch� questo non � null)
-
-		//database.close();
-		return cursor;
-	}
-
->>>>>>> refs/remotes/origin/master
 	private void addNewContact(){
 		Intent intent = new Intent(getActivity(), pickContact.class);
 		startActivity(intent);

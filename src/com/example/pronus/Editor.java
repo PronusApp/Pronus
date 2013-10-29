@@ -166,30 +166,4 @@ public class Editor extends Fragment {
 		name = nome;
 		userName.setText(name);
 	}
-<<<<<<< HEAD
-=======
-	
-	/*
-	 * Il metodo addMessage permette di memorizzare il messaggio inviato nel database
-	 * in modo da aggiornare lo storico di una determinata conversazione
-	 */
-	public boolean addMessage(final String nome_conversazione, final String messaggio, int bool) {
-
-		ContentValues values = new ContentValues();
-
-		values.put("nome_conversazione", nome_conversazione);
-		values.put("bool", bool);
-		values.put("messaggio", messaggio);
-
-		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
-
-		long id = database.insert("conversazioni", null, values);
-
-		//database.close();
-		
-		if (id == -1)
-			return false;
-		return true;
-	}
->>>>>>> refs/remotes/origin/master
 }
