@@ -26,7 +26,7 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 	// view pager
 	public static CustomViewPager mPager;
 	//main context
-	public static Context mainContext;
+	//public static Context mainContext;
 
 	public static Activity instance;
 
@@ -55,7 +55,7 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 
 		instance = this;
 		mainContentResolver = getContentResolver();
-		mainContext = this.getBaseContext();
+		//mainContext = this.getBaseContext();
 
 		// creating fragments and adding to list
 

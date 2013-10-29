@@ -99,18 +99,20 @@ public class ConversationList extends Fragment {
 
 				ArrayList<OneComment> list = currentlyConv.getMessage();
 
-				for(OneComment s : list)
+				for (OneComment s : list)
 
 					if (s != null){
 						Editor.adapter.add(s);
 						Editor.conversation.setAdapter(Editor.adapter);
 
+<<<<<<< HEAD
 						if(s!=null){
 
+=======
+						if (s != null) {
+>>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 							Editor.adapter.add(s);
-
 							Editor.conversation.setAdapter(Editor.adapter);
-
 						}
 
 						//imposto la lista di messaggi all'ultimo elemento
@@ -131,6 +133,7 @@ public class ConversationList extends Fragment {
 
 			public boolean onItemLongClick(AdapterView<?> arg0, View v,
 					int index, long arg3) {
+<<<<<<< HEAD
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 				builder.setMessage("Desideri cancellare la conversazione?")
@@ -140,6 +143,10 @@ public class ConversationList extends Fragment {
 
 				dialog.show();
 
+=======
+				// TODO Auto-generated method stub
+				Log.i("ConversationList","in onLongClick");
+>>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 				return true;
 			}
 		}); 
@@ -230,17 +237,27 @@ public class ConversationList extends Fragment {
 
 		// Prendo l'insieme di nomi dei contatti
 
+<<<<<<< HEAD
 		Log.i("Main","Creo mDatabaseHelperForConversation");
 
+=======
+>>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 		String[] columns = {"nome_conversazione"};
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 		while(cursor.moveToNext()){
 			String mail = cursor.getString(0);
 			Log.i("ConversationList","" + mail);
 
+<<<<<<< HEAD
 			if (!smsList.containsKey(mail)){
 
 				Cursor cursorConv = getConversation(mail);
+=======
+			while(cursor.moveToNext()) {
+				
+				String mail = cursor.getString(0);
+				Log.i("ConversationList", "" + mail);
+>>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 
 				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
 
@@ -248,6 +265,7 @@ public class ConversationList extends Fragment {
 
 					String messaggio = cursorConv.getString(0);
 
+<<<<<<< HEAD
 					if((bool = cursorConv.getInt(1)) == 1){
 
 						tempConv.addMessageToList(true,messaggio);
@@ -265,6 +283,24 @@ public class ConversationList extends Fragment {
 		}
 
 
+=======
+					while (cursorConv.moveToNext()) {
+
+						String messaggio = cursorConv.getString(0);
+
+						if ((bool = cursorConv.getInt(1)) == 1) {
+							tempConv.addMessageToList(true,messaggio);
+						} else {
+							tempConv.addMessageToList(false,messaggio);
+						}
+					}
+					
+					cursorConv.close();
+					smsList.put(mail,tempConv);
+				}
+			}
+		
+>>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}

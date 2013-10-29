@@ -44,7 +44,7 @@ public class Editor extends Fragment {
 		//edittext per la stesura del messaggio
 		message = (EditText)EditorView.findViewById(R.id.messageText);
 		//adapter per la listview conversation
-		adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
+		adapter = new DiscussArrayAdapter(getActivity(), R.layout.message);
 		
 		//Nome dell'utente con cui sto conversando
 		userName=(TextView)EditorView.findViewById(R.id.userMail);
@@ -127,6 +127,7 @@ public class Editor extends Fragment {
 				
 				try {
 					if (seed == null) {
+						Toast.makeText(getActivity(), "Impossibile ottenere la password.\nUso la password di default", Toast.LENGTH_LONG).show();
 						Log.i("Editor", "Password non trovata, uso la password di default");
 						seed = "ThisIsASecretKey";
 					}
