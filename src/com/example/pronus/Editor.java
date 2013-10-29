@@ -149,6 +149,7 @@ public class Editor extends Fragment {
 					Login.connection.sendPacket(msg);
 					Log.i("Editor", "Messaggio criptato inviato con successo");
 				}
+				
 			}	
 		});
 		
@@ -180,7 +181,7 @@ public class Editor extends Fragment {
 
 		long id = database.insert("conversazioni", null, values);
 
-		database.close();
+		//database.close();
 		
 		if (id == -1)
 			return false;

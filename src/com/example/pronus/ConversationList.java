@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -101,16 +102,8 @@ public class ConversationList extends Fragment {
 
 				for (OneComment s : list)
 
-					if (s != null){
-						Editor.adapter.add(s);
-						Editor.conversation.setAdapter(Editor.adapter);
-
-<<<<<<< HEAD
-						if(s!=null){
-
-=======
-						if (s != null) {
->>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
+					if (s != null ){
+						if(s.getMessage() != null && !(s.getMessage().equals(""))){
 							Editor.adapter.add(s);
 							Editor.conversation.setAdapter(Editor.adapter);
 						}
@@ -128,25 +121,33 @@ public class ConversationList extends Fragment {
 					}
 			}
 		});
-		//metodo per mostrare un alert dialog durante il long press di una conversazione
+
 		mSmsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			public boolean onItemLongClick(AdapterView<?> arg0, View v,
 					int index, long arg3) {
-<<<<<<< HEAD
+				// TODO Auto-generated method stub
+				// 1. Instantiate an AlertDialog.Builder with its constructor
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-				builder.setMessage("Desideri cancellare la conversazione?")
-				.setTitle("Cancella conversazione");
+				// 2. Chain together various setter methods to set the dialog characteristics
+				builder.setMessage("Desideri eliminare la conversazione?")
+				.setTitle("Elimina");
 
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// User clicked OK button
+					}
+				});
+				builder.setNegativeButton("CANCELLA", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// User cancelled the dialog
+					}
+				});
+
+				// 3. Get the AlertDialog from create()
 				AlertDialog dialog = builder.create();
-
 				dialog.show();
-
-=======
-				// TODO Auto-generated method stub
-				Log.i("ConversationList","in onLongClick");
->>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 				return true;
 			}
 		}); 
@@ -237,70 +238,37 @@ public class ConversationList extends Fragment {
 
 		// Prendo l'insieme di nomi dei contatti
 
-<<<<<<< HEAD
-		Log.i("Main","Creo mDatabaseHelperForConversation");
-
-=======
->>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 		String[] columns = {"nome_conversazione"};
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
-		while(cursor.moveToNext()){
-			String mail = cursor.getString(0);
-			Log.i("ConversationList","" + mail);
 
-<<<<<<< HEAD
+		while(cursor.moveToNext()) {
+
+			String mail = cursor.getString(0);
+			Log.i("ConversationList", "" + mail);
+
 			if (!smsList.containsKey(mail)){
 
 				Cursor cursorConv = getConversation(mail);
-=======
-			while(cursor.moveToNext()) {
-				
-				String mail = cursor.getString(0);
-				Log.i("ConversationList", "" + mail);
->>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 
 				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
 
-				while(cursorConv.moveToNext()){
+				while (cursorConv.moveToNext()) {
 
 					String messaggio = cursorConv.getString(0);
 
-<<<<<<< HEAD
-					if((bool = cursorConv.getInt(1)) == 1){
-
+					if ((bool = cursorConv.getInt(1)) == 1) {
 						tempConv.addMessageToList(true,messaggio);
-
-					}else{
-
+					} else {
 						tempConv.addMessageToList(false,messaggio);
-
 					}
-
 				}
+
 				cursorConv.close();
+
 				smsList.put(mail,tempConv);
 			}
 		}
 
-
-=======
-					while (cursorConv.moveToNext()) {
-
-						String messaggio = cursorConv.getString(0);
-
-						if ((bool = cursorConv.getInt(1)) == 1) {
-							tempConv.addMessageToList(true,messaggio);
-						} else {
-							tempConv.addMessageToList(false,messaggio);
-						}
-					}
-					
-					cursorConv.close();
-					smsList.put(mail,tempConv);
-				}
-			}
-		
->>>>>>> dd4d48486dfbb75a87a1f9c56546e5c9cbf795a7
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
@@ -310,7 +278,6 @@ public class ConversationList extends Fragment {
 		database.close();
 
 		cursor.close();
-		database.close();
 	}
 
 
@@ -358,7 +325,7 @@ public class ConversationList extends Fragment {
 		String[] columns = {"messaggio","bool"};
 		String selection = "nome_conversazione = ?" ;
 		String[] selectionArgs = {nome_conversazione};
-		//                String orderBy = "id DESC";
+		//		String orderBy = "id DESC";
 
 		// SELECT messaggio FROM conversazioni WHERE email = Valore(email) AND nome_conversazione = Valore(nome_conversazione);
 		Cursor cursor = database.query("conversazioni", columns, selection, selectionArgs, null, null, null);
@@ -366,7 +333,7 @@ public class ConversationList extends Fragment {
 		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
 		// il cursor ritornato con moveToNext() (finch� questo non � null)
 
-		database.close();
+		//database.close();
 		return cursor;
 	}
 

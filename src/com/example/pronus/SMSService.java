@@ -113,10 +113,11 @@ public class SMSService extends Service {
 						//Lancio la notifica alla ricezione del messaggio
 						//se e solo se la mia applicazione non è in esecuzione.
 						
-						if(!isForeground("com.example.pronus"))
+						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
-
-						new UIUpdater().execute(fromName, clear ,"");
+						}else{
+							new Main.UIUpdater().execute(fromName, clear ,"");
+						}
 					}
 				}
 			}, filter);
@@ -142,7 +143,6 @@ public class SMSService extends Service {
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
 
-						new UIUpdater().execute(fromName,message.getBody(),"");
 					} else if (message.getBody().equals("IWannaYourKey")) {
 						
 						String from = StringUtils.parseBareAddress(message.getFrom());
