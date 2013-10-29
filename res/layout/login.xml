@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#33B5E5"
@@ -6,43 +6,55 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/start"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="150dp"
-        android:gravity="center_horizontal"
-        android:text="Insert your google e-mail"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ok"
+        android:padding="1dp"
+        android:paddingLeft="1dp"
         android:textColor="@color/Ivory"
-        android:textSize="18dp"
-        android:typeface="sans" />
+        android:textSize="18dp" />
 
     <EditText
         android:id="@+id/userNameLogin"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginTop="5dp"
+        android:layout_above="@+id/TextView2"
+        android:layout_alignLeft="@+id/TextView2"
+        android:layout_marginBottom="59dp"
         android:background="@drawable/rounded_corners_ivory"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:shadowDx="80"
-        android:text="vincenzoarceri.92@gmail.com"
-        android:shadowDy="80" >
-
-        <requestFocus />
-    </EditText>
+        android:shadowDy="80"
+        android:text="vincenzoarceri.92@gmail.com" />
 
     <TextView
         android:id="@+id/TextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
         android:gravity="center_horizontal"
         android:text="Insert your password"
+        android:textColor="@color/Ivory"
+        android:textSize="18dp"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/userNameLogin"
+        android:layout_alignLeft="@+id/userNameLogin"
+        android:layout_marginBottom="31dp"
+        android:gravity="center_horizontal"
+        android:text="Insert your google e-mail"
         android:textColor="@color/Ivory"
         android:textSize="18dp"
         android:typeface="sans" />
@@ -51,25 +63,18 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginBottom="77dp"
-        android:layout_marginTop="5dp"
+        android:layout_above="@+id/start"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="96dp"
         android:background="@drawable/rounded_corners_ivory"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:password="true"
         android:shadowDx="80"
-        android:text="aslobadas90"
-        android:shadowDy="80" />
+        android:shadowDy="80"
+        android:text="aslobadas90" >
 
-    <Button
-        android:id="@+id/start"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ok"
-        android:padding="1dp"
-        android:paddingLeft="1dp"
-        android:textColor="@color/Ivory"
-        android:textSize="18dp" />
+        <requestFocus />
+    </EditText>
 
-</LinearLayout>
+</RelativeLayout>

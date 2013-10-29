@@ -23,35 +23,35 @@
     <CheckBox
         android:id="@+id/onlySms"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|left"
         android:text="Invia solo SMS" />
 
     <CheckBox
         android:id="@+id/onlyWifi"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|left"
         android:text="Utilizza solo WiFi per l&apos;invio di messaggi" />
 
     <CheckBox
         android:id="@+id/deleteConversation"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|left"
         android:text="Cancella tutte le conversazioni" />
 
     <CheckBox
         android:id="@+id/doBackup"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|left"
         android:text="Effettua un backup delle conversazioni" />
 
     <CheckBox
         android:id="@+id/restoreBackup"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal|left"
         android:text="Ripristina conversazioni da backup precedente" />
 
@@ -78,7 +78,7 @@
     <Button
         android:id="@+id/changeProfileImage"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="@color/Ivory"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
@@ -88,7 +88,7 @@
     <Button
         android:id="@+id/changeName"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="@color/Ivory"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"

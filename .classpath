@@ -3,9 +3,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="/home/vincenzo/Scrivania/asmack-android-8-0.8.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="/home/vincenzo/Scrivania/bcprov-jdk15-130.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/asmack.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/naming.jar"/>
+	<classpathentry kind="lib" path="/Users/Francesca/Downloads/smack.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

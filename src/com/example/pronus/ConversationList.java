@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -61,9 +62,9 @@ public class ConversationList extends Fragment{
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
 	public static Rubrica contatti;
-	
+
 	private static Button add,newMessage,settings;
-	
+
 	private static TextView myMail,hint;
 
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -82,48 +83,48 @@ public class ConversationList extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				
+
 				View v =  mSmsList.getChildAt(arg2);
-				
+
 				nome = ((TextView)v.findViewById(R.id.userName)).getText().toString();
-				
+
 				message =((TextView)v.findViewById(R.id.smsMessage)).getText().toString();
-				
+
 				((TextView)v.findViewById(R.id.smsMessage)).setTypeface(null);
-				
+
 				((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#000000"));
-				
+
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
-				
-				
+
+
 				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
-				
+
 				currentlyConv = smsList.get(nome);
-				
+
 				ArrayList<OneComment> list = currentlyConv.getMessage();
-				
+
 				for(OneComment s : list)
-					
+
 					if(s!=null){
-						
+
 						Editor.adapter.add(s);
-						
+
 						Editor.conversation.setAdapter(Editor.adapter);
-						
+
 					}
 
 				//imposto la lista di messaggi all'ultimo elemento
-				
+
 				Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-				
+
 				// NOME O MAIL?
-				
+
 				Editor.setItems(nome);
-				
+
 				Main.mPager.setCurrentItem(1,true);
-				
-				
-				
+
+
+
 			}
 
 
@@ -133,74 +134,75 @@ public class ConversationList extends Fragment{
 
 		mSmsList.setAdapter(adapter);
 		//salvo la mia mail nella textview associata
-		
+
 		myMail = (TextView)view.findViewById(R.id.myMail);
-		
+
 		hint = (TextView)view.findViewById(R.id.hint);
-		
+
 		add = (Button)view.findViewById(R.id.addContact);
-		
+
 		newMessage = (Button)view.findViewById(R.id.newMessage);
-		
+
 		settings = (Button)view.findViewById(R.id.settings);
-		
+
 		myMail.setText(Main.mail);
 		//quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
 		myMail.setOnTouchListener(new OnTouchListener(){
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
-				arg0.setVisibility(View.GONE);
-				ConversationList.hint.setVisibility(View.GONE);
+				arg0.setVisibility(View.INVISIBLE);
+				ConversationList.hint.setVisibility(View.INVISIBLE);
 				ConversationList.add.setVisibility(View.VISIBLE);
 				ConversationList.newMessage.setVisibility(View.VISIBLE);
 				ConversationList.settings.setVisibility(View.VISIBLE);
 				return false;
 			}
-			
+
 		});
-		
-		add.setOnTouchListener(new OnTouchListener(){
+
+		add.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				arg0.setVisibility(View.GONE);
+			public void onClick(View arg0) {
+				arg0.setVisibility(View.INVISIBLE);
 				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.newMessage.setVisibility(View.GONE);
-				ConversationList.settings.setVisibility(View.GONE);
+				ConversationList.hint.setVisibility(View.VISIBLE);
+				ConversationList.newMessage.setVisibility(View.INVISIBLE);
+				ConversationList.settings.setVisibility(View.INVISIBLE);
 				addNewContact();
-				return false;
+
 			}
-			
+
 		});
-			
-		newMessage.setOnTouchListener(new OnTouchListener(){
+
+		newMessage.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				arg0.setVisibility(View.GONE);
+			public void onClick(View arg0) {
+				arg0.setVisibility(View.INVISIBLE);
 				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.add.setVisibility(View.GONE);
-				ConversationList.settings.setVisibility(View.GONE);
-				return false;
+				ConversationList.hint.setVisibility(View.VISIBLE);
+				ConversationList.add.setVisibility(View.INVISIBLE);
+				ConversationList.settings.setVisibility(View.INVISIBLE);
 			}
-			
+
 		});
-		
-		settings.setOnTouchListener(new OnTouchListener(){
+
+		settings.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				arg0.setVisibility(View.GONE);
+			public void onClick(View arg0) {
+				arg0.setVisibility(View.INVISIBLE);
 				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.add.setVisibility(View.GONE);
-				ConversationList.newMessage.setVisibility(View.GONE);
+				ConversationList.hint.setVisibility(View.VISIBLE);
+				ConversationList.add.setVisibility(View.INVISIBLE);
+				ConversationList.newMessage.setVisibility(View.INVISIBLE);
 				launchSettings();
-				return false;
 			}
-			
+
 		});
-		
+
 		updateSmsList();
 
 		return view;
@@ -247,7 +249,7 @@ public class ConversationList extends Fragment{
 		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
 		while(cursor.moveToNext()){
-			
+
 			String mail = cursor.getString(0);
 			Log.i("ConversationList - Test","" + mail);
 			if(!smsList.containsKey(mail)){
@@ -255,8 +257,8 @@ public class ConversationList extends Fragment{
 				Cursor cursorConv = getConversation(mail);
 
 				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
-				
-				
+
+
 
 				while(cursorConv.moveToNext()){
 
@@ -271,9 +273,9 @@ public class ConversationList extends Fragment{
 						tempConv.addMessageToList(false,messaggio);
 
 					}
-					
+
 				}
-				
+
 				smsList.put(mail,tempConv);
 			}
 
@@ -281,16 +283,20 @@ public class ConversationList extends Fragment{
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
-		
+
 		SMSService.sendPublicKey();
 
 	}
 
 	public static void addNewSms(String timeOfLastSms,String userName,String sms, int numOfNewMessages,int profileImage, boolean isMine){
 		boolean alreadyExists = false;
+
 		if(ConversationList.smsList !=null){
+
 			for(String p:ConversationList.smsList.keySet())
+
 				if(p!=null && p.equals(userName))
+
 					alreadyExists=true;
 		}
 
@@ -340,14 +346,14 @@ public class ConversationList extends Fragment{
 
 		return cursor;
 	}
-	
+
 	private void addNewContact(){
 
 		Intent intent = new Intent(Main.mainContext,pickContact.class);
 
 		startActivity(intent);
 	}
-	
+
 	/*
 	 * Il metodo selectItem permette di gestire le azioni dopo aver premuto
 	 * un elemento del navigation drawer
@@ -355,7 +361,7 @@ public class ConversationList extends Fragment{
 	public void launchSettings() {
 		//Qui verrˆ lanciata l'activity per le impostazioni
 		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
-		
+
 		startActivity(intent);
 
 	}
