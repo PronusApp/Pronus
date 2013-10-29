@@ -5,7 +5,12 @@ public class OneComment {
 	public String message;
 
 	public String getMessage() {
-		return message;
+		if(message!=null){
+			return message;
+		}else{
+			return null;
+		}
+
 	}
 
 	public void setMessage(String message) {

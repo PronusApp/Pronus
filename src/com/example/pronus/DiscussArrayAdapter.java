@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,17 +59,7 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 		countryName.setBackgroundResource(coment.left ? R.drawable.rounded_corners_blue: R.drawable.rounded_corners);
 
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
-
-		anim = new TranslateAnimation(0, 0, 200, 0);
-
-		anim.setDuration(750);   
-
-		anim.setDuration(400);
-
-		row.startAnimation(anim);
-
-		anim = null;
-
+		
 		return row;
 	}
 

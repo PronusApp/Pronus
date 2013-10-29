@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -100,11 +103,9 @@ public class ConversationList extends Fragment {
 
 				for (OneComment s : list)
 
-					if (s != null){
-						Editor.adapter.add(s);
-						Editor.conversation.setAdapter(Editor.adapter);
-
-						if (s != null) {
+					if (s != null ){
+						//controllo che esista effettivamente un messaggio all'interno dell'oggetto
+						if(s.getMessage() != null && !(s.getMessage().equals(""))){
 							Editor.adapter.add(s);
 							Editor.conversation.setAdapter(Editor.adapter);
 						}
@@ -117,7 +118,11 @@ public class ConversationList extends Fragment {
 
 						Editor.setItems(nome);
 
+						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+
 						Main.mPager.setCurrentItem(1,true);
+
+
 
 					}
 			}
@@ -127,7 +132,27 @@ public class ConversationList extends Fragment {
 
 			public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
 				// TODO Auto-generated method stub
-				Log.i("ConversationList","in onLongClick");
+				// 1. Instantiate an AlertDialog.Builder with its constructor
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+				// 2. Chain together various setter methods to set the dialog characteristics
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				builder.setView(inflater.inflate(R.layout.delete_conversation, null));
+
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// User clicked OK button
+					}
+				});
+				builder.setNegativeButton("CANCELLA", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// User cancelled the dialog
+					}
+				});
+
+				// 3. Get the AlertDialog from create()
+				AlertDialog dialog = builder.create();
+				dialog.show();
 				return true;
 			}
 		}); 
@@ -186,6 +211,23 @@ public class ConversationList extends Fragment {
 				ConversationList.hint.setVisibility(View.VISIBLE);
 				ConversationList.add.setVisibility(View.INVISIBLE);
 				ConversationList.settings.setVisibility(View.INVISIBLE);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				builder.setView(inflater.inflate(R.layout.new_conversation, null))
+				// Add action buttons
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						//
+					}
+				})
+				.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						//
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 
 		});
@@ -220,6 +262,7 @@ public class ConversationList extends Fragment {
 		
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
+<<<<<<< HEAD
 			while (cursor.moveToNext()) {
 				
 				String mail = cursor.getString(0);
@@ -230,29 +273,45 @@ public class ConversationList extends Fragment {
 					Cursor cursorConv = database.getConversation(mail);
 
 					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile,true);
+=======
+		while(cursor.moveToNext()) {
 
-					while (cursorConv.moveToNext()) {
+			String mail = cursor.getString(0);
+			Log.i("ConversationList", "" + mail);
 
-						String messaggio = cursorConv.getString(0);
+			if (!smsList.containsKey(mail)){
 
-						if ((bool = cursorConv.getInt(1)) == 1) {
-							tempConv.addMessageToList(true,messaggio);
-						} else {
-							tempConv.addMessageToList(false,messaggio);
-						}
+				Cursor cursorConv = getConversation(mail);
+>>>>>>> refs/remotes/origin/master
+
+				Conversation tempConv = new Conversation("22:55",mail,null,1,R.drawable.demo_profile,true);
+
+				while (cursorConv.moveToNext()) {
+
+					String messaggio = cursorConv.getString(0);
+
+					if ((bool = cursorConv.getInt(1)) == 1) {
+						tempConv.addMessageToList(true,messaggio);
+					} else {
+						tempConv.addMessageToList(false,messaggio);
 					}
-					
-					cursorConv.close();
-					smsList.put(mail,tempConv);
 				}
+
+				cursorConv.close();
+
+				smsList.put(mail,tempConv);
 			}
-		
+		}
+
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
 		
 		cursor.close();
+<<<<<<< HEAD
 		database.sendPassword();
+=======
+>>>>>>> refs/remotes/origin/master
 	}
 
 
@@ -292,7 +351,30 @@ public class ConversationList extends Fragment {
 				}}
 		}
 	}
+<<<<<<< HEAD
 	
+=======
+
+	public Cursor getConversation(final String nome_conversazione) {
+
+		SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
+
+		String[] columns = {"messaggio","bool"};
+		String selection = "nome_conversazione = ?" ;
+		String[] selectionArgs = {nome_conversazione};
+		//		String orderBy = "id DESC";
+
+		// SELECT messaggio FROM conversazioni WHERE email = Valore(email) AND nome_conversazione = Valore(nome_conversazione);
+		Cursor cursor = database.query("conversazioni", columns, selection, selectionArgs, null, null, null);
+
+		// Per esaminare la conversazione con un preciso utente basta "scannerizzare"
+		// il cursor ritornato con moveToNext() (finch� questo non � null)
+
+		//database.close();
+		return cursor;
+	}
+
+>>>>>>> refs/remotes/origin/master
 	private void addNewContact(){
 		Intent intent = new Intent(getActivity(), pickContact.class);
 		startActivity(intent);
@@ -309,4 +391,3 @@ public class ConversationList extends Fragment {
 	}
 
 }
-

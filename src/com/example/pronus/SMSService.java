@@ -87,10 +87,28 @@ public class SMSService extends Service {
 						// Lancio la notifica alla ricezione del messaggio
 						// se e solo se la mia applicazione non è in esecuzione.
 						
-						if(!isForeground("com.example.pronus"))
+						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
+<<<<<<< HEAD
 						else 
 							new Main.UIUpdater().execute(fromName, clear ,"");
+=======
+						}else{
+							Log.i("SMSService","Aggiungo messaggio");
+							if(Main.mPager.getCurrentItem() == 1){
+								OneComment temp = new OneComment(true,clear);
+								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
+								Editor.adapter.add(temp);
+								
+								Editor.conversation.setAdapter(Editor.adapter);
+								
+								Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+								
+							}
+							new UIUpdater().execute(fromName, clear ,"");
+							//controllo che l'utente stia chattando in questo momento
+						}
+>>>>>>> refs/remotes/origin/master
 					}
 				}
 			}, filter);
