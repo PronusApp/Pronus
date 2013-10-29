@@ -46,28 +46,29 @@ containing a value of this type.
         public static final int space=0x7f060003;
     }
     public static final class drawable {
-        public static final int back=0x7f020000;
-        public static final int demo_profile=0x7f020001;
-        public static final int dr_settings=0x7f020002;
-        public static final int dr_share=0x7f020003;
-        public static final int empty=0x7f020004;
-        public static final int first=0x7f020005;
-        public static final int ic_action_add=0x7f020006;
-        public static final int ic_action_new_message=0x7f020007;
-        public static final int ic_action_new_message_blue=0x7f020008;
-        public static final int ic_content_new=0x7f020009;
-        public static final int ic_drawer=0x7f02000a;
-        public static final int ic_launcher=0x7f02000b;
-        public static final int ic_new_sms=0x7f02000c;
-        public static final int ic_send_now=0x7f02000d;
-        public static final int icon=0x7f02000e;
-        public static final int new_sms=0x7f02000f;
-        public static final int ok=0x7f020010;
-        public static final int rounded_corners=0x7f020011;
-        public static final int rounded_corners_blue=0x7f020012;
-        public static final int rounded_corners_ivory=0x7f020013;
-        public static final int settings=0x7f020014;
-        public static final int sms_counter=0x7f020015;
+        public static final int andre=0x7f020000;
+        public static final int back=0x7f020001;
+        public static final int demo_profile=0x7f020002;
+        public static final int dr_settings=0x7f020003;
+        public static final int dr_share=0x7f020004;
+        public static final int empty=0x7f020005;
+        public static final int first=0x7f020006;
+        public static final int ic_action_add=0x7f020007;
+        public static final int ic_action_new_message=0x7f020008;
+        public static final int ic_action_new_message_blue=0x7f020009;
+        public static final int ic_content_new=0x7f02000a;
+        public static final int ic_drawer=0x7f02000b;
+        public static final int ic_launcher=0x7f02000c;
+        public static final int ic_new_sms=0x7f02000d;
+        public static final int ic_send_now=0x7f02000e;
+        public static final int icon=0x7f02000f;
+        public static final int new_sms=0x7f020010;
+        public static final int ok=0x7f020011;
+        public static final int rounded_corners=0x7f020012;
+        public static final int rounded_corners_blue=0x7f020013;
+        public static final int rounded_corners_ivory=0x7f020014;
+        public static final int settings=0x7f020015;
+        public static final int sms_counter=0x7f020016;
     }
     public static final class id {
         public static final int TextView01=0x7f0a0009;
@@ -191,7 +192,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:typeface
+          @attr name com.example.pronus:typeface
         */
         public static final int TypefacedTextView_typeface = 0;
     };
