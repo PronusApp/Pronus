@@ -116,7 +116,17 @@ public class SMSService extends Service {
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
 						}else{
-							new Main.UIUpdater().execute(fromName, clear ,"");
+							Log.i("SMSService","Aggiungo messaggio");
+							new UIUpdater().execute(fromName, clear ,"");
+							//controllo che l'utente stia chattando in questo momento
+							if(Main.mPager.getCurrentItem() == 1){
+								OneComment temp = new OneComment(true,clear);
+								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
+								Editor.adapter.add(temp);
+								
+								Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+								
+							}
 						}
 					}
 				}

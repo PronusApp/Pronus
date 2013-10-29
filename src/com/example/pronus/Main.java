@@ -6,7 +6,6 @@ import java.util.Vector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -18,6 +17,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 
 public class Main<MyDatabaseHelper> extends FragmentActivity {
@@ -45,6 +47,8 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
 		setContentView(R.layout.activity_main);
+		
+		new UIUpdater();
 	
 		//acquisisco i dati passati alla classe main quando viene
 		//lanciata come intent dalla classe Login
@@ -70,6 +74,16 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 
 		mPager = (CustomViewPager) super.findViewById(R.id.pager);
 		mPager.setSwipeable(false);
+		//ridefinisco il metodo setOnTouchListener in modo che l'utente
+		//non possa scorrere il pager con le dita
+		mPager.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				return false;
+			}
+			
+		});
 		mPager.setAdapter(this.mPagerAdapter);
 		mPager.setPageTransformer(true, new DepthPageTransformer());
 	}
@@ -118,23 +132,5 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 			this.setTitle("Messaggi");
 		}
 	}
-	public static class UIUpdater extends AsyncTask<String,String,String>{
-		String name, message;
-		@Override
-		protected String doInBackground(String... arg0) {
-			name = arg0[0];
-			message = arg0[1];
-			return null;
-		} 
-		
-	    protected void onProgressUpdate(Integer... progress) {
-	    	//
-	    }
 
-	    protected void onPostExecute(String result) {
-	    	Log.i("UIUpdater","gonna update now");
-			ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
-	    }
-
-	}
 }

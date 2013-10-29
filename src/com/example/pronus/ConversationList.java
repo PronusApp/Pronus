@@ -103,6 +103,7 @@ public class ConversationList extends Fragment {
 				for (OneComment s : list)
 
 					if (s != null ){
+						//controllo che esista effettivamente un messaggio all'interno dell'oggetto
 						if(s.getMessage() != null && !(s.getMessage().equals(""))){
 							Editor.adapter.add(s);
 							Editor.conversation.setAdapter(Editor.adapter);
@@ -278,6 +279,8 @@ public class ConversationList extends Fragment {
 		database.close();
 
 		cursor.close();
+		
+		Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 	}
 
 
