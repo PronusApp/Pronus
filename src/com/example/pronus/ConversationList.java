@@ -56,19 +56,9 @@ public class ConversationList extends Fragment {
 
 	public static MyDatabaseHelper mDatabaseHelper;
 
-<<<<<<< HEAD
-	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
-
-	private static Button add,newMessage,settings;
-
-	private static TextView myMail, hint;
-=======
-	//public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
-
-	private static Button add, newMessage, settings;
+	private static Button add, newMessage,settings;
 
 	private static TextView myMail, hint; 
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -113,7 +103,6 @@ public class ConversationList extends Fragment {
 						Editor.adapter.add(s);
 						Editor.conversation.setAdapter(Editor.adapter);
 
-<<<<<<< HEAD
 						if(s!=null){
 
 							Editor.adapter.add(s);
@@ -145,29 +134,7 @@ public class ConversationList extends Fragment {
 				return true;
 			}
 		}); 
-=======
 
-						if(s!=null){
-
-							Editor.adapter.add(s);
-
-							Editor.conversation.setAdapter(Editor.adapter);
-
-						}
-
-						//imposto la lista di messaggi all'ultimo elemento
-
-						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-
-						// NOME O MAIL?
-
-						Editor.setItems(nome);
-
-						Main.mPager.setCurrentItem(1,true);
-
-					}
-			}});
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 
 		adapter = new ListOfConversationAdapter(getActivity(), R.layout.sms_preview);
 
@@ -252,24 +219,12 @@ public class ConversationList extends Fragment {
 		mDatabaseHelper = new MyDatabaseHelper(getActivity());
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
-<<<<<<< HEAD
 		// Prendo l'insieme di nomi dei contatti
 
 		Log.i("Main","Creo mDatabaseHelperForConversation");
 
-		mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
-
-		SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
-=======
-		//mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
-		//SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
-
 		String[] columns = {"nome_conversazione"};
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
-
-<<<<<<< HEAD
-		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
 
@@ -296,56 +251,27 @@ public class ConversationList extends Fragment {
 							tempConv.addMessageToList(false,messaggio);
 
 						}
-=======
-		while (cursor.moveToNext()) {
-			while(cursor.moveToNext()) {
-				String mail = cursor.getString(0);
-				Log.i("ConversationList", mail);
 
-				if (!smsList.containsKey(mail)) {
-
-					Cursor cursorConv = getConversation(mail);
-					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile, true);
-					
-					while (cursorConv.moveToNext()) {
-
-						String messaggio = cursorConv.getString(0);
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
-
-						if ((bool = cursorConv.getInt(1)) == 1) {
-							tempConv.addMessageToList(true,messaggio);
-						} else {
-							tempConv.addMessageToList(false,messaggio);
-						}
 					}
-<<<<<<< HEAD
-
-					smsList.put(mail,tempConv);
-				}
-
-			}
-=======
 					cursorConv.close();
 					smsList.put(mail,tempConv);
 				}
 			}
-			
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
-			for(String s : smsList.keySet()){
-				adapter.add(smsList.get(s));
-			}
-
-			SMSService.sendPublicKey();
-<<<<<<< HEAD
-			database.close();
-=======
-			
-			cursor.close();
-			database.close();
-			//databaseConversazioni.close();
->>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 		}
+
+
+		for(String s : smsList.keySet()){
+			adapter.add(smsList.get(s));
+		}
+
+		SMSService.sendPublicKey();
+
+		database.close();
+
+		cursor.close();
+		database.close();
 	}
+
 
 	public static void addNewSms(String timeOfLastSms, String userName, String sms, int numOfNewMessages, int profileImage, boolean isMine){
 		boolean alreadyExists = false;
