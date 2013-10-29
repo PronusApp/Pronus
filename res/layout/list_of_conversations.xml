@@ -49,6 +49,7 @@
             android:id="@+id/sms_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
             android:layout_below="@+id/myMail"
             android:animateLayoutChanges="true"
             android:divider="@null"

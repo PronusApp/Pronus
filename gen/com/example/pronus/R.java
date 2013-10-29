@@ -71,7 +71,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int TextView01=0x7f0a0009;
-        public static final int TextView2=0x7f0a0020;
+        public static final int TextView2=0x7f0a001f;
         public static final int action_add=0x7f0a0033;
         public static final int action_search=0x7f0a0034;
         public static final int action_settings=0x7f0a0032;
@@ -103,7 +103,7 @@ containing a value of this type.
         public static final int onlySms=0x7f0a000a;
         public static final int onlyWifi=0x7f0a000b;
         public static final int pager=0x7f0a0001;
-        public static final int password=0x7f0a001e;
+        public static final int password=0x7f0a0020;
         public static final int profileImage=0x7f0a002c;
         public static final int relative=0x7f0a0000;
         public static final int restoreBackup=0x7f0a000e;
@@ -112,15 +112,15 @@ containing a value of this type.
         public static final int smsCounter=0x7f0a0031;
         public static final int smsMessage=0x7f0a002e;
         public static final int sms_list=0x7f0a0019;
-        public static final int start=0x7f0a0021;
-        public static final int textView1=0x7f0a001d;
+        public static final int start=0x7f0a001d;
+        public static final int textView1=0x7f0a0021;
         public static final int textView2=0x7f0a0027;
         public static final int timeOfLastSms=0x7f0a002f;
         public static final int titleAccountSettings=0x7f0a000f;
         public static final int topLayout=0x7f0a0015;
         public static final int userMail=0x7f0a0007;
         public static final int userName=0x7f0a002d;
-        public static final int userNameLogin=0x7f0a001f;
+        public static final int userNameLogin=0x7f0a001e;
         public static final int view1=0x7f0a0018;
         public static final int wrapper=0x7f0a0022;
     }
