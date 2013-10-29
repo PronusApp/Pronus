@@ -170,7 +170,7 @@ public class SMSService extends Service {
 		values.put("bool", bool);
 		values.put("messaggio", messaggio);
 
-		SQLiteDatabase database = ConversationList.mDatabaseHelperForConversation.getWritableDatabase();
+		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
 
 		long id = database.insert("conversazioni", null, values);
 

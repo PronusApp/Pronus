@@ -56,7 +56,7 @@ public class ConversationList extends Fragment {
 
 	public static MyDatabaseHelper mDatabaseHelper;
 
-	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
+	//public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
 	private static Button add, newMessage, settings;
 
@@ -207,14 +207,14 @@ public class ConversationList extends Fragment {
 	private void updateSmsList() {
 		int bool = 0;
 
-		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
+		mDatabaseHelper = new MyDatabaseHelper(getActivity());
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
-		mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
-		SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
+		//mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
+		//SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
 
 		String[] columns = {"nome_conversazione"};
-		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
+		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
 			while(cursor.moveToNext()) {
@@ -249,7 +249,7 @@ public class ConversationList extends Fragment {
 			
 			cursor.close();
 			database.close();
-			databaseConversazioni.close();
+			//databaseConversazioni.close();
 		}
 	}
 
@@ -292,7 +292,7 @@ public class ConversationList extends Fragment {
 
 	public Cursor getConversation(final String nome_conversazione) {
 
-		SQLiteDatabase database = mDatabaseHelperForConversation.getReadableDatabase();
+		SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
 
 		String[] columns = {"messaggio","bool"};
 		String selection = "nome_conversazione = ?" ;

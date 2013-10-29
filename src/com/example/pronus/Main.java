@@ -18,7 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 
-public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
+public class Main<MyDatabaseHelper> extends FragmentActivity {
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> fragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
