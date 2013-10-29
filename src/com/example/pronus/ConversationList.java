@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
-
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,7 +40,6 @@ public class ConversationList extends Fragment {
 
 	public static Conversation currentlyConv = null;
 	/*
-	 * 
 	 * inizializzo la lista degli sms
 	 */
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
@@ -60,13 +56,23 @@ public class ConversationList extends Fragment {
 
 	public static MyDatabaseHelper mDatabaseHelper;
 
+<<<<<<< HEAD
 	public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
 	private static Button add,newMessage,settings;
 
 	private static TextView myMail, hint;
+=======
+	//public static myDatabaseHelperForConversation mDatabaseHelperForConversation;
 
+	private static Button add, newMessage, settings;
+
+	private static TextView myMail, hint; 
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
+
+	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+
 		// fragment not when container null
 		if (container == null) {
 			return null;
@@ -80,8 +86,7 @@ public class ConversationList extends Fragment {
 		mSmsList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
 				View v =  mSmsList.getChildAt(arg2);
 
@@ -96,7 +101,7 @@ public class ConversationList extends Fragment {
 				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
 
 
-				Editor.adapter = new DiscussArrayAdapter(Main.mainContext, R.layout.message);
+				Editor.adapter = new DiscussArrayAdapter(getActivity(), R.layout.message);
 
 				currentlyConv = smsList.get(nome);
 
@@ -108,6 +113,7 @@ public class ConversationList extends Fragment {
 						Editor.adapter.add(s);
 						Editor.conversation.setAdapter(Editor.adapter);
 
+<<<<<<< HEAD
 						if(s!=null){
 
 							Editor.adapter.add(s);
@@ -139,8 +145,31 @@ public class ConversationList extends Fragment {
 				return true;
 			}
 		}); 
+=======
 
-		adapter = new ListOfConversationAdapter(Main.mainContext, R.layout.sms_preview);
+						if(s!=null){
+
+							Editor.adapter.add(s);
+
+							Editor.conversation.setAdapter(Editor.adapter);
+
+						}
+
+						//imposto la lista di messaggi all'ultimo elemento
+
+						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+
+						// NOME O MAIL?
+
+						Editor.setItems(nome);
+
+						Main.mPager.setCurrentItem(1,true);
+
+					}
+			}});
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
+
+		adapter = new ListOfConversationAdapter(getActivity(), R.layout.sms_preview);
 
 		mSmsList.setAdapter(adapter);
 		//salvo la mia mail nella textview associata
@@ -183,7 +212,6 @@ public class ConversationList extends Fragment {
 				ConversationList.settings.setVisibility(View.INVISIBLE);
 				addNewContact();
 			}
-
 		});
 
 		newMessage.setOnClickListener(new OnClickListener(){
@@ -221,9 +249,10 @@ public class ConversationList extends Fragment {
 	private void updateSmsList() {
 		int bool = 0;
 
-		mDatabaseHelper = new MyDatabaseHelper(Main.mainContext);
+		mDatabaseHelper = new MyDatabaseHelper(getActivity());
 		SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
 
+<<<<<<< HEAD
 		// Prendo l'insieme di nomi dei contatti
 
 		Log.i("Main","Creo mDatabaseHelperForConversation");
@@ -231,9 +260,15 @@ public class ConversationList extends Fragment {
 		mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
 
 		SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
+=======
+		//mDatabaseHelperForConversation= new myDatabaseHelperForConversation(Main.mainContext);
+		//SQLiteDatabase databaseConversazioni = mDatabaseHelperForConversation.getReadableDatabase();
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 
 		String[] columns = {"nome_conversazione"};
+		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
+<<<<<<< HEAD
 		Cursor cursor = databaseConversazioni.query("conversazioni", columns, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
@@ -261,39 +296,70 @@ public class ConversationList extends Fragment {
 							tempConv.addMessageToList(false,messaggio);
 
 						}
+=======
+		while (cursor.moveToNext()) {
+			while(cursor.moveToNext()) {
+				String mail = cursor.getString(0);
+				Log.i("ConversationList", mail);
 
+				if (!smsList.containsKey(mail)) {
+
+					Cursor cursorConv = getConversation(mail);
+					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile, true);
+					
+					while (cursorConv.moveToNext()) {
+
+						String messaggio = cursorConv.getString(0);
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
+
+						if ((bool = cursorConv.getInt(1)) == 1) {
+							tempConv.addMessageToList(true,messaggio);
+						} else {
+							tempConv.addMessageToList(false,messaggio);
+						}
 					}
+<<<<<<< HEAD
 
 					smsList.put(mail,tempConv);
 				}
 
 			}
+=======
+					cursorConv.close();
+					smsList.put(mail,tempConv);
+				}
+			}
+			
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 			for(String s : smsList.keySet()){
 				adapter.add(smsList.get(s));
 			}
 
 			SMSService.sendPublicKey();
+<<<<<<< HEAD
 			database.close();
+=======
+			
+			cursor.close();
+			database.close();
+			//databaseConversazioni.close();
+>>>>>>> 3a04f343824051cf73bf16504b83429c7939ffeb
 		}
 	}
 
-	public static void addNewSms(String timeOfLastSms,String userName,String sms, int numOfNewMessages,int profileImage, boolean isMine){
+	public static void addNewSms(String timeOfLastSms, String userName, String sms, int numOfNewMessages, int profileImage, boolean isMine){
 		boolean alreadyExists = false;
 
-		if(ConversationList.smsList !=null){
-
+		if(ConversationList.smsList !=null) {
 			for(String p:ConversationList.smsList.keySet())
-
-				if(p!=null && p.equals(userName))
-
-					alreadyExists=true;
+				if (p!=null && p.equals(userName))
+					alreadyExists = true;
 		}
 
-		if(!alreadyExists){
+		if (!alreadyExists) {
 			adapter.add(new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
 			ConversationList.smsList.put(userName,new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
-
-		}else{
+		} else {
 			//prendo la conversazione relativa
 			Conversation conv = ConversationList.smsList.get(userName);
 			//aggiungo un nuovo meddaggio alla lista della conversazione
@@ -320,7 +386,7 @@ public class ConversationList extends Fragment {
 
 	public Cursor getConversation(final String nome_conversazione) {
 
-		SQLiteDatabase database = mDatabaseHelperForConversation.getReadableDatabase();
+		SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
 
 		String[] columns = {"messaggio","bool"};
 		String selection = "nome_conversazione = ?" ;
@@ -338,9 +404,7 @@ public class ConversationList extends Fragment {
 	}
 
 	private void addNewContact(){
-
-		Intent intent = new Intent(Main.mainContext,pickContact.class);
-
+		Intent intent = new Intent(getActivity(), pickContact.class);
 		startActivity(intent);
 	}
 
@@ -350,10 +414,9 @@ public class ConversationList extends Fragment {
 	 */
 	public void launchSettings() {
 		//Qui verr� lanciata l'activity per le impostazioni
-		Intent intent = new Intent(Main.mainContext, Impostazioni.class);
-
+		Intent intent = new Intent(getActivity(), Impostazioni.class);
 		startActivity(intent);
-
 	}
 
 }
+

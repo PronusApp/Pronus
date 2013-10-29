@@ -1,7 +1,5 @@
 package com.example.pronus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,14 +13,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
-import android.view.WindowManager;
 
-public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
+public class Main<MyDatabaseHelper> extends FragmentActivity {
 	// list contains fragments to instantiate in the viewpager
 	List<Fragment> fragments = new Vector<Fragment>();
 	// page adapter between fragment list and view pager
@@ -44,13 +40,9 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
-
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
-		
 		setContentView(R.layout.activity_main);
-		
 	
 		//acquisisco i dati passati alla classe main quando viene
 		//lanciata come intent dalla classe Login
@@ -58,56 +50,40 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null) {
-			
 		    mail = extras.getString("mail");
-		    
 		}
 
 		instance = this;
-
 		mainContentResolver = getContentResolver();
-
 		mainContext = this.getBaseContext();
 
 		// creating fragments and adding to list
 
-		fragments.add(Fragment.instantiate(this,ConversationList.class.getName()));
-
-		fragments.add(Fragment.instantiate(this,Editor.class.getName()));
+		fragments.add(Fragment.instantiate(this, ConversationList.class.getName()));
+		fragments.add(Fragment.instantiate(this, Editor.class.getName()));
 
 		// creating adapter and linking to view pager
 
 		this.mPagerAdapter = new PagerAdap(super.getSupportFragmentManager(),fragments);
 
 		mPager = (CustomViewPager) super.findViewById(R.id.pager);
-
 		mPager.setSwipeable(false);
-
 		mPager.setAdapter(this.mPagerAdapter);
-
 		mPager.setPageTransformer(true, new DepthPageTransformer());
-		
 	}
+	
 	@Override
-
 	protected void onPostCreate(Bundle savedInstanceState) {
-
 		super.onPostCreate(savedInstanceState);
-
 	}
 
 	@Override
-
 	public void onConfigurationChanged(Configuration newConfig) {
-
 		super.onConfigurationChanged(newConfig);
-
 	}
 
 	@Override
-
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu items for use in the action bar
 
 		MenuInflater inflater = getMenuInflater();
@@ -118,21 +94,14 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 	}
 
 	@Override
-
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
 		return false;
-
 	}
 
-	public void startContactList(){
-
+	public void startContactList() {
 		Intent contact = new Intent(this, ContactActivity.class);
-
 		startActivity(contact);
-
 		overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
 	}
 
 	@Override
@@ -147,5 +116,4 @@ public class Main<MyDatabaseHelperForConversation> extends FragmentActivity{
 			this.setTitle("Messaggi");
 		}
 	}
-
 }

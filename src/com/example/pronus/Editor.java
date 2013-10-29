@@ -87,7 +87,8 @@ public class Editor extends Fragment {
 				}
 				
 				String seed = cursor.getString(0);
-				
+				cursor.close();
+		
 				if (seed == null) {
 					Log.i("Editor", "Nessuna password memorizzata per il contatto");
 					
@@ -119,15 +120,19 @@ public class Editor extends Fragment {
 					}
 		
 					seed = new_cursor.getString(0);
+					new_cursor.close();
 				}
 	
 				String encrypt = "";
 				
 				try {
-					if (seed == null) 
+					if (seed == null) {
+						Log.i("Editor", "Password non trovata, uso la password di default");
 						seed = "ThisIsASecretKey";
-					
+					}
+				
 					encrypt = Decoder.encrypt(seed, text);
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -170,10 +175,12 @@ public class Editor extends Fragment {
 		values.put("bool", bool);
 		values.put("messaggio", messaggio);
 
-		SQLiteDatabase database = ConversationList.mDatabaseHelperForConversation.getWritableDatabase();
+		SQLiteDatabase database = ConversationList.mDatabaseHelper.getWritableDatabase();
 
 		long id = database.insert("conversazioni", null, values);
 
+		database.close();
+		
 		if (id == -1)
 			return false;
 		return true;

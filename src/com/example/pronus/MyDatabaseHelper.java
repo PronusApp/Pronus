@@ -10,11 +10,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
-	private static final String DB_NAME = "rubrica_pronus_2";
+	private static final String DB_NAME = "database_pronus";
 	private static final int DB_VERSION = 1;
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		
+		// Creazione tabella contatti
 		String sql = "";
 		sql += "CREATE TABLE contatti (";
 		sql += "id INTEGER PRIMARY KEY,";
@@ -22,6 +24,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		sql += "numero TEXT NOT NULL,";
 		sql += "password TEXT,";
 		sql += "email TEXT)";
+		db.execSQL(sql);
+		
+		// Creazione tabella conversazioni
+		sql = "";
+		sql += "CREATE TABLE conversazioni (";
+		sql += "id INTEGER PRIMARY KEY,";
+		sql += "messaggio TEXT NOT NULL,";
+		sql += "bool INTEGER NOT NULL,";
+		sql += "nome_conversazione TEXT NOT NULL)";
 		db.execSQL(sql);
 	}
 
