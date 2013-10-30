@@ -148,7 +148,8 @@ public class Database {
 		int id = database.update("contatti", values, whereClause, whereArgs);
 
 		database.close();
-
+		sendPassword();
+		
 		if (id == -1)
 			return false;
 		return true;
