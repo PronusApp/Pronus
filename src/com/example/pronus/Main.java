@@ -114,11 +114,6 @@ public class Main<MyDatabaseHelper> extends FragmentActivity {
 		return false;
 	}
 
-	public void startContactList() {
-		Intent contact = new Intent(this, ContactActivity.class);
-		startActivity(contact);
-		overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-	}
 
 	@Override
 	public void onBackPressed() {

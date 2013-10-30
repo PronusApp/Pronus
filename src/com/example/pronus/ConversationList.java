@@ -117,7 +117,11 @@ public class ConversationList extends Fragment {
 
 						Editor.setItems(nome);
 
+						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+
 						Main.mPager.setCurrentItem(1,true);
+
+
 
 					}
 			}
@@ -132,8 +136,8 @@ public class ConversationList extends Fragment {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 				// 2. Chain together various setter methods to set the dialog characteristics
-				builder.setMessage("Desideri eliminare la conversazione?")
-				.setTitle("Elimina");
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				builder.setView(inflater.inflate(R.layout.delete_conversation, null));
 
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
@@ -208,6 +212,23 @@ public class ConversationList extends Fragment {
 				ConversationList.hint.setVisibility(View.VISIBLE);
 				ConversationList.add.setVisibility(View.INVISIBLE);
 				ConversationList.settings.setVisibility(View.INVISIBLE);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				builder.setView(inflater.inflate(R.layout.new_conversation, null))
+				// Add action buttons
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						//
+					}
+				})
+				.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						//
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 
 		});
@@ -279,8 +300,6 @@ public class ConversationList extends Fragment {
 		database.close();
 
 		cursor.close();
-		
-		Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 	}
 
 

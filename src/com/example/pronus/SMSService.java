@@ -117,16 +117,18 @@ public class SMSService extends Service {
 							createNotification(fromName, clear);
 						}else{
 							Log.i("SMSService","Aggiungo messaggio");
-							new UIUpdater().execute(fromName, clear ,"");
-							//controllo che l'utente stia chattando in questo momento
 							if(Main.mPager.getCurrentItem() == 1){
 								OneComment temp = new OneComment(true,clear);
 								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
 								Editor.adapter.add(temp);
 								
+								Editor.conversation.setAdapter(Editor.adapter);
+								
 								Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 								
 							}
+							new UIUpdater().execute(fromName, clear ,"");
+							//controllo che l'utente stia chattando in questo momento
 						}
 					}
 				}
