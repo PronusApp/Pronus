@@ -29,7 +29,7 @@
         android:background="@drawable/rounded_corners_ivory"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
-        android:text="nicolacastellani92@gmail.com" />
+        android:text="vincenzoarceri.92@gmail.com" />
 
     <TextView
         android:id="@+id/TextView2"
@@ -64,7 +64,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:padding="15px"
         android:password="true"
-        android:text="allocazionecontigua" >
+        android:text="aslobadas90" >
 
         <requestFocus />
     </EditText>

@@ -1,6 +1,8 @@
 package com.example.pronus;
 
 import org.jivesoftware.smack.packet.Message;
+
+import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -62,19 +64,14 @@ public class Editor extends Fragment {
 				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
 				adapter.add(new OneComment(false, message.getText().toString()));
 				
-				String to = name + "/0123456789101";
-				
-				// Questo è il testo da criptare con la chiave pubblica associata al contatto
-				String text = message.getText().toString();
+				String to = name + "/0123456789101"; // Destinatario
+				String text = message.getText().toString(); // Testo da criptare
 		
 				if (database.addMessage(name, text, 0))
-					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
+					Log.i("Editor", "Messaggio aggiunto al database");
 	
 				message.setText("");
-				
-				//SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
-				
-				
+
 				String[] columns = {"password"};
 				String selection = "email = ?";
 				String[] selectionArgs = {name};
@@ -103,16 +100,24 @@ public class Editor extends Fragment {
 						Login.connection.sendPacket(msg);
 						Log.i("Editor","Richiesta della password inviata con successo");
 					}
-					
-					try {
-						Thread.currentThread().sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+
+					final ProgressDialog pausingDialog = ProgressDialog.show(getActivity(), "Attendo la password...", "Aspetto la passowrd dal destinatario...");
+					new Thread() {
+						
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(5000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}				
+							pausingDialog.dismiss();
+						}
+					}.start();
 					
 					// Query per cercare la nuova password
 
-					Cursor new_cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
+					Cursor new_cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
 					
 					if (new_cursor.moveToFirst() == false) {
 						Log.i("Editor", "Password non presente per questo contatto");

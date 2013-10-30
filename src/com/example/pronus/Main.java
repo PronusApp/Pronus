@@ -111,7 +111,6 @@ public class Main extends FragmentActivity {
 		return false;
 	}
 
-
 	@Override
 	public void onBackPressed() {
 		if (mPager.getCurrentItem() == 0) {

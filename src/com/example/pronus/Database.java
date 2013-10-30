@@ -162,4 +162,52 @@ public class Database {
 		database.close();
 		Log.i("SMSService", "Inviata password a tutti i contatti");
 	}
+	
+	public boolean deleteContactByEmail(String email) {
+		SQLiteDatabase database = helper.getWritableDatabase();
+		int result;
+		
+		String where = "email = ?";
+		String[] whereArgs = {email};
+		
+		result = database.delete("contatti", where, whereArgs);
+		
+		database.close();
+		
+		if (result != -1)
+			return true;
+		return false;
+	}
+	
+	public boolean deleteContactByName(String name) {
+		SQLiteDatabase database = helper.getWritableDatabase();
+		int result;
+		
+		String where = "nome = ?";
+		String[] whereArgs = {name};
+		
+		result = database.delete("contatti", where, whereArgs);
+		
+		database.close();
+		
+		if (result != -1)
+			return true;
+		return false;
+	}
+	
+	public boolean deleteConversation(String email) {
+		SQLiteDatabase database = helper.getWritableDatabase();
+		int result;
+		
+		String where = "email = ?";
+		String[] whereArgs = {email};
+		
+		result = database.delete("conversazioni", where, whereArgs);
+		
+		database.close();
+		
+		if (result != -1)
+			return true;
+		return false;
+	}
 }
