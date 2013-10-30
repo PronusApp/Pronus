@@ -235,16 +235,28 @@ public class Database {
 	public boolean deleteConversation(String email) {
 		SQLiteDatabase database = helper.getWritableDatabase();
 		int result;
-		
+
 		String where = "email = ?";
 		String[] whereArgs = {email};
-		
+
 		result = database.delete("conversazioni", where, whereArgs);
-		
+
 		database.close();
-		
+
 		if (result != -1)
 			return true;
 		return false;
+	}
+	
+	public void deleteAllContacts() {
+		SQLiteDatabase database = helper.getWritableDatabase();
+		database.execSQL("delete * from contatti");
+		database.close();
+	}
+	
+	public void deleteAllMessages() {
+		SQLiteDatabase database = helper.getWritableDatabase();
+		database.execSQL("delete * from conversazioni");
+		database.close();
 	}
 }
