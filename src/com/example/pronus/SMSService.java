@@ -3,6 +3,8 @@ package com.example.pronus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
@@ -32,7 +34,7 @@ public class SMSService extends Service {
 
 	@Override
 	public void onCreate() {
-		seed = "ThisIsASecretKey";
+		seed = randomString();
 		this.connection = Login.connection;
 		database = new Database(getBaseContext());
 		Log.i("SMSService", "Servizio creato");
@@ -194,5 +196,19 @@ public class SMSService extends Service {
 		if (componentInfo.getPackageName().equals(myPackage)) 
 			return true;
 		return false;
+	}
+	
+	private String randomString() {
+		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+		StringBuilder sb = new StringBuilder();
+
+		Random random = new Random();
+
+		for (int i = 0; i < 16; i++) {
+			char c = chars[random.nextInt(chars.length)];
+			sb.append(c);
+		}
+
+		return sb.toString();
 	}
 }
