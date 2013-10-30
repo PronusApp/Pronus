@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -17,11 +16,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,10 +55,10 @@ public class ConversationList extends Fragment {
 	private static View view;
 
 	public Database database;
-	
-	private static Button add, newMessage,settings;
 
-	private static TextView myMail, hint; 
+	private static TextView myMail, hint, test; 
+
+	private static Button menu;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class ConversationList extends Fragment {
 		}
 
 		database = new Database(getActivity());
-		
+
 		// inflate view from layout
 		view = (FrameLayout)inflater.inflate(R.layout.list_of_conversations,container,false);
 
@@ -162,89 +160,28 @@ public class ConversationList extends Fragment {
 		mSmsList.setAdapter(adapter);
 		//salvo la mia mail nella textview associata
 
+		menu = (Button)view.findViewById(R.id.menu);
+
+		menu.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				builder.setView(inflater.inflate(R.layout.main_menu, null));
+				
+				AlertDialog dialog = builder.create();
+				dialog.show();
+
+			}
+
+		});
+
 		myMail = (TextView)view.findViewById(R.id.myMail);
 
 		hint = (TextView)view.findViewById(R.id.hint);
 
-		add = (Button)view.findViewById(R.id.addContact);
-
-		newMessage = (Button)view.findViewById(R.id.newMessage);
-
-		settings = (Button)view.findViewById(R.id.settings);
-
 		myMail.setText(Main.mail);
-
-		// Quando clicco su questa listview mi appariranno i bottoni per le varie impostazioni
-		myMail.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				arg0.setVisibility(View.INVISIBLE);
-				ConversationList.hint.setVisibility(View.INVISIBLE);
-				ConversationList.add.setVisibility(View.VISIBLE);
-				ConversationList.newMessage.setVisibility(View.VISIBLE);
-				ConversationList.settings.setVisibility(View.VISIBLE);
-				return false;
-			}
-
-		});
-
-		add.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				arg0.setVisibility(View.INVISIBLE);
-				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.hint.setVisibility(View.VISIBLE);
-				ConversationList.newMessage.setVisibility(View.INVISIBLE);
-				ConversationList.settings.setVisibility(View.INVISIBLE);
-				addNewContact();
-			}
-		});
-
-		newMessage.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				arg0.setVisibility(View.INVISIBLE);
-				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.hint.setVisibility(View.VISIBLE);
-				ConversationList.add.setVisibility(View.INVISIBLE);
-				ConversationList.settings.setVisibility(View.INVISIBLE);
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				LayoutInflater inflater = getActivity().getLayoutInflater();
-				builder.setView(inflater.inflate(R.layout.new_conversation, null))
-				// Add action buttons
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						//
-					}
-				})
-				.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						//
-					}
-				});
-				AlertDialog dialog = builder.create();
-				dialog.show();
-			}
-
-		});
-
-		settings.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				arg0.setVisibility(View.INVISIBLE);
-				ConversationList.myMail.setVisibility(View.VISIBLE);
-				ConversationList.hint.setVisibility(View.VISIBLE);
-				ConversationList.add.setVisibility(View.INVISIBLE);
-				ConversationList.newMessage.setVisibility(View.INVISIBLE);
-				launchSettings();
-			}
-
-		});
 
 		updateSmsList();
 
@@ -255,23 +192,23 @@ public class ConversationList extends Fragment {
 		int bool = 0;
 
 		Database database = new Database(getActivity());
-		
+
 		// Prendo l'insieme di nomi dei contatti
 
 		String[] columns = {"nome_conversazione"};
-		
+
 		Cursor cursor = database.query("conversazioni", columns, null, null, null, null, null);
 
-			while (cursor.moveToNext()) {
-				
-				String mail = cursor.getString(0);
-				Log.i("ConversationList", "" + mail);
+		while (cursor.moveToNext()) {
 
-				if (!smsList.containsKey(mail)) {
+			String mail = cursor.getString(0);
+			Log.i("ConversationList", "" + mail);
 
-					Cursor cursorConv = database.getConversation(mail);
+			if (!smsList.containsKey(mail)) {
 
-					Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile,true);
+				Cursor cursorConv = database.getConversation(mail);
+
+				Conversation tempConv = new Conversation("22:55", mail, null, 1, R.drawable.demo_profile,true);
 
 
 				while (cursorConv.moveToNext()) {
@@ -294,7 +231,7 @@ public class ConversationList extends Fragment {
 		for(String s : smsList.keySet()){
 			adapter.add(smsList.get(s));
 		}
-		
+
 		cursor.close();
 
 		database.sendPassword();
@@ -336,21 +273,6 @@ public class ConversationList extends Fragment {
 					i++;
 				}}
 		}
-	}
-
-	private void addNewContact(){
-		Intent intent = new Intent(getActivity(), pickContact.class);
-		startActivity(intent);
-	}
-
-	/*
-	 * Il metodo selectItem permette di gestire le azioni dopo aver premuto
-	 * un elemento del navigation drawer
-	 */
-	public void launchSettings() {
-		//Qui verr� lanciata l'activity per le impostazioni
-		Intent intent = new Intent(getActivity(), Impostazioni.class);
-		startActivity(intent);
 	}
 
 }

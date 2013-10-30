@@ -24,7 +24,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
         android:ems="10"
-        android:hint="Inserisci un contatto in rubrica" >
+        android:hint="Inserisci un contatto in rubrica"
+        android:padding="30dp" >
 
         <requestFocus />
     </AutoCompleteTextView>

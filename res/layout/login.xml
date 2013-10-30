@@ -29,7 +29,7 @@
         android:background="@drawable/rounded_corners_ivory"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
-        android:text="vincenzoarceri.92@gmail.com" />
+        android:text="nicolacastellani92@gmail.com" />
 
     <TextView
         android:id="@+id/TextView2"
@@ -38,7 +38,7 @@
         android:layout_above="@+id/password"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="Insert your password"
+        android:text="inserisci la password"
         android:textColor="@color/Ivory"
         android:textSize="18dp"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/userNameLogin"
         android:gravity="center_horizontal"
-        android:text="Insert your google e-mail"
+        android:text="Inserisci la password"
         android:textColor="@color/Ivory"
         android:textSize="18dp" />
 
@@ -64,7 +64,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:padding="15px"
         android:password="true"
-        android:text="aslobadas90" >
+        android:text="allocazionecontigua" >
 
         <requestFocus />
     </EditText>

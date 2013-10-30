@@ -17,6 +17,14 @@ public class UIUpdater extends AsyncTask<String,String,String>{
     protected void onPostExecute(String result) {
     	Log.i("UIUpdater","gonna update now");
 		ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
+		OneComment temp = new OneComment(true,message);
+		//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
+		Editor.adapter.add(temp);
+		
+		Editor.conversation.setAdapter(Editor.adapter);
+		
+		Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
+		
     }
 
     @Override

@@ -5,7 +5,10 @@ import java.util.Vector;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,8 +16,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,13 +31,13 @@ public class Main extends FragmentActivity {
 	private PagerAdapter mPagerAdapter = null;
 	// view pager
 	public static CustomViewPager mPager;
-	
+
 	public static Activity instance;
 
 	public static String[] contactNames;
 
 	public static ContentResolver mainContentResolver;
-	
+
 	public static String mail;
 
 
@@ -42,18 +45,20 @@ public class Main extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
 		setContentView(R.layout.activity_main);
+
 		
 		new UIUpdater();
-	
+
 		//acquisisco i dati passati alla classe main quando viene
 		//lanciata come intent dalla classe Login
-		
+
 		Bundle extras = getIntent().getExtras();
-		
+
 		if (extras != null) {
-		    mail = extras.getString("mail");
+			mail = extras.getString("mail");
 		}
 
 		instance = this;
@@ -78,12 +83,12 @@ public class Main extends FragmentActivity {
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				return false;
 			}
-			
+
 		});
 		mPager.setAdapter(this.mPagerAdapter);
 		mPager.setPageTransformer(true, new DepthPageTransformer());
 	}
-	
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -96,19 +101,30 @@ public class Main extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-
-		MenuInflater inflater = getMenuInflater();
-
-		inflater.inflate(R.menu.main_activity_actions, menu);
-
+		menu.add("Nuovo Contatto");
+		menu.add("Nuova Conversazione");
+		menu.add("Impostazioni");
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		return false;
+		switch (item.getItemId()) {
+		case 0:
+			//addNewContact();
+			return true;
+		case 1:
+			//startNewConversation();
+			return true;
+		case 2:
+			//launchSettings();
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
+
 
 	@Override
 	public void onBackPressed() {
@@ -122,22 +138,55 @@ public class Main extends FragmentActivity {
 			this.setTitle("Messaggi");
 		}
 	}
-	
+
 	public static class UIUpdater extends AsyncTask<String,String,String>{
 		String name, message;
-		
+
 		@Override
 		protected String doInBackground(String... arg0) {
 			name = arg0[0];
 			message = arg0[1];
 			return null;
 		} 
-		
+
 		@Override
-	    protected void onPostExecute(String result) {
-	    	Log.i("UIUpdater","gonna update now");
+		protected void onPostExecute(String result) {
+			Log.i("UIUpdater","gonna update now");
 			ConversationList.addNewSms("22:55", name, message,1,R.drawable.demo_profile,true);
-	    }
+		}
 	}
 
+	public void addNewContact(View v){
+		Intent intent = new Intent(this, pickContact.class);
+		startActivity(intent);
+	}
+
+	/*
+	 * Il metodo selectItem permette di gestire le azioni dopo aver premuto
+	 * un elemento del navigation drawer
+	 */
+	public void launchSettings(View v) {
+		//Qui verr� lanciata l'activity per le impostazioni
+		Intent intent = new Intent(this, Impostazioni.class);
+		startActivity(intent);
+	}
+	public void startNewConversation(View v) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = this.getLayoutInflater();
+		builder.setView(inflater.inflate(R.layout.new_conversation, null))
+		// Add action buttons
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				//
+			}
+		})
+		.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				//
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
 }
