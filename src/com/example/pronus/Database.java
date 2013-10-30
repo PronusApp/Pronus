@@ -260,5 +260,6 @@ public class Database {
 		SQLiteDatabase database = helper.getWritableDatabase();
 		database.execSQL("delete * from conversazioni");
 		database.close();
+		
 	}
 }
