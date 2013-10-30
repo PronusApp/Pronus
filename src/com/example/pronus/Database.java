@@ -95,7 +95,7 @@ public class Database {
 			return false;
 		
 		new_cursor3.close();
-		database_lettura.close();
+
 		// Se numero di cellulare, mail e nome contatto non sono presenti allora aggiunto il nuovo contatto
 		
 		ContentValues values = new ContentValues();
@@ -107,6 +107,7 @@ public class Database {
 		long id = database.insert("contatti", null, values);
 
 		database.close();
+		database_lettura.close();
 		sendPassword();
 		
 		if (id == -1)
