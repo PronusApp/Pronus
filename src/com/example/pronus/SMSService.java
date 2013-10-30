@@ -30,13 +30,15 @@ public class SMSService extends Service {
 	public static XMPPConnection connection;
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
 	public static String seed;
-	Database database;
+	private Database database;
 
 	@Override
 	public void onCreate() {
 		seed = randomString();
+		Log.i("SMSService","Password generata: " + seed);
 		this.connection = Login.connection;
 		database = new Database(getBaseContext());
+		database.sendPassword();
 		Log.i("SMSService", "Servizio creato");
 	}
 
@@ -102,6 +104,8 @@ public class SMSService extends Service {
 //							}
 //							//controllo che l'utente stia chattando in questo momento
 						}
+						
+						database.sendPassword();
 
 					}
 				}
@@ -127,7 +131,9 @@ public class SMSService extends Service {
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
-
+						
+						database.sendPassword();
+						
 					} else if (message.getBody().equals("IWannaYourKey")) {
 						
 						String from = StringUtils.parseBareAddress(message.getFrom());
@@ -141,6 +147,8 @@ public class SMSService extends Service {
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
 						}
+						
+						database.sendPassword();
 					}
 				}
 			}, filter);
@@ -185,6 +193,7 @@ public class SMSService extends Service {
 	 * E' necessario in quanto una notifica deve essere lanciata solo se l'applicazione
 	 * non � in esecuzione.
 	 */
+	
 	public boolean isForeground(String myPackage){
 
 		ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);

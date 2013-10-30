@@ -37,32 +37,32 @@ public class Login extends Activity {
 
 		setContentView(R.layout.login);
 
-		userName = (EditText)findViewById(R.id.userNameLogin);
-
-		password = (EditText)findViewById(R.id.password);
-
-		start = (Button)findViewById(R.id.start);
+		userName = (EditText) findViewById(R.id.userNameLogin);
+		password = (EditText) findViewById(R.id.password);
+		start = (Button) findViewById(R.id.start);
 
 		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 		start.startAnimation(fadeIn);
 
-		start.setOnClickListener(new OnClickListener(){
+		start.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				USERNAME = userName.getText().toString();
 				PASSWORD = password.getText().toString();
+
 				connect();
+
 				Intent intent = new Intent(Login.this, Main.class);
-				//salvo il nome utilizzato per il login nella classe main
+
+				// Salvo la mail utilizzata per il login nella classe Main
 				intent.putExtra("mail", USERNAME);
 				startActivity(intent);
 				Login.this.finish();
 			}
-
 		});
 	}
-	
+
 	public void connect() {
 
 		Thread t = new Thread(new Runnable() {
@@ -79,13 +79,14 @@ public class Login extends Activity {
 					Log.i("XMPP", "Connected to " + connection.getHost());
 				} catch (XMPPException ex) {
 					Log.e("XMPP", "Failed to connect to " + connection.getHost());
-					
+
 					((EditText) findViewById(R.id.userNameLogin)).setText("");
 					((EditText) findViewById(R.id.password)).setText("");
 					Log.e("XMPP", ex.toString());
+					Toast.makeText(getBaseContext(), "Login non effettuato.\nVerificare e-mail e password", Toast.LENGTH_LONG).show();
 					setConnection(null);
 				}
-				
+
 				try {
 					connection.login(USERNAME, PASSWORD, "0123456789101");
 					Log.i("XMPP", "Logged in as " + connection.getUser());
@@ -102,12 +103,12 @@ public class Login extends Activity {
 				}
 			}
 		});
-		
+
 		t.start();
 	}
-	
+
 	public void setConnection(XMPPConnection connection) {
-			Login.connection = connection;
-			startService(new Intent(this, SMSService.class));
+		Login.connection = connection;
+		startService(new Intent(this, SMSService.class));
 	}
 }

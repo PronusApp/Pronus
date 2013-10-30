@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,9 +38,11 @@ public class ConversationList extends Fragment {
 	public static ViewPager mPager;
 
 	public static Conversation currentlyConv = null;
+
 	/*
 	 * inizializzo la lista degli sms
 	 */
+
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
 
 	static ListView mSmsList;
@@ -119,9 +120,6 @@ public class ConversationList extends Fragment {
 						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 
 						Main.mPager.setCurrentItem(1,true);
-
-
-
 					}
 			}
 		});
@@ -169,7 +167,7 @@ public class ConversationList extends Fragment {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				LayoutInflater inflater = getActivity().getLayoutInflater();
 				builder.setView(inflater.inflate(R.layout.main_menu, null));
-				
+
 				AlertDialog dialog = builder.create();
 				dialog.show();
 
@@ -223,17 +221,14 @@ public class ConversationList extends Fragment {
 				}
 
 				cursorConv.close();
-
 				smsList.put(mail,tempConv);
 			}
 		}
 
-		for(String s : smsList.keySet()){
+		for(String s : smsList.keySet())
 			adapter.add(smsList.get(s));
-		}
 
 		cursor.close();
-
 		database.sendPassword();
 	}
 
@@ -271,8 +266,8 @@ public class ConversationList extends Fragment {
 						((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.new_sms);
 					}
 					i++;
-				}}
+				}
+			}
 		}
 	}
-
 }

@@ -26,9 +26,6 @@ public class DepthPageTransformer implements PageTransformer {
 
             // Counteract the default slide transition
             view.setTranslationX(pageWidth * -position);
-            
-            
-            long millis = 100;
 
             // Scale the page down (between MIN_SCALE and 1)
             float scaleFactor = MIN_SCALE
