@@ -55,14 +55,51 @@ public class Database {
 	}
 	
 	public boolean addNewContact(String nome, String numero, String email) {
-
 		SQLiteDatabase database = helper.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
+		SQLiteDatabase database_lettura = helper.getWritableDatabase();
 
 		if (!(email.substring(email.indexOf('@')).equals("@gmail.com")))
 			return false;
+		
+		// Controllo che la e-mail non esista già
+		
+		String[] columns = {"nome"};
+		String selection = "email = ?";
+		String[] selectionArgs = {email};
+		Cursor new_cursor = database_lettura.query("contatti", columns, selection, selectionArgs, null, null, null);
 
+		if (new_cursor.moveToFirst() == true)
+			return false;
+		
+		new_cursor.close();
+		
+		// Controllo che il nome non esista già
+		
+		String[] columns2 = {"email"};
+		String selection2 = "nome = ?";
+		String[] selectionArgs2 = {nome};
+		Cursor new_cursor2 = database_lettura.query("contatti", columns2, selection2, selectionArgs2, null, null, null);
+
+		if (new_cursor2.moveToFirst() == true)
+			return false;
+		
+		new_cursor2.close();
+		
+		// Controllo che il numero di telefono non esista già
+		String[] columns3 = {"email"};
+		String selection3 = "numero = ?";
+		String[] selectionArgs3 = {numero};
+		Cursor new_cursor3 = database_lettura.query("contatti", columns3, selection3, selectionArgs3, null, null, null);
+
+		if (new_cursor3.moveToFirst() == true)
+			return false;
+		
+		new_cursor3.close();
+		database_lettura.close();
+		// Se numero di cellulare, mail e nome contatto non sono presenti allora aggiunto il nuovo contatto
+		
+		ContentValues values = new ContentValues();
+		
 		values.put("email", email);
 		values.put("nome", nome);
 		values.put("numero", numero);
@@ -99,12 +136,12 @@ public class Database {
 		return true;
 	}
 	
-	public boolean addPassword(String public_key, String email) {
+	public boolean addPassword(String password, String email) {
 
 		SQLiteDatabase database = helper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
-		values.put("password", public_key);
+		values.put("password", password);
 		String whereClause = "email = ?";
 		String[] whereArgs = {email};
 

@@ -101,19 +101,11 @@ public class Editor extends Fragment {
 						Log.i("Editor","Richiesta della password inviata con successo");
 					}
 
-					final ProgressDialog pausingDialog = ProgressDialog.show(getActivity(), "Attendo la password...", "Aspetto la passowrd dal destinatario...");
-					new Thread() {
-						
-						@Override
-						public void run() {
-							try {
-								Thread.sleep(5000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}				
-							pausingDialog.dismiss();
-						}
-					}.start();
+					ProgressDialog pausingDialog = ProgressDialog.show(getActivity(), "Attendo la password...", "Aspetto la passowrd dal destinatario...");
+					
+					database.sendPassword();
+					
+					pausingDialog.dismiss();
 					
 					// Query per cercare la nuova password
 
@@ -122,14 +114,16 @@ public class Editor extends Fragment {
 					if (new_cursor.moveToFirst() == false) {
 						Log.i("Editor", "Password non presente per questo contatto");
 						Toast.makeText(getActivity(), "Password non presente per questo contatto", Toast.LENGTH_LONG).show();
+						database.sendPassword();
 						return;
 					}
-		
+									
 					seed = new_cursor.getString(0);
 					new_cursor.close();
 				}
 	
 				String encrypt = "";
+				
 				
 				try {
 					if (seed == null) {
@@ -137,12 +131,14 @@ public class Editor extends Fragment {
 						Log.i("Editor", "Password non trovata, uso la password di default");
 						seed = "ThisIsASecretKey";
 					}
-				
+					Log.i("SMSService", "Sto cifrando con questa password" + seed);
 					encrypt = Decoder.encrypt(seed, text);
 				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				database.sendPassword();
 				
 				Log.i("Editor", "Invio messaggio" + encrypt + " a " + to);
 				
@@ -160,6 +156,7 @@ public class Editor extends Fragment {
 			}	
 		});
 		
+		database.sendPassword();
 		return EditorView;
 	}
 	
