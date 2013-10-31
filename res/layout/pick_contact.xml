@@ -2,63 +2,26 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
-    android:background="@color/Ivory"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_marginTop="60px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="24dp"
-        android:text="Aggiorna contatto esistente" />
-
-    <EditText
-        android:id="@+id/nome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:ems="10"
-        android:gravity="center_vertical|center_horizontal"
-        android:hint="Nome in rubrica" />
-
-    <EditText
-        android:id="@+id/mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/nome"
-        android:ems="10"
-        android:gravity="center_vertical|center_horizontal"
-        android:hint="example@gmail.com" />
-
-    <Button
-        android:id="@+id/confirm"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/mail"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/ok"
-        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/confirm"
+        android:background="@color/Blue"
         android:gravity="center_horizontal"
-        android:text="Aggiungi un nuovo contatto"
-        android:textSize="24dp" />
+        android:padding="10dp"
+        android:text="AGGIUNGI NUOVO CONTATTO"
+        android:textColor="@color/Ivory"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/new_contact"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/confirm"
         android:layout_below="@+id/mail_new"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/ok" />
 
     <EditText

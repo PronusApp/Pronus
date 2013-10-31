@@ -10,7 +10,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
-	private static final String DB_NAME = "database_pronus_v1";
+	private static final String DB_NAME = "database_pronus";
 	private static final int DB_VERSION = 1;
 
 	@Override

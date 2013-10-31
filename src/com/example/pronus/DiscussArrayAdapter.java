@@ -17,15 +17,15 @@ import android.widget.TextView;
 
 public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
-	private TextView countryName;
-	private List<OneComment> countries = new ArrayList<OneComment>();
+	private TextView message;
+	private List<OneComment> listOfMessages = new ArrayList<OneComment>();
 	private LinearLayout wrapper;
 	public int numOfItem = 0;
 	public int animationOn = 2;
 	Animation anim;
 	@Override
 	public void add(OneComment object) {
-		countries.add(object);
+		listOfMessages.add(object);
 		super.add(object);
 	}
 
@@ -34,11 +34,11 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 	}
 
 	public int getCount() {
-		return this.countries.size();
+		return this.listOfMessages.size();
 	}
 
 	public OneComment getItem(int index) {
-		return this.countries.get(index);
+		return this.listOfMessages.get(index);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -52,11 +52,13 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
 		OneComment coment = getItem(position);
 
-		countryName = (TextView) row.findViewById(R.id.message);
+		message = (TextView) row.findViewById(R.id.message);
 
-		countryName.setText(coment.message);
+		message.setText(coment.message);
 
-		countryName.setBackgroundResource(coment.left ? R.drawable.rounded_corners_blue: R.drawable.rounded_corners);
+		message.setBackgroundResource(coment.left ? R.drawable.rounded_corners_blue: R.drawable.rounded_corners);
+		
+		message.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 		

@@ -3,8 +3,6 @@ package com.example.pronus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
@@ -19,7 +17,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -34,8 +35,7 @@ public class SMSService extends Service {
 
 	@Override
 	public void onCreate() {
-		seed = randomString();
-		Log.i("SMSService","Password generata: " + seed);
+		seed = "ThisIsASecretKey";
 		this.connection = Login.connection;
 		database = new Database(getBaseContext());
 		Log.i("SMSService", "Servizio creato");
@@ -48,17 +48,17 @@ public class SMSService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startid) {
-
+		
 		Log.i("SMSService", "onStart");
 
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
-
+		
 		this.connection = Login.connection;
-
+		
 		// Listener per i messaggi (chat)
 
 		if (connection != null) {
-
+			
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
 			connection.addPacketListener(new PacketListener() {
@@ -66,46 +66,42 @@ public class SMSService extends Service {
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
-
+					
 					if (message.getBody() != null) {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 						Log.i("SMSService", "Messaggio ricevuto " + message.getBody() + " da " + fromName );
-
+						
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave
-
+						
 						String clear = "";
-
+						
 						try {
-							Log.i("SMSService", "Sto cifrando il messaggio con questa password" + seed);
 							clear = Decoder.decrypt(new String(seed), message.getBody());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-
+						
 						if (database.addMessage(fromName, clear, 1))
 							Log.i("SMSService ","Messaggio aggiunto al database: " + clear);
 
 						// Lancio la notifica alla ricezione del messaggio
 						// se e solo se la mia applicazione non è in esecuzione.
-
+						
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
 
-						} else {
+						}else{
 							Log.i("SMSService","Aggiungo messaggio");
-							if(Main.mPager.getCurrentItem() == 1){
-								OneComment temp = new OneComment(true,clear);
-								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
-								Editor.adapter.add(temp);
-
-								Editor.conversation.setAdapter(Editor.adapter);
-
-								Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-
-							}
 							new UIUpdater().execute(fromName, clear ,"");
-							database.sendPassword();
-							//controllo che l'utente stia chattando in questo momento
+//							if(Main.mPager.getCurrentItem() == 1){
+//								OneComment temp = new OneComment(true,clear);
+//								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
+//								Editor.adapter.add(temp);
+//								
+//								Editor.conversation.setAdapter(Editor.adapter);
+//								
+//							}
+//							//controllo che l'utente stia chattando in questo momento
 						}
 
 					}
@@ -127,35 +123,31 @@ public class SMSService extends Service {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 
 						Log.i("SMSService", "Password ricevuta " + message.getBody() + " da " + fromName);
-
+		
 						if (database.addPassword(message.getBody(), fromName))
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
-						
-						database.sendPassword();
 
 					} else if (message.getBody().equals("IWannaYourKey")) {
-
+						
 						String from = StringUtils.parseBareAddress(message.getFrom());
 						Log.i("SMSService", "Richiesta di password ricevuta da " + from);
-
+						
 						Message msg = new Message(from, Message.Type.normal);
-
+						
 						msg.setBody(seed);
-
+						
 						if (Login.connection != null) {	
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
 						}
-						
-						database.sendPassword();
 					}
 				}
 			}, filter);
 		}
 	}
-
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -205,19 +197,5 @@ public class SMSService extends Service {
 		if (componentInfo.getPackageName().equals(myPackage)) 
 			return true;
 		return false;
-	}
-
-	private String randomString() {
-		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-		StringBuilder sb = new StringBuilder();
-
-		Random random = new Random();
-
-		for (int i = 0; i < 16; i++) {
-			char c = chars[random.nextInt(chars.length)];
-			sb.append(c);
-		}
-
-		return sb.toString();
 	}
 }
