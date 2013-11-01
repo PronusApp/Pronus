@@ -55,25 +55,38 @@ public class Editor extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				String to = name + "/0123456789101";
+				String text = message.getText().toString();
 				
 				//aggiungo un nuovo messaggio a una conversazione esistente
-				ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
+				if (text == null) {
+					ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
+					return;
+				}
 				
 				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
 				adapter.add(new OneComment(false, message.getText().toString()));
-				
-				String to = name + "/0123456789101";
-				
-				// Questo è il testo da criptare con la chiave pubblica associata al contatto
-				String text = message.getText().toString();
-		
+
 				if (database.addMessage(name, text, 0))
 					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
-	
+				
 				message.setText("");
 				
-				//SQLiteDatabase database = ConversationList.mDatabaseHelper.getReadableDatabase();
+				// Richiesta esplicita della chiave
 				
+				Message msg = new Message(to, Message.Type.normal);
+				msg.setBody("IWannaYourKey");
+				
+				if (Login.connection != null) {	
+					Login.connection.sendPacket(msg);
+					Log.i("Editor","Richiesta della password inviata con successo");
+				}
+				
+				try {
+					Thread.currentThread().sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				
 				String[] columns = {"password"};
 				String selection = "email = ?";
@@ -91,11 +104,15 @@ public class Editor extends Fragment {
 				cursor.close();
 		
 				if (seed == null) {
+					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nPassword non disponibile.", Toast.LENGTH_LONG).show();
+					return;
+				}
+					/*
 					Log.i("Editor", "Nessuna password memorizzata per il contatto");
 					
 					// Richiesta esplicita della password al contatto
 					
-					Message msg = new Message(to, Message.Type.normal);
+					msg = new Message(to, Message.Type.normal);
 		
 					msg.setBody("IWannaYourKey");
 					
@@ -122,39 +139,16 @@ public class Editor extends Fragment {
 		
 					seed = new_cursor.getString(0);
 					new_cursor.close();
-				}
+					*/
+				
 	
-				String encrypt = "";
-				
-				try {
-					if (seed == null) {
-						Toast.makeText(getActivity(), "Impossibile ottenere la password.\nUso la password di default", Toast.LENGTH_LONG).show();
-						Log.i("Editor", "Password non trovata, uso la password di default");
-						seed = "ThisIsASecretKey";
-					}
-				
-					encrypt = Decoder.encrypt(seed, text);
-				
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (!sendMessageByInternet(text, to, seed)) {
+					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nControllare la propria connessione.", Toast.LENGTH_LONG).show();
+					return;
 				}
-				
-				Log.i("Editor", "Invio messaggio" + encrypt + " a " + to);
-				
-				// Creo un nuovo messaggio da inviare
-				Message msg = new Message(to, Message.Type.chat);
-				
-				msg.setBody(encrypt);
-				
-				if (Login.connection != null) {	
-					Login.connection.sendPacket(msg);
-					conversation.setSelection(conversation.getAdapter().getCount()-1);
-					Log.i("Editor", "Messaggio criptato inviato con successo");
-				}
-				
 			}	
 		});
-		
+
 		return EditorView;
 	}
 	
@@ -162,8 +156,34 @@ public class Editor extends Fragment {
 	 * La funzione setItems permette di settare il titolo dell'activity con il nome
 	 * della persona con cui si sta conversando
 	 */
+	
 	public static void setItems(String nome){
 		name = nome;
 		userName.setText(name);
+	}
+	
+	private boolean sendMessageByInternet(String text, String to, String seed) {
+		String encrypt = "";
+		
+		try {
+			encrypt = Decoder.encrypt(seed, text);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Log.i("Editor", "Invio messaggio " + encrypt + " a " + to);
+
+		Message msg = new Message(to, Message.Type.chat);
+		
+		msg.setBody(encrypt);
+		
+		if (Login.connection != null) {	
+			Login.connection.sendPacket(msg);
+			conversation.setSelection(conversation.getAdapter().getCount()-1);
+			Log.i("Editor", "Messaggio criptato inviato con successo");
+			return true;
+		}
+		
+		return false;
 	}
 }
