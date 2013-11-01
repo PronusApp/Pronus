@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/Ivory"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -12,7 +13,7 @@
         android:background="@color/Blue"
         android:gravity="center_horizontal"
         android:padding="10dp"
-        android:text="AGGIUNGI NUOVO CONTATTO"
+        android:text="Aggiungi un nuovo contatto"
         android:textColor="@color/Ivory"
         android:textSize="18sp" />
 

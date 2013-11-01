@@ -21,13 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/hint"
+            android:layout_marginTop="5dp"
             android:animateLayoutChanges="true"
+            android:cacheColorHint="#00000000"
             android:divider="@null"
-            android:dividerHeight="0dp" 
-            android:layout_marginTop="5dp">
+            android:dividerHeight="0dp" >
         </ListView>
-
-        <View
+		<View
             android:layout_width="2dp"
             android:layout_height="fill_parent"
             android:layout_above="@+id/sms_list"
