@@ -35,9 +35,10 @@ public class Intro extends Activity {
         Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 	    intro.startAnimation(fadeInAnimation);
 	    
-	    // Lancio il servizio che gira sempre in background
+	    // Lancio i due servizi che girano sempre in background
 	    startService(new Intent(this, SMSService.class));
-		
+	    startService(new Intent(this, PasswordUpdater.class));
+	    
 		IntentLauncher launcher = new IntentLauncher();
 
 		launcher.start();
@@ -52,7 +53,7 @@ public class Intro extends Activity {
 
 			try {
 				// Sleeping
-				Thread.sleep(SLEEP_TIME*1000);
+				Thread.sleep(SLEEP_TIME * 1000);
 			} catch (Exception e) {
 				Log.e(TAG, e.getMessage());
 			}

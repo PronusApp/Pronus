@@ -21,6 +21,10 @@
             android:name=".SMSService"
             android:enabled="true" />
 
+        <service
+            android:name=".PasswordUpdater"
+            android:enabled="true" />
+        
         <activity
             android:name="com.example.pronus.Intro"
             android:label="@string/app_name"
@@ -38,22 +42,22 @@
         </activity>
         <activity
             android:name="com.example.pronus.Main"
-            android:label="MESSAGGI"
+            android:label="Main"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.pronus.pickContact"
-            android:label="pickContact"
+            android:label="PickContact"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.pronus.Login"
-            android:label=""
+            android:label="Login"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.pronus.Impostazioni"
-            android:label=""
+            android:label="Impostazioni"
             android:screenOrientation="portrait" >
         </activity>
     </application>

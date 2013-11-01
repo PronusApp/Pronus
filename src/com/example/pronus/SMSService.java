@@ -3,7 +3,6 @@ package com.example.pronus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -12,7 +11,6 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
-
 
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -29,22 +27,24 @@ public class SMSService extends Service {
 
 	public static XMPPConnection connection;
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
-	public static String seed;
+	public static String seed = null;
 	private Database database;
 
 	@Override
 	public void onCreate() {
-		seed = randomString();
-		Log.i("SMSService","Password generata: " + seed);
+		
+	    Log.i("SMSService","PasswordUpdater lanciato");
 		this.connection = Login.connection;
+		
 		database = new Database(getBaseContext());
 		database.sendPassword();
+		
 		Log.i("SMSService", "Servizio creato");
 	}
 
 	@Override
 	public void onDestroy() {
-		Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "SMSService fermato", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -205,19 +205,5 @@ public class SMSService extends Service {
 		if (componentInfo.getPackageName().equals(myPackage)) 
 			return true;
 		return false;
-	}
-	
-	private String randomString() {
-		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-		StringBuilder sb = new StringBuilder();
-
-		Random random = new Random();
-
-		for (int i = 0; i < 16; i++) {
-			char c = chars[random.nextInt(chars.length)];
-			sb.append(c);
-		}
-
-		return sb.toString();
 	}
 }

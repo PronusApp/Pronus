@@ -3,6 +3,7 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:background="@color/Ivory"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -28,6 +29,7 @@
             android:text="userMail@gmail.com" />
 
         <ListView
+                android:background="@color/Ivory"
             android:id="@+id/conversation"
             android:layout_marginRight="2dp"
             android:layout_marginLeft="2dp"
