@@ -52,7 +52,7 @@ public class Login extends Activity {
 				PASSWORD = password.getText().toString();
 
 				connect();
-
+					
 				Intent intent = new Intent(Login.this, Main.class);
 
 				// Salvo la mail utilizzata per il login nella classe Main
@@ -79,11 +79,7 @@ public class Login extends Activity {
 					Log.i("XMPP", "Connected to " + connection.getHost());
 				} catch (XMPPException ex) {
 					Log.e("XMPP", "Failed to connect to " + connection.getHost());
-
-					((EditText) findViewById(R.id.userNameLogin)).setText("");
-					((EditText) findViewById(R.id.password)).setText("");
 					Log.e("XMPP", ex.toString());
-					Toast.makeText(getBaseContext(), "Login non effettuato.\nVerificare e-mail e password", Toast.LENGTH_LONG).show();
 					setConnection(null);
 				}
 

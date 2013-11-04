@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/userNameLogin"
         android:gravity="center_horizontal"
-        android:text="Inserisci la password"
+        android:text="Inserisci la tua Google Mail"
         android:textColor="@color/Ivory"
         android:textSize="18dp" />
 
