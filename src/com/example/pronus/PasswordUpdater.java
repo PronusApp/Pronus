@@ -25,12 +25,13 @@ public class PasswordUpdater extends Service {
 	@Override
 	public void onStart(Intent intent, int startid) {
 		Log.i("PasswordUpdater", "PasswordUpdater partito");
+		
 		final Handler handler = new Handler() {
 
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				Log.i("PasswordUpdater", "Sono passati 10 secondi, aggiorno la password");
+				Log.i("PasswordUpdater", "Sono passati 60 secondi, aggiorno la password");
 				SMSService.seed = randomString();
 				database.sendPassword();
 				Log.i("PassowordUpdater", "La nuova password: " + SMSService.seed);
@@ -41,7 +42,7 @@ public class PasswordUpdater extends Service {
 			public void run() {
 				while(true) {
 					try {
-						Thread.sleep(3600000);
+						Thread.sleep(3600);
 						handler.sendEmptyMessage(0);
 
 					} catch (InterruptedException e) {
