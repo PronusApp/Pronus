@@ -6,7 +6,7 @@
     <color name="Blue">#33B5E5</color>
     <color name="Blue_Dark">#0099CC</color>
     <color name="Green">#99CC00</color>
-    <color name="Green_20">#8099CC00</color>
-    <color name="Blue_20">#33B5E500</color>
+    <color name="Green_20">#CC99CC00</color>
+    <color name="Blue_20">#8033B5E5</color>
 
 </resources>

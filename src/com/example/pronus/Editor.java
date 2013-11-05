@@ -63,9 +63,6 @@ public class Editor extends Fragment {
 					ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
 					return;
 				}
-				
-				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
-				adapter.add(new OneComment(false, message.getText().toString()));
 
 				if (database.addMessage(name, text, 0))
 					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
@@ -146,6 +143,11 @@ public class Editor extends Fragment {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nControllare la propria connessione.", Toast.LENGTH_LONG).show();
 					return;
 				}
+				
+				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
+				adapter.add(new OneComment(false, message.getText().toString()));
+				
+				conversation.setAdapter(adapter);
 			}	
 		});
 

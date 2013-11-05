@@ -9,71 +9,78 @@
         android:layout_marginBottom="2dp"
         android:adjustViewBounds="true" >
 
-            <com.example.widget.CircularImageView
-                android:id="@+id/profileImage"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/demo_profile" />
+        <com.example.widget.CircularImageView
+            android:id="@+id/profileImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:onClick="selectProfileImage"
+            android:src="@drawable/demo_profile" />
 
-            <TextView
-                android:id="@+id/userName"
-                android:layout_width="270dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/profileImage"
-                android:maxLines="1"
-                android:text="Paul"
-                android:textColor="@color/Blue_Dark"
-                android:textSize="18sp"
-                android:typeface="normal" />
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/profileImage"
+            android:maxLines="1"
+            android:text="Paul"
+            android:textColor="@color/Blue_Dark"
+            android:textSize="18sp"
+            android:typeface="normal" />
 
-            <TextView
-                android:id="@+id/smsMessage"
-                android:layout_width="190dp"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/timeOfLastSms"
-                android:layout_toLeftOf="@+id/newSms"
-                android:layout_toRightOf="@+id/smsCounter"
-                android:maxLines="2"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:typeface="sans" />
+        <TextView
+            android:id="@+id/smsCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/userName"
+            android:background="@drawable/sms_counter"
+            android:gravity="center_horizontal|center_vertical"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:text="1"
+            android:textColor="@color/Ivory"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
-            <TextView
-                android:id="@+id/smsCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/userName"
-                android:background="@drawable/sms_counter"
-                android:gravity="center_horizontal|center_vertical"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:text="1"
-                android:textColor="@color/Ivory"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:typeface="sans" />
+        <TextView
+            android:id="@+id/timeOfLastSms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/userName"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/userName"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="23:55"
+            android:textColor="@color/Blue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
-            <ImageView
-                android:id="@+id/newSms"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignBottom="@+id/profileImage"
-                android:layout_alignParentRight="true" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/Blue_20" />
 
-            <TextView
-                android:id="@+id/timeOfLastSms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/userName"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/userName"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="23:55"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:typeface="sans" />
+        <TextView
+            android:id="@+id/smsMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/timeOfLastSms"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/timeOfLastSms"
+            android:maxLines="2"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
     </RelativeLayout>
 

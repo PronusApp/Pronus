@@ -10,8 +10,12 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -23,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.ImageView;
 
 public class Main extends FragmentActivity {
 	// list contains fragments to instantiate in the viewpager
@@ -40,16 +45,20 @@ public class Main extends FragmentActivity {
 
 	public static String mail;
 
+	private static int RESULT_LOAD_IMAGE = 1; 
+
+	Uri myPicture = null;
+
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
 		setContentView(R.layout.activity_main);
 
-		
+
 		new UIUpdater();
 
 		//acquisisco i dati passati alla classe main quando viene
@@ -167,9 +176,31 @@ public class Main extends FragmentActivity {
 	 */
 	public void launchSettings(View v) {
 		//Qui verr� lanciata l'activity per le impostazioni
-		Intent intent = new Intent(this, Impostazioni.class);
-		startActivity(intent);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = this.getLayoutInflater();
+		builder.setView(inflater.inflate(R.layout.impostazioni, null))
+		// Add action buttons
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				//
+			}
+		})
+		.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				//
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
+
+	/*
+	 * 
+	 * Inizio una nuova conversazione:
+	 * Lancio un dialog che permette all'utente di selezionare un contatto
+	 * per una conversazione
+	 */
 	public void startNewConversation(View v) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = this.getLayoutInflater();
@@ -188,5 +219,40 @@ public class Main extends FragmentActivity {
 		});
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+/*
+ * metodo per selezionare l'immagine profile
+ */
+	public void selectProfileImage(View v){
+
+		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+		startActivityForResult(i, RESULT_LOAD_IMAGE);
+	}
+
+	/*
+	 * Metodo derivato da Activity, permette di gestire la foto selezionata dall'utente e caricarla
+	 * nell'imageview foto profilo
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor cursor = getContentResolver().query(selectedImage,
+					filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+
+			ImageView imageView = (ImageView) findViewById(R.id.profileImage);
+			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+		}
 	}
 }
