@@ -57,6 +57,7 @@ public class Login extends Activity {
 
 				// Salvo la mail utilizzata per il login nella classe Main
 				intent.putExtra("mail", USERNAME);
+				SMSService.mail = USERNAME;
 				startActivity(intent);
 				Login.this.finish();
 			}

@@ -1,8 +1,13 @@
 package com.example.pronus;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +26,7 @@ public class Intro extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Rimozione del titolo e della barra e delle notifiche
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -32,22 +37,32 @@ public class Intro extends Activity {
 		intro = (ImageView) findViewById(R.id.introImage);
 		intro.setVisibility(View.VISIBLE);
 
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-	    intro.startAnimation(fadeInAnimation);
-	    
-	    // Lancio i due servizi che girano sempre in background
-	    startService(new Intent(this, SMSService.class));
-	    startService(new Intent(this, PasswordUpdater.class));
-	    
-		IntentLauncher launcher = new IntentLauncher();
+		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		intro.startAnimation(fadeInAnimation);
 
-		launcher.start();
+		if (SMSService.alreadyLogged == false) {
+
+			// Lancio i due servizi che girano sempre in background
+			startService(new Intent(this, SMSService.class));
+			startService(new Intent(this, PasswordUpdater.class));
+
+			IntentLauncher launcher = new IntentLauncher();
+			SMSService.alreadyLogged = true;
+			launcher.start();
+		} else {
+			Intent intent = new Intent(this, Main.class);
+			intent.putExtra("mail", SMSService.mail);
+			
+			this.startActivity(intent);
+			this.finish();
+			
+		}
 	}
-	
+
 	// Attività che dorme per tot secondi e poi lancia l'activity main
-	
+
 	private class IntentLauncher extends Thread {
-		
+
 		@Override
 		public void run() {
 
@@ -64,4 +79,7 @@ public class Intro extends Activity {
 			Intro.this.finish();
 		}
 	}
+
+
 }
+

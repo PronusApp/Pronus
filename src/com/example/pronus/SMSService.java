@@ -29,6 +29,8 @@ public class SMSService extends Service {
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
 	public static String seed = null;
 	private Database database;
+	public static boolean alreadyLogged = false;
+	public static String mail;
 
 	@Override
 	public void onCreate() {
@@ -131,8 +133,6 @@ public class SMSService extends Service {
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
-						
-						database.sendPassword();
 						
 					} else if (message.getBody().equals("IWannaYourKey")) {
 						

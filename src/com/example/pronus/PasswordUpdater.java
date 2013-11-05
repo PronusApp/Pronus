@@ -42,7 +42,7 @@ public class PasswordUpdater extends Service {
 			public void run() {
 				while(true) {
 					try {
-						Thread.sleep(3600);
+						Thread.sleep(60000);
 						handler.sendEmptyMessage(0);
 
 					} catch (InterruptedException e) {
