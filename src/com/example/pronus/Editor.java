@@ -150,6 +150,7 @@ public class Editor extends Fragment {
 					Login.connection.sendPacket(msg);
 					conversation.setSelection(conversation.getAdapter().getCount()-1);
 					Log.i("Editor", "Messaggio criptato inviato con successo");
+					Editor.adapter.add(new OneComment(false,msg));
 				}
 				
 			}	
