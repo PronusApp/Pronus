@@ -91,8 +91,6 @@ public class ConversationList extends Fragment {
 
 				((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#000000"));
 
-				((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.empty);
-
 
 				Editor.adapter = new DiscussArrayAdapter(getActivity(), R.layout.message);
 
@@ -126,7 +124,7 @@ public class ConversationList extends Fragment {
 
 		mSmsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-			public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
+			public boolean onItemLongClick(AdapterView<?> arg0, final View v, int index, long arg3) {
 				// TODO Auto-generated method stub
 				// 1. Instantiate an AlertDialog.Builder with its constructor
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -137,7 +135,7 @@ public class ConversationList extends Fragment {
 
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						// User clicked OK button
+						database.deleteConversation(((TextView)v.findViewById(R.id.userName)).toString());
 					}
 				});
 				builder.setNegativeButton("CANCELLA", new DialogInterface.OnClickListener() {
@@ -263,7 +261,6 @@ public class ConversationList extends Fragment {
 						((TextView)v.findViewById(R.id.smsMessage)).setText(sms);
 						((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#33B5E5"));
 						((TextView)v.findViewById(R.id.smsMessage)).setTypeface(Typeface.DEFAULT_BOLD);
-						((ImageView)v.findViewById(R.id.newSms)).setBackgroundResource(R.drawable.new_sms);
 					}
 					i++;
 				}

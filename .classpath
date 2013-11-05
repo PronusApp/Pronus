@@ -7,6 +7,5 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/asmack.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Users/Francesca/Downloads/bcprov-jdk14.jar"/>
-	<classpathentry kind="lib" path="/Users/Francesca/Downloads/smack.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

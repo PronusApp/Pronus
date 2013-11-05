@@ -3,7 +3,7 @@
     android:id="@+id/relative"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/Ivory"
+    android:background="@drawable/texture_background"
     tools:context=".Main" >
 
     <com.example.pronus.CustomViewPager

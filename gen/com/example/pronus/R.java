@@ -69,13 +69,14 @@ containing a value of this type.
         public static final int rounded_corners_ivory=0x7f020014;
         public static final int settings=0x7f020015;
         public static final int sms_counter=0x7f020016;
+        public static final int texture_background=0x7f020017;
     }
     public static final class id {
         public static final int TextView01=0x7f0a000b;
         public static final int TextView2=0x7f0a001f;
-        public static final int action_add=0x7f0a0032;
-        public static final int action_search=0x7f0a0033;
-        public static final int action_settings=0x7f0a0031;
+        public static final int action_add=0x7f0a0031;
+        public static final int action_search=0x7f0a0032;
+        public static final int action_settings=0x7f0a0030;
         public static final int autoCompleteTextView1=0x7f0a0027;
         public static final int buttons=0x7f0a0002;
         public static final int cancel=0x7f0a0003;
@@ -95,7 +96,6 @@ containing a value of this type.
         public static final int message=0x7f0a0026;
         public static final int messageText=0x7f0a0008;
         public static final int myMail=0x7f0a001b;
-        public static final int newSms=0x7f0a002f;
         public static final int new_contact=0x7f0a0022;
         public static final int new_conversation=0x7f0a0023;
         public static final int nome_new=0x7f0a0029;
@@ -109,8 +109,8 @@ containing a value of this type.
         public static final int restoreBackup=0x7f0a0010;
         public static final int send=0x7f0a0004;
         public static final int settings=0x7f0a0024;
-        public static final int smsCounter=0x7f0a0030;
-        public static final int smsMessage=0x7f0a002d;
+        public static final int smsCounter=0x7f0a002d;
+        public static final int smsMessage=0x7f0a002f;
         public static final int sms_list=0x7f0a0019;
         public static final int start=0x7f0a001d;
         public static final int textView1=0x7f0a0006;
