@@ -60,7 +60,6 @@ public class Editor extends Fragment {
 				
 				//aggiungo un nuovo messaggio a una conversazione esistente
 				if (text == null) {
-					ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
 					return;
 				}
 
@@ -82,6 +81,8 @@ public class Editor extends Fragment {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				
+				Log.i("Editor","Sto cercando la password relativa a " + name);
 				
 				String[] columns = {"password"};
 				String selection = "email = ?";

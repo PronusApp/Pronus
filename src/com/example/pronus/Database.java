@@ -56,7 +56,7 @@ public class Database {
 	
 	public boolean addNewContact(String nome, String numero, String email) {
 		SQLiteDatabase database = helper.getWritableDatabase();
-		SQLiteDatabase database_lettura = helper.getWritableDatabase();
+		SQLiteDatabase database_lettura = helper.getReadableDatabase();
 
 		if (!(email.substring(email.indexOf('@')).equals("@gmail.com")))
 			return false;
@@ -174,7 +174,7 @@ public class Database {
 		return true;
 	}
 	
-	public boolean addPassword(String password, String email) {
+	public boolean addPassword(final String password, final String email) {
 
 		SQLiteDatabase database = helper.getWritableDatabase();
 		ContentValues values = new ContentValues();
