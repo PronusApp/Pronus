@@ -86,6 +86,7 @@ public class Database {
 		new_cursor2.close();
 		
 		// Controllo che il numero di telefono non esista già
+		
 		String[] columns3 = {"email"};
 		String selection3 = "numero = ?";
 		String[] selectionArgs3 = {numero};
@@ -124,6 +125,7 @@ public class Database {
 		
 		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
 		
+		database.close();
 		sendPassword();
 		
 		if (cursor.moveToFirst() == false)
@@ -141,6 +143,7 @@ public class Database {
 		
 		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
 		
+		database.close();
 		sendPassword();
 		
 		if (cursor.moveToFirst() == false)

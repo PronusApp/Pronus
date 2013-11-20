@@ -96,15 +96,6 @@ public class SMSService extends Service {
 						}else{
 							Log.i("SMSService","Aggiungo messaggio");
 							new UIUpdater().execute(fromName, clear ,"");
-//							if(Main.mPager.getCurrentItem() == 1){
-//								OneComment temp = new OneComment(true,clear);
-//								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
-//								Editor.adapter.add(temp);
-//								
-//								Editor.conversation.setAdapter(Editor.adapter);
-//								
-//							}
-//							//controllo che l'utente stia chattando in questo momento
 						}
 						
 						database.sendPassword();
@@ -148,7 +139,7 @@ public class SMSService extends Service {
 							Log.i("SMSService","Passoword inviata con successo");
 						}
 						
-						database.sendPassword();
+						//database.sendPassword();
 					}
 				}
 			}, filter);

@@ -66,9 +66,7 @@ public class Editor extends Fragment {
 
 				if (database.addMessage(name, text, 0))
 					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
-				
-				message.setText("");
-				
+		
 				// Richiesta esplicita della chiave
 				
 				Message msg = new Message(to, Message.Type.normal);
@@ -104,41 +102,7 @@ public class Editor extends Fragment {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nPassword non disponibile.", Toast.LENGTH_LONG).show();
 					return;
 				}
-					/*
-					Log.i("Editor", "Nessuna password memorizzata per il contatto");
 					
-					// Richiesta esplicita della password al contatto
-					
-					msg = new Message(to, Message.Type.normal);
-		
-					msg.setBody("IWannaYourKey");
-					
-					if (Login.connection != null) {	
-						Login.connection.sendPacket(msg);
-						Log.i("Editor","Richiesta della password inviata con successo");
-					}
-					
-					try {
-						Thread.currentThread().sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					// Query per cercare la nuova password
-
-					Cursor new_cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
-					
-					if (new_cursor.moveToFirst() == false) {
-						Log.i("Editor", "Password non presente per questo contatto");
-						Toast.makeText(getActivity(), "Password non presente per questo contatto", Toast.LENGTH_LONG).show();
-						return;
-					}
-		
-					seed = new_cursor.getString(0);
-					new_cursor.close();
-					*/
-				
-	
 				if (!sendMessageByInternet(text, to, seed)) {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nControllare la propria connessione.", Toast.LENGTH_LONG).show();
 					return;
@@ -148,9 +112,10 @@ public class Editor extends Fragment {
 				adapter.add(new OneComment(false, message.getText().toString()));
 				
 				conversation.setAdapter(adapter);
+				message.setText("");
 			}	
 		});
-
+		
 		return EditorView;
 	}
 	

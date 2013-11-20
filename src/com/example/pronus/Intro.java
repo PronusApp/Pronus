@@ -40,23 +40,15 @@ public class Intro extends Activity {
 		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 		intro.startAnimation(fadeInAnimation);
 
-		if (SMSService.alreadyLogged == false) {
 
-			// Lancio i due servizi che girano sempre in background
-			startService(new Intent(this, SMSService.class));
-			startService(new Intent(this, PasswordUpdater.class));
+		// Lancio i due servizi che girano sempre in background
+		startService(new Intent(this, SMSService.class));
+		startService(new Intent(this, PasswordUpdater.class));
 
-			IntentLauncher launcher = new IntentLauncher();
-			SMSService.alreadyLogged = true;
-			launcher.start();
-		} else {
-			Intent intent = new Intent(this, Main.class);
-			intent.putExtra("mail", SMSService.mail);
-			
-			this.startActivity(intent);
-			this.finish();
-			
-		}
+		new IntentLauncher().start();
+		SMSService.alreadyLogged = true;
+
+		this.finish();		
 	}
 
 	// Attività che dorme per tot secondi e poi lancia l'activity main
