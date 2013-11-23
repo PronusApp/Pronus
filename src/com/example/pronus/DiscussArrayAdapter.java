@@ -57,8 +57,6 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 		message.setText(coment.message);
 
 		message.setBackgroundResource(coment.left ? R.drawable.rounded_corners_blue: R.drawable.rounded_corners);
-		
-		message.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 		

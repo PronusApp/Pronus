@@ -32,13 +32,13 @@ public class SMSService extends Service {
 
 	@Override
 	public void onCreate() {
-		
-	    Log.i("SMSService","PasswordUpdater lanciato");
+
+		Log.i("SMSService","PasswordUpdater lanciato");
 		this.connection = Login.connection;
-		
+
 		database = new Database(getBaseContext());
 		database.sendPassword();
-		
+
 		Log.i("SMSService", "Servizio creato");
 	}
 
@@ -49,17 +49,17 @@ public class SMSService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startid) {
-		
+
 		Log.i("SMSService", "onStart");
 
 		// Setto un ascoltatore sia per ricevere messaggi che per ricevere le chiavi pubbliche dei contatti
-		
+
 		this.connection = Login.connection;
-		
+
 		// Listener per i messaggi (chat)
 
 		if (connection != null) {
-			
+
 			// Add a packet listener to get messages sent to us
 			PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
 			connection.addPacketListener(new PacketListener() {
@@ -67,44 +67,37 @@ public class SMSService extends Service {
 				@Override
 				public void processPacket(Packet packet) {
 					Message message = (Message) packet;
-					
+
 					if (message.getBody() != null) {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 						Log.i("SMSService", "Messaggio ricevuto " + message.getBody() + " da " + fromName );
-						
+
 						// Ho ricevo il messaggio criptato, devo decriptarlo con la chiave
-						
+
 						String clear = "";
-						
+
 						try {
 							clear = Decoder.decrypt(new String(seed), message.getBody());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 						if (database.addMessage(fromName, clear, 1))
 							Log.i("SMSService ","Messaggio aggiunto al database: " + clear);
 
 						// Lancio la notifica alla ricezione del messaggio
 						// se e solo se la mia applicazione non è in esecuzione.
-						
+
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
 
-						}else{
-							Log.i("SMSService","Aggiungo messaggio");
-							new UIUpdater().execute(fromName, clear ,"");
-//							if(Main.mPager.getCurrentItem() == 1){
-//								OneComment temp = new OneComment(true,clear);
-//								//se l'utente sta chattando devo inserire nella conversazione il messaggio ricevuto
-//								Editor.adapter.add(temp);
-//								
-//								Editor.conversation.setAdapter(Editor.adapter);
-//								
-//							}
-//							//controllo che l'utente stia chattando in questo momento
 						}
-						
+						Log.i("SMSService","Aggiungo messaggio");
+						Log.i("SMSService","Testo del messaggio:" + clear);
+						Log.i("SMSService","Da:" + fromName);
+						String email = fromName.substring(0, fromName.indexOf('/'));
+						new UIUpdater().execute(email, clear ,"false");
+
 						database.sendPassword();
 
 					}
@@ -126,35 +119,34 @@ public class SMSService extends Service {
 						String fromName = StringUtils.parseBareAddress(message.getFrom());
 
 						Log.i("SMSService", "Password ricevuta " + message.getBody() + " da " + fromName);
-		
+
 						if (database.addPassword(message.getBody(), fromName))
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
-						
-						database.sendPassword();
-						
+
+
 					} else if (message.getBody().equals("IWannaYourKey")) {
-						
+
 						String from = StringUtils.parseBareAddress(message.getFrom());
 						Log.i("SMSService", "Richiesta di password ricevuta da " + from);
-						
+
 						Message msg = new Message(from, Message.Type.normal);
-						
+
 						msg.setBody(seed);
-						
+
 						if (Login.connection != null) {	
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
 						}
-						
+
 						database.sendPassword();
 					}
 				}
 			}, filter);
 		}
 	}
-	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -193,7 +185,7 @@ public class SMSService extends Service {
 	 * E' necessario in quanto una notifica deve essere lanciata solo se l'applicazione
 	 * non � in esecuzione.
 	 */
-	
+
 	public boolean isForeground(String myPackage){
 
 		ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);

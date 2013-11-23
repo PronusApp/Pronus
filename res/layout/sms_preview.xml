@@ -5,18 +5,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="2dp"
         android:adjustViewBounds="true" >
 
         <com.example.widget.CircularImageView
             android:id="@+id/profileImage"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:onClick="selectProfileImage"
-            android:src="@drawable/demo_profile" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/userName"
@@ -48,13 +48,28 @@
             android:typeface="sans" />
 
         <TextView
+            android:id="@+id/smsMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/profileImage"
+            android:layout_alignLeft="@+id/userName"
+            android:layout_below="@+id/userName"
+            android:layout_toLeftOf="@+id/timeOfLastSms"
+            android:maxLines="2"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <TextView
             android:id="@+id/timeOfLastSms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/userName"
+            android:layout_alignBottom="@+id/smsMessage"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/userName"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:padding="2dp"
             android:text="23:55"
             android:textColor="@color/Blue"
             android:textSize="12sp"
@@ -62,25 +77,12 @@
             android:typeface="sans" />
 
         <View
+            android:id="@+id/view1"
             android:layout_width="fill_parent"
             android:layout_height="2px"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/profileImage"
             android:layout_alignParentLeft="true"
             android:background="@color/Blue_20" />
-
-        <TextView
-            android:id="@+id/smsMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/timeOfLastSms"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/timeOfLastSms"
-            android:maxLines="2"
-            android:padding="2dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
 
     </RelativeLayout>
 

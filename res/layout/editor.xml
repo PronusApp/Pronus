@@ -2,10 +2,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/texture_background" >
+        android:scaleType="centerCrop"
+        android:src="@drawable/texture_background" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <EditText
             android:id="@+id/messageText"
@@ -56,7 +62,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/messageText"
             android:layout_marginBottom="2dp"
-            android:background="@drawable/rounded_corners_blue"
+            android:background="@drawable/rounded_corners_blue_20"
             android:text="INVIA"
             android:textColor="@color/Ivory" />
     </RelativeLayout>

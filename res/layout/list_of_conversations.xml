@@ -5,9 +5,9 @@
 
     <RelativeLayout
         android:id="@+id/topLayout"
-        android:background="@color/Ivory"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:background="@color/Ivory" >
 
         <View
             android:id="@+id/view1"
@@ -21,13 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/hint"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="1dp"
-            android:animateLayoutChanges="true"
             android:cacheColorHint="#00000000"
             android:divider="@null"
-            android:dividerHeight="0dp" >
-        </ListView>
-		<View
+            android:dividerHeight="0dp" />
+
+
+        <View
             android:layout_width="2dp"
             android:layout_height="fill_parent"
             android:layout_above="@+id/sms_list"
@@ -63,19 +64,50 @@
             android:gravity="center_horizontal|center_vertical"
             android:text="myContact@gmail.com"
             android:textColor="@color/Ivory"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:typeface="normal" />
 
-        <Button
-            android:id="@+id/menu"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignBaseline="@+id/myMail"
-            android:layout_alignBottom="@+id/myMail"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="4dp"
-            android:background="@drawable/menu_down" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/mainButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/Blue_Dark"
+        android:divider="@color/Ivory"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:showDividers="middle" >
+
+        <ImageButton
+            android:id="@+id/newConversation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.27"
+            android:background="@color/Blue_Dark"
+            android:onClick="startNewConversation"
+            android:src="@drawable/ic_action_edit" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.27"
+            android:background="@color/Blue_Dark"
+            android:onClick="addNewContact"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_user_add" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.27"
+            android:background="@color/Blue_Dark"
+            android:onClick="launchSettings"
+            android:src="@drawable/ic_action_settings" />
+
+    </LinearLayout>
 
 </FrameLayout>

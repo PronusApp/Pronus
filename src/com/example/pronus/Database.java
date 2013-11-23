@@ -262,4 +262,34 @@ public class Database {
 		database.close();
 		
 	}
+	public String searchNameByEmail(final String email) {
+		SQLiteDatabase database = helper.getReadableDatabase();
+		
+		String[] columns = {"nome"};
+		String selection = "email = ?";
+		String[] selectionArgs = {email};
+		
+		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
+		
+		
+		if (cursor.moveToFirst() == false)
+			return "";
+		
+		return cursor.getString(0);
+	}
+	
+	public String searchEmailByName(final String nome) {
+		SQLiteDatabase database = helper.getReadableDatabase();
+		
+		String[] columns = {"email"};
+		String selection = "nome = ?";
+		String[] selectionArgs = {nome};
+		
+		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
+		
+		if (cursor.moveToFirst() == false)
+			return "";
+		
+		return cursor.getString(0);
+	}
 }

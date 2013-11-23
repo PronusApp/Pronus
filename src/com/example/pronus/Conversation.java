@@ -2,6 +2,8 @@ package com.example.pronus;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 /*
  * La classe Conversation permette di definire un oggetto contenente i dati relativi ad
  * uan determinata conversazione con un utente in rubrica.
@@ -104,9 +106,10 @@ public class Conversation {
 	
 	}
 	
-	public void addMessageToList(boolean isMine,String message){
+	public void addMessageToList(boolean isNotMine,String message){
 		
-		this.message.add(new OneComment(isMine,message));
+		Log.i("Conversation","Aggiungo messaggio: " + message);
+		this.message.add(new OneComment(isNotMine,message));
 		
 	}
 	

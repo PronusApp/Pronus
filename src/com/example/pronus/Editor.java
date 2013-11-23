@@ -50,24 +50,21 @@ public class Editor extends Fragment {
 		userName=(TextView)EditorView.findViewById(R.id.userMail);
 		
 		conversation.setAdapter(adapter);
+		
+		message.setText("");
 
 		send.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				String to = name + "/0123456789101";
+				String to = database.searchEmailByName(name);
+				Log.i("Editor", "Mail: " + to);
 				String text = message.getText().toString();
 				
 				//aggiungo un nuovo messaggio a una conversazione esistente
-				if (text == null) {
-					ConversationList.addNewSms("22:55", name, message.getText().toString(),1,R.drawable.demo_profile,false);
+				if (text.equals(null)) {
 					return;
 				}
-
-				if (database.addMessage(name, text, 0))
-					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
-				
-				message.setText("");
 				
 				// Richiesta esplicita della chiave
 				
@@ -87,7 +84,7 @@ public class Editor extends Fragment {
 				
 				String[] columns = {"password"};
 				String selection = "email = ?";
-				String[] selectionArgs = {name};
+				String[] selectionArgs = {database.searchEmailByName(name)};
 				
 				Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
 				
@@ -96,6 +93,10 @@ public class Editor extends Fragment {
 					Toast.makeText(getActivity(), "Contatto non presente in rubrica", Toast.LENGTH_LONG).show();
 					return;
 				}
+				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
+				adapter.add(new OneComment(false, message.getText().toString()));
+				
+				conversation.setAdapter(adapter);
 				
 				String seed = cursor.getString(0);
 				cursor.close();
@@ -104,39 +105,6 @@ public class Editor extends Fragment {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nPassword non disponibile.", Toast.LENGTH_LONG).show();
 					return;
 				}
-					/*
-					Log.i("Editor", "Nessuna password memorizzata per il contatto");
-					
-					// Richiesta esplicita della password al contatto
-					
-					msg = new Message(to, Message.Type.normal);
-		
-					msg.setBody("IWannaYourKey");
-					
-					if (Login.connection != null) {	
-						Login.connection.sendPacket(msg);
-						Log.i("Editor","Richiesta della password inviata con successo");
-					}
-					
-					try {
-						Thread.currentThread().sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					// Query per cercare la nuova password
-
-					Cursor new_cursor = database.query("contatti", columns, selection, selectionArgs, null,null,null);
-					
-					if (new_cursor.moveToFirst() == false) {
-						Log.i("Editor", "Password non presente per questo contatto");
-						Toast.makeText(getActivity(), "Password non presente per questo contatto", Toast.LENGTH_LONG).show();
-						return;
-					}
-		
-					seed = new_cursor.getString(0);
-					new_cursor.close();
-					*/
 				
 	
 				if (!sendMessageByInternet(text, to, seed)) {
@@ -144,11 +112,8 @@ public class Editor extends Fragment {
 					return;
 				}
 				
-				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
-				adapter.add(new OneComment(false, message.getText().toString()));
-				
-				conversation.setAdapter(adapter);
-			}	
+				message.setText("");
+			}
 		});
 
 		return EditorView;
@@ -167,6 +132,10 @@ public class Editor extends Fragment {
 	private boolean sendMessageByInternet(String text, String to, String seed) {
 		String encrypt = "";
 		
+		if (database.addMessage(to, text, 0)){
+			Log.i("Editor", "Messaggio in uscita inviato a "+ to +" aggiunto al database");
+			new UIUpdater().execute(to, message.getText().toString() ,"true");
+		}
 		try {
 			encrypt = Decoder.encrypt(seed, text);
 		} catch (Exception e) {
@@ -175,7 +144,7 @@ public class Editor extends Fragment {
 
 		Log.i("Editor", "Invio messaggio " + encrypt + " a " + to);
 
-		Message msg = new Message(to, Message.Type.chat);
+		Message msg = new Message(to + "/0123456789101", Message.Type.chat);
 		
 		msg.setBody(encrypt);
 		

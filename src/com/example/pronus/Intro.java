@@ -15,9 +15,6 @@ public class Intro extends Activity {
 
 	private static String TAG = Intro.class.getName();
 	private static long SLEEP_TIME = 5;    // Sleep for some time
-
-	private static ImageView intro;	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,13 +24,6 @@ public class Intro extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.intro);
-
-		intro = new ImageView(this);
-		intro = (ImageView) findViewById(R.id.introImage);
-		intro.setVisibility(View.VISIBLE);
-
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-	    intro.startAnimation(fadeInAnimation);
 	    
 	    // Lancio i due servizi che girano sempre in background
 	    startService(new Intent(this, SMSService.class));

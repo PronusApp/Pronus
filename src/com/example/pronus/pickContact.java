@@ -34,7 +34,7 @@ public class pickContact extends Activity {
 				if (database.addNewContact(newName.getText().toString(), newNumber.getText().toString(),newMail.getText().toString()))
 					Log.i("PickContact", "Contatto aggiunto");
 
-				ConversationList.addNewSms("22:55", newMail.getText().toString(),"",1,R.drawable.demo_profile,true);
+				ConversationList.addNewSms("22:55", newName.getText().toString(),"",1,R.drawable.demo_profile,true);
 				finish();
 			}
 		});

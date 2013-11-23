@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/Ivory"
-        android:scaleType="fitXY"
-        android:src="@drawable/first" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/back_1" />
 
 </RelativeLayout>

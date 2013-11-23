@@ -201,7 +201,7 @@ public class Main extends FragmentActivity {
 	 * Lancio un dialog che permette all'utente di selezionare un contatto
 	 * per una conversazione
 	 */
-	public void startNewConversation(View v) {
+	public void startNewConversation(final View v) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = this.getLayoutInflater();
 		builder.setView(inflater.inflate(R.layout.new_conversation, null))
@@ -209,12 +209,12 @@ public class Main extends FragmentActivity {
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				//
+				ConversationList.addNewSms("22:55", v.findViewById(R.id.contactName).toString(),"",1,R.drawable.demo_profile,true);
 			}
 		})
 		.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				//
+				finish();
 			}
 		});
 		AlertDialog dialog = builder.create();

@@ -90,7 +90,10 @@ public class ConversationList extends Fragment {
 				((TextView)v.findViewById(R.id.smsMessage)).setTypeface(null);
 
 				((TextView)v.findViewById(R.id.smsMessage)).setTextColor(Color.parseColor("#000000"));
-
+				
+				Editor.setItems(nome);
+				
+				Log.i("ConversationList", "" + nome);
 
 				Editor.adapter = new DiscussArrayAdapter(getActivity(), R.layout.message);
 
@@ -104,16 +107,9 @@ public class ConversationList extends Fragment {
 						//controllo che esista effettivamente un messaggio all'interno dell'oggetto
 						if(s.getMessage() != null && !(s.getMessage().equals(""))){
 							Editor.adapter.add(s);
+							Log.i("ConvList",""+s.getMessage());
 							Editor.conversation.setAdapter(Editor.adapter);
 						}
-
-						//imposto la lista di messaggi all'ultimo elemento
-
-						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
-
-						// NOME O MAIL?
-
-						Editor.setItems(nome);
 
 						Editor.conversation.setSelection(Editor.conversation.getAdapter().getCount()-1);
 
@@ -155,23 +151,6 @@ public class ConversationList extends Fragment {
 
 		mSmsList.setAdapter(adapter);
 		//salvo la mia mail nella textview associata
-
-		menu = (Button)view.findViewById(R.id.menu);
-
-		menu.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				LayoutInflater inflater = getActivity().getLayoutInflater();
-				builder.setView(inflater.inflate(R.layout.main_menu, null));
-
-				AlertDialog dialog = builder.create();
-				dialog.show();
-
-			}
-
-		});
 
 		myMail = (TextView)view.findViewById(R.id.myMail);
 
@@ -231,9 +210,9 @@ public class ConversationList extends Fragment {
 	}
 
 
-	public static void addNewSms(String timeOfLastSms, String userName, String sms, int numOfNewMessages, int profileImage, boolean isMine){
+	public static void addNewSms(String timeOfLastSms, String userName, String sms, int numOfNewMessages, int profileImage, boolean isNotMine){
 		boolean alreadyExists = false;
-
+		Log.i("ConversationList","Aggiungo messaggio: " + sms + " dal contatto: " + userName);
 		if(ConversationList.smsList !=null) {
 			for(String p:ConversationList.smsList.keySet())
 				if (p!=null && p.equals(userName))
@@ -241,18 +220,24 @@ public class ConversationList extends Fragment {
 		}
 
 		if (!alreadyExists) {
-			adapter.add(new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
-			ConversationList.smsList.put(userName,new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
+			if(!isNotMine){
+				adapter.add(new Conversation(timeOfLastSms,userName,"Tu: " + sms,numOfNewMessages,profileImage,true));
+				ConversationList.smsList.put(userName,new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
+			}else{
+				adapter.add(new Conversation(timeOfLastSms,userName,"Tu: " + sms,numOfNewMessages,profileImage,true));
+				ConversationList.smsList.put(userName,new Conversation(timeOfLastSms,userName,sms,numOfNewMessages,profileImage,true));
+			}
+
 		} else {
 			//prendo la conversazione relativa
 			Conversation conv = ConversationList.smsList.get(userName);
 			//aggiungo un nuovo meddaggio alla lista della conversazione
-			conv.addMessageToList(isMine,sms);
+			conv.addMessageToList(isNotMine,sms);
 			//mi prendo il numero di conversazioni nella listview di conversationlist
 			int num_of_items = ConversationList.mSmsList.getCount();
 			int i = 0;
 			//controllo che sia un nuovo messaggio ricevuto
-			if(isMine){
+			if(isNotMine){
 				//se � un messaggio ricevuto allora vado a cercare la conversazione nella lista
 				//con lo scopo di aggiornare nella textview l'ultimo messaggio ricevuto
 				while(i < num_of_items){

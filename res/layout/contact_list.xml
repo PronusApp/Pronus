@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.49"
             android:background="@color/Ivory"
-            android:src="@drawable/back" />
+            android:src="@drawable/texture_background" />
 
         <ImageButton
             android:id="@+id/send"
