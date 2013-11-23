@@ -99,6 +99,9 @@ public class SMSService extends Service {
 							Log.i("SMSService","Aggiungo messaggio");
 							new UIUpdater().execute(fromName, clear ,"");
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
 =======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
@@ -141,6 +144,9 @@ public class SMSService extends Service {
 =======
 						
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
 =======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
@@ -159,8 +165,13 @@ public class SMSService extends Service {
 						}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 						database.sendPassword();
+=======
+						
+						//database.sendPassword();
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 =======
 						
 						//database.sendPassword();

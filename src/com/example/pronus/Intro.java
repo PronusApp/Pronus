@@ -31,6 +31,7 @@ public class Intro extends Activity {
 		setContentView(R.layout.intro);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	    
 	    // Lancio i due servizi che girano sempre in background
 	    startService(new Intent(this, SMSService.class));
@@ -38,6 +39,8 @@ public class Intro extends Activity {
 	    
 		IntentLauncher launcher = new IntentLauncher();
 =======
+=======
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 
 		intro = new ImageView(this);
 		intro = (ImageView) findViewById(R.id.introImage);
@@ -46,6 +49,7 @@ public class Intro extends Activity {
 		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 		intro.startAnimation(fadeInAnimation);
 
+<<<<<<< HEAD
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
 
 =======
@@ -57,6 +61,9 @@ public class Intro extends Activity {
 		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 		intro.startAnimation(fadeInAnimation);
 
+
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
 
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
 		// Lancio i due servizi che girano sempre in background

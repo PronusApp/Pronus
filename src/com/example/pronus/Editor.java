@@ -76,6 +76,9 @@ public class Editor extends Fragment {
 					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
 =======
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
@@ -122,8 +125,12 @@ public class Editor extends Fragment {
 				}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				
 	
+=======
+					
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 =======
 					
 >>>>>>> 852558465517e28fca49103e2f313c442d536e72
