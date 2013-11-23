@@ -56,7 +56,7 @@ public class Database {
 	
 	public boolean addNewContact(String nome, String numero, String email) {
 		SQLiteDatabase database = helper.getWritableDatabase();
-		SQLiteDatabase database_lettura = helper.getWritableDatabase();
+		SQLiteDatabase database_lettura = helper.getReadableDatabase();
 
 		if (!(email.substring(email.indexOf('@')).equals("@gmail.com")))
 			return false;
@@ -86,6 +86,7 @@ public class Database {
 		new_cursor2.close();
 		
 		// Controllo che il numero di telefono non esista già
+		
 		String[] columns3 = {"email"};
 		String selection3 = "numero = ?";
 		String[] selectionArgs3 = {numero};
@@ -115,6 +116,42 @@ public class Database {
 		return true;
 	}
 	
+	public String searchNameByEmail(final String email) {
+		SQLiteDatabase database = helper.getReadableDatabase();
+		
+		String[] columns = {"nome"};
+		String selection = "email = ?";
+		String[] selectionArgs = {email};
+		
+		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
+		
+		database.close();
+		sendPassword();
+		
+		if (cursor.moveToFirst() == false)
+			return "";
+		
+		return cursor.getString(0);
+	}
+	
+	public String searchEmailByName(final String nome) {
+		SQLiteDatabase database = helper.getReadableDatabase();
+		
+		String[] columns = {"email"};
+		String selection = "nome = ?";
+		String[] selectionArgs = {nome};
+		
+		Cursor cursor = database.query("contatti", columns, selection, selectionArgs, null, null, null);
+		
+		database.close();
+		sendPassword();
+		
+		if (cursor.moveToFirst() == false)
+			return "";
+		
+		return cursor.getString(0);
+	}
+	
 	public boolean addEMailByName(final String nome, final String email) {
 		SQLiteDatabase database = helper.getWritableDatabase();
 
@@ -137,7 +174,7 @@ public class Database {
 		return true;
 	}
 	
-	public boolean addPassword(String password, String email) {
+	public boolean addPassword(final String password, final String email) {
 
 		SQLiteDatabase database = helper.getWritableDatabase();
 		ContentValues values = new ContentValues();

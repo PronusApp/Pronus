@@ -29,6 +29,8 @@ public class SMSService extends Service {
 	public static Map<String,Conversation> smsList = new HashMap<String,Conversation>();
 	public static String seed = null;
 	private Database database;
+	public static boolean alreadyLogged = false;
+	public static String mail;
 
 	@Override
 	public void onCreate() {
@@ -91,6 +93,15 @@ public class SMSService extends Service {
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
 
+<<<<<<< HEAD
+=======
+						}else{
+							Log.i("SMSService","Aggiungo messaggio");
+							new UIUpdater().execute(fromName, clear ,"");
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 						}
 						Log.i("SMSService","Aggiungo messaggio");
 						Log.i("SMSService","Testo del messaggio:" + clear);
@@ -124,8 +135,15 @@ public class SMSService extends Service {
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
+<<<<<<< HEAD
 
 
+=======
+						
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 					} else if (message.getBody().equals("IWannaYourKey")) {
 
 						String from = StringUtils.parseBareAddress(message.getFrom());
@@ -139,8 +157,18 @@ public class SMSService extends Service {
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
 						}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 						database.sendPassword();
+=======
+						
+						//database.sendPassword();
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
+						
+						//database.sendPassword();
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 					}
 				}
 			}, filter);

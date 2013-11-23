@@ -62,10 +62,23 @@ public class Editor extends Fragment {
 				String text = message.getText().toString();
 				
 				//aggiungo un nuovo messaggio a una conversazione esistente
+<<<<<<< HEAD
 				if (text.equals(null)) {
 					return;
 				}
 				
+=======
+				if (text == null) {
+					return;
+				}
+
+				if (database.addMessage(name, text, 0))
+					Log.i("Editor", "Messaggio in uscita inviato a "+ name +" aggiunto al database");
+		
+<<<<<<< HEAD
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 				// Richiesta esplicita della chiave
 				
 				Message msg = new Message(to, Message.Type.normal);
@@ -81,6 +94,8 @@ public class Editor extends Fragment {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				
+				Log.i("Editor","Sto cercando la password relativa a " + name);
 				
 				String[] columns = {"password"};
 				String selection = "email = ?";
@@ -105,17 +120,34 @@ public class Editor extends Fragment {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nPassword non disponibile.", Toast.LENGTH_LONG).show();
 					return;
 				}
+<<<<<<< HEAD
+<<<<<<< HEAD
 				
 	
+=======
+					
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
+=======
+					
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 				if (!sendMessageByInternet(text, to, seed)) {
 					Toast.makeText(getActivity(), "Impossibile inviare il messaggio ora.\nControllare la propria connessione.", Toast.LENGTH_LONG).show();
 					return;
 				}
 				
+<<<<<<< HEAD
 				message.setText("");
 			}
+=======
+				//aggiungo all'adapter un nuovo messaggio del tipo OneComment
+				adapter.add(new OneComment(false, message.getText().toString()));
+				
+				conversation.setAdapter(adapter);
+				message.setText("");
+			}	
+>>>>>>> 852558465517e28fca49103e2f313c442d536e72
 		});
-
+		
 		return EditorView;
 	}
 	
