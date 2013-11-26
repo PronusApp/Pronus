@@ -29,51 +29,23 @@ public class Intro extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.intro);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	    
-	    // Lancio i due servizi che girano sempre in background
-	    startService(new Intent(this, SMSService.class));
-	    startService(new Intent(this, PasswordUpdater.class));
-	    
-		IntentLauncher launcher = new IntentLauncher();
-=======
-=======
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-
-		intro = new ImageView(this);
+		
+		ImageView intro = new ImageView(this);
 		intro = (ImageView) findViewById(R.id.introImage);
-		intro.setVisibility(View.VISIBLE);
 
-		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		intro.startAnimation(fadeInAnimation);
-
-<<<<<<< HEAD
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-
-=======
-
-		intro = new ImageView(this);
-		intro = (ImageView) findViewById(R.id.introImage);
-		intro.setVisibility(View.VISIBLE);
-
-		Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		intro.startAnimation(fadeInAnimation);
-
-
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
-
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
 		// Lancio i due servizi che girano sempre in background
 		startService(new Intent(this, SMSService.class));
 		startService(new Intent(this, PasswordUpdater.class));
 
-		new IntentLauncher().start();
-		SMSService.alreadyLogged = true;
-
-		this.finish();		
+		
+		if(SMSService.alreadyLogged == true){
+			this.finish();
+		}else{
+			SMSService.alreadyLogged = true;
+			new IntentLauncher().start();
+		}
+		
+		
 	}
 
 	// Attività che dorme per tot secondi e poi lancia l'activity main
@@ -85,6 +57,7 @@ public class Intro extends Activity {
 
 			try {
 				// Sleeping
+				Log.i("IntentLauncher", "Try to sleep");
 				Thread.sleep(SLEEP_TIME * 1000);
 			} catch (Exception e) {
 				Log.e(TAG, e.getMessage());

@@ -4,13 +4,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class UIUpdater extends AsyncTask<String,String,String>{
-	String email, message;
+	String name, message;
 	Database database;
 	String isMine;
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		email = arg0[0];
+		name = arg0[0];
 		message = arg0[1];
 		isMine = arg0[2];
 		return null;
@@ -19,13 +19,13 @@ public class UIUpdater extends AsyncTask<String,String,String>{
 	@Override
 	protected void onPostExecute(String result) {
 		if(isMine.equals("false")){
-			Log.i("UIUpdater","Messaggio da aggiungere alle conversazioni: " + message +" da: " + email);
-			ConversationList.addNewSms("22:55",database.searchNameByEmail(email), message,1,R.drawable.demo_profile,true);
+			Log.i("UIUpdater","Messaggio da aggiungere alle conversazioni: " + message +" da: " + name);
+			ConversationList.addNewSms("22:55",name, message,1,R.drawable.demo_profile,true);
 
 		}else{
-			Log.i("UIUpdater","Messaggio da aggiungere alle conversazioni: " + message +" verso: " + email);
+			Log.i("UIUpdater","Messaggio da aggiungere alle conversazioni: " + message +" verso: " + name);
 			
-			ConversationList.addNewSms("22:55","Vincenzo Arceri", message,1,R.drawable.demo_profile,false);
+			ConversationList.addNewSms("22:55",name, message,1,R.drawable.demo_profile,false);
 		}
 
 	}

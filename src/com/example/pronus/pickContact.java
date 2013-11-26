@@ -30,6 +30,10 @@ public class pickContact extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				Log.i("PICK_CONTACT","Devo salvare il contatto con i seguenti dati:");
+				Log.i("PICK_CONTACT","Nome: " + newName.getText().toString());
+				Log.i("PICK_CONTACT","Numero: " + newNumber.getText().toString());
+				Log.i("PICK_CONTACT","Mail: " + newMail.getText().toString());
 
 				if (database.addNewContact(newName.getText().toString(), newNumber.getText().toString(),newMail.getText().toString()))
 					Log.i("PickContact", "Contatto aggiunto");

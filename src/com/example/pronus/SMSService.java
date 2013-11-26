@@ -92,25 +92,13 @@ public class SMSService extends Service {
 
 						if(!isForeground("com.example.pronus")){
 							createNotification(fromName, clear);
-
-<<<<<<< HEAD
-=======
 						}else{
 							Log.i("SMSService","Aggiungo messaggio");
-							new UIUpdater().execute(fromName, clear ,"");
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
+							Log.i("SMSService","Testo del messaggio:" + clear);
+							Log.i("SMSService","Da:" + fromName);
+							new UIUpdater().execute(database.searchNameByEmail(fromName), clear ,"false");
 						}
-						Log.i("SMSService","Aggiungo messaggio");
-						Log.i("SMSService","Testo del messaggio:" + clear);
-						Log.i("SMSService","Da:" + fromName);
-						String email = fromName.substring(0, fromName.indexOf('/'));
-						new UIUpdater().execute(email, clear ,"false");
+
 
 						database.sendPassword();
 
@@ -138,18 +126,7 @@ public class SMSService extends Service {
 							Log.i("SMSService","Password aggiunta al database");
 						else
 							Log.i("SMSService","Impossibile aggiungere la password al database");
-<<<<<<< HEAD
 
-
-=======
-						
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
 					} else if (message.getBody().equals("IWannaYourKey")) {
 
 						String from = StringUtils.parseBareAddress(message.getFrom());
@@ -163,23 +140,8 @@ public class SMSService extends Service {
 							Login.connection.sendPacket(msg);
 							Log.i("SMSService","Passoword inviata con successo");
 						}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 						database.sendPassword();
-=======
-						
-						//database.sendPassword();
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
-						
-						//database.sendPassword();
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
-=======
-						
-						//database.sendPassword();
->>>>>>> 852558465517e28fca49103e2f313c442d536e72
 					}
 				}
 			}, filter);

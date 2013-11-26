@@ -5,17 +5,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:adjustViewBounds="true" >
 
         <com.example.widget.CircularImageView
             android:id="@+id/profileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_alignParentTop="true"
             android:onClick="selectProfileImage"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             android:src="@drawable/ic_launcher" />
 
         <TextView
